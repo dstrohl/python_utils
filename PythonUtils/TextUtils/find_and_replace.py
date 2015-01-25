@@ -4,10 +4,12 @@ __author__ = 'strohl'
 
 def replace_between(instring, start_key, end_key, replace, keep_keys=False, offset_count=1, count=9999):
     """
+    Replace text between two keys, optionally including the keys themselves.
+
     :param instring: The string to search
     :param start_key: The starting boundary key
     :param end_key: The ending boundary key
-    :param replace: The string to replace the text between the boundary keys.
+    :param replace: The string to put between the boundary keys
     :param keep_keys: True/False: include the key strings in the replacement
     :param count: replace up to this many instances
     :param offset_count: start replacing after this many instances

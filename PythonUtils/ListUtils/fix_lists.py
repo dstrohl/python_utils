@@ -1,7 +1,4 @@
-__author__ = 'strohl'
-
-def is_string(in_obj):
-    return isinstance(in_obj, str )
+__author__ = 'dstrohl'
 
 def make_list(in_obj):
     if is_string(in_obj):

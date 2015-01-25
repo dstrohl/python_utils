@@ -5,7 +5,7 @@ Created on Aug 10, 2014
 '''
 import unittest
 
-from helper_utils.formatter import  find_enclosed, IntelligentFormat, FormatField, FormatTest
+from PythonUtils.TextUtils.formatter import find_enclosed, IntelligentFormat, FormatField, FormatTest
 
 class TestTestFormatter( unittest.TestCase ):
 

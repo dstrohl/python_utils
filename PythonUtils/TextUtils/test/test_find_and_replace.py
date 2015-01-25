@@ -1,8 +1,8 @@
 __author__ = 'strohl'
 
 import unittest
-from TextUtils import replace_between, get_before, get_between, get_after
-from TextUtils.find_and_replace import index_of_count
+from PythonUtils.TextUtils import replace_between, get_before, get_between, get_after
+from PythonUtils.TextUtils.find_and_replace import index_of_count
 
 
 class TestTextUtils(unittest.TestCase):

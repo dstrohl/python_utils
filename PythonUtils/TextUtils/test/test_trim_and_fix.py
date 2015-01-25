@@ -1,9 +1,8 @@
 __author__ = 'strohl'
 
-
-
 import unittest
-from TextUtils import elipse_trim
+from PythonUtils.TextUtils import elipse_trim
+
 
 class TrimTests(unittest.TestCase):
     def test_elipse_trim_basic(self):
@@ -25,8 +24,3 @@ class TrimTests(unittest.TestCase):
         instr = '1234567890'
         outstr = elipse_trim(instr, 20)
         self.assertEqual('1234567890', outstr)
-
-
-
-if __name__ == '__main__':
-    unittest.main()

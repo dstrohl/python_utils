@@ -6,8 +6,8 @@ Created on Aug 16, 2014
 
 import copy
 from string import Formatter
-
-from HelperUtils.helper_utils.list2 import list2
+from decimal import Decimal
+from PythonUtils.ListUtils.list2 import list2
 
 
 
@@ -34,7 +34,7 @@ def format_as_decimal_string(num, max_decimal_points=6):
 
 
 
-class FormatTest( Formatter ):
+class FormatTest(Formatter):
 
     '''
     def format( self, format_string, *args, **kwargs ):
