@@ -4,11 +4,9 @@ Created on Aug 16, 2014
 @author: Dan Strohl
 '''
 import unittest
+from PythonUtils.IndentedPrint.indented_print import IndentedPrint
 
-from helper_utils.indented_print import IndentedPrint
-
-
-class Test( unittest.TestCase ):
+class Test(unittest.TestCase):
 
 
     def test_init( self ):
@@ -42,6 +40,18 @@ class Test( unittest.TestCase ):
         self.assertEqual( IP.current_indent, 0 )
         IP.a( 10 ).s( 5 )
         self.assertEqual( IP.current_indent, 5 )
+
+
+    def test_call(self):
+        IP = IndentedPrint()
+
+        IP.p('this is the initial line')
+        self.assertEqual( IP.current_indent, 0)
+        IP('this is a test', pre_indent=5, post_outdent=5)
+        self.assertEqual( IP.current_indent, 0)
+        IP.p('this is the final line')
+
+
 
 
     def test_ms( self ):
