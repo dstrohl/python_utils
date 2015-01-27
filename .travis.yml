@@ -9,3 +9,10 @@ python:
 # install: PLEASE CHANGE ME
 # command to run tests, e.g. python setup.py test
 script:  nosetests
+notifications:
+  email:
+    recipients:
+      - dan@wjcg.net
+      - d.strohl@f5.com
+    on_success: always
+    on_failure: always
