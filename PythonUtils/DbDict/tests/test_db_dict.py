@@ -3,7 +3,7 @@ import pprint
 
 p=pprint.PrettyPrinter()
 
-from HelperUtils.helper_utils.db_dict import ListDB
+from PythonUtils.DbDict.db_dict import ListDB
 __author__ = 'strohl'
 
 

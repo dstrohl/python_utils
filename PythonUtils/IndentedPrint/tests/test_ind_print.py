@@ -4,11 +4,22 @@ Created on Aug 16, 2014
 @author: Dan Strohl
 '''
 import unittest
-from PythonUtils.IndentedPrint.indented_print import IndentedPrint
+from PythonUtils.IndentedPrint.indented_print import IndentedPrinter, IndentedPrintHelper
+
 
 class Test(unittest.TestCase):
 
+    def test_ip_helper(self):
+        iph = IndentedPrintHelper()
 
+        self.assertEqual(iph.crlf, '\n')
+        self.assertEqual(iph.f(), 'test_ip_helper')
+
+        self.assertEqual(iph('this is a test{crlf}'), 'this is a test\n')
+        self.assertEqual(iph('this is a test{counter:12}'), 'this is a test\n')
+
+
+    """
     def test_init( self ):
 
         IP = IndentedPrint( indent_spaces = 5, silence = True, inc_stack = True, stack_format = '{stack}', stack_length_limits = {'test':12} )
@@ -89,7 +100,7 @@ class Test(unittest.TestCase):
         IP.ca( 3, 'test_key' )
         IP.sep().pl( '#[]#', ' this is a test ', '#[test_key]#' ).sep().nl( 3 )
 
-
+    """
 
 if __name__ == "__main__":
     # import sys;sys.argv = ['', 'Test.testName']
