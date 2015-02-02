@@ -8,29 +8,203 @@ __author__ = 'strohl'
 import inspect
 import pprint
 from Lib.string import Formatter
+import ast
+import os
 
 from PythonUtils.TermColor.termcolor import colored
 from PythonUtils.IndentedPrint.color_wrap import ColorWrap
-from PythonUtils import Clicker
+from PythonUtils import get_before, get_after, get_between
+from PythonUtils import Clicker, swap, list_in_list, list_not_in_list
 from os import path
 # import copy
 # from sys import stdout
 
+
+
 class IPFormatter(Formatter):
+    def __init__(self, iph):
+        self._iph = iph
+        self._iph_properties = self._iph._exposed_properties
+        self._iph_methods = self._iph._exposed_methods
+
+    def get_value(self, key, args, kwargs):
+
+        if isinstance(key, int):
+            return args[key]
+        else:
+            test_key = get_before(key,'(')
+            if key in self._iph_properties:
+                return getattr(self._iph, key)
+
+            if key in self._iph_methods:
+                iph_meth = getattr(self._iph, key)
+                return iph_meth()
+
+            elif test_key in self._iph_methods:
+                iph_meth = getattr(self._iph, test_key)
+                iph_args, iph_kwargs = self._parse_args(get_between(key,'(',')'))
+                return iph_meth(*iph_args, **iph_kwargs)
+            else:
+                return kwargs[key]
 
 
+    def _parse_args(self,key_string):
+        if key_string.endswith('=') or key_string.startswith('='):
+            raise AttributeError('format key args must not start or end with "="')
+        tmp_arg_list = key_string.split(',')
+        tmp_arg_list_2 = []
+        args_list = []
+        kwargs_dict = {}
+        skip_next = False
+        for offset, arg in enumerate(tmp_arg_list):
+            if arg == '=':
+                tmp_arg_list_2.pop()
+                tmp_str = tmp_arg_list[offset-1]+tmp_arg_list[offset]+tmp_arg_list[offset+1]
+                tmp_arg_list_2.append(tmp_str)
+                skip_next = True
+            else:
+                if not skip_next:
+                    tmp_arg_list_2.append(arg)
 
-class FormatProxy(object):
+        for arg in tmp_arg_list_2:
+            if '=' in arg:
+                tmp_kwarg = arg.split('=')
+                kwargs_dict[tmp_kwarg[0]] = ast.literal_eval(tmp_kwarg[1])
+            else:
+                args_list.append(ast.literal_eval(arg))
 
-    def __init__(self, parent):
-        self.parent = parent
+        return args_list, kwargs_dict
+
+class Colorizer(object):
+    ATTRIBUTES = dict(list(zip(['bold', 'dark', '', 'underline', 'blink', '',
+                                'reverse', 'concealed'], list(range(1, 9)))))
+    del ATTRIBUTES['']
+    HIGHLIGHTS = dict(list(zip(['on_grey', 'on_red', 'on_green', 'on_yellow',
+                                'on_blue', 'on_magenta', 'on_cyan', 'on_white'], list(range(40, 48)))))
+    COLORS = dict(list(zip(['grey','red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'], list(range(30, 38)))))
+    RESET = '\033[0m'
+
+    def __init__(self, presets=None):
+        self._presets = {}
+        if presets:
+            self._presets.update(presets)
+
+    def __setitem__(self, key, value):
+        self._presets[key] = value
 
     def __getitem__(self, item):
-        print(item)
-        return getattr(self.parent, item)
+        try:
+            return self(self._presets[item])
+        except KeyError:
+            raise KeyError('preset '+item+' not found in list of presets')
+
+    def __call__(self, *args):
+        if args:
+            color, on_color, attrs = self._param(*args)
+            return self._colored(color, on_color, attrs)
+        else:
+            return self._colored(reset=True)
+
+    def _param(self, *args):
+
+        if len(args) == 1:
+            if isinstance(args[0], str):
+                tmp_arg = args[0].replace(',',' ')
+                if ' ' in tmp_arg:
+                    args = tmp_arg.split()
+            elif isinstance(args[0], (list, tuple)):
+                args = args[0]
+
+        attrib = []
+        color = None
+        on_color = None
+
+        for a in args:
+            a = a.lower()
+            if a in self.ATTRIBUTES:
+                attrib.append(a)
+
+            elif a in self.COLORS:
+                color = a
+
+            elif a in self.HIGHLIGHTS:
+                on_color = a
+
+
+        return color, on_color, attrib
+
+
+    def _colored(self, color=None, on_color=None, attrs=None, reset=False):
+        """Generate Color String.
+
+        Available text colors:
+            red, green, yellow, blue, magenta, cyan, white.
+
+        Available text highlights:
+            on_red, on_green, on_yellow, on_blue, on_magenta, on_cyan, on_white.
+
+        Available attributes:
+            bold, dark, underline, blink, reverse, concealed.
+        """
+        text = ''
+        if os.getenv('ANSI_COLORS_DISABLED') is None:
+            fmt_str = '\033[%dm%s'
+            if color is not None:
+                text = fmt_str % (self.COLORS[color], text)
+
+            if on_color is not None:
+                text = fmt_str % (self.HIGHLIGHTS[on_color], text)
+
+            if attrs is not None:
+                if isinstance(attrs, str):
+                    text = fmt_str % (self.ATTRIBUTES[attrs], text)
+                else:
+                    for attr in attrs:
+                        text = fmt_str % (self.ATTRIBUTES[attr], text)
+
+            if reset:
+                text += self.RESET
+        return text
+
+
+
+    def colored(self, text, color=None, on_color=None, attrs=None):
+        """Colorize text.
+
+        Available text colors:
+            red, green, yellow, blue, magenta, cyan, white.
+
+        Available text highlights:
+            on_red, on_green, on_yellow, on_blue, on_magenta, on_cyan, on_white.
+
+        Available attributes:
+            bold, dark, underline, blink, reverse, concealed.
+
+        Example:
+            colored('Hello, World!', 'red', 'on_grey', ['blue', 'blink'])
+            colored('Hello, World!', 'green')
+        """
+        if os.getenv('ANSI_COLORS_DISABLED') is None:
+            fmt_str = '\033[%dm%s'
+            if color is not None:
+                text = fmt_str % (self.COLORS[color], text)
+
+            if on_color is not None:
+                text = fmt_str % (self.HIGHLIGHTS[on_color], text)
+
+            if attrs is not None:
+                for attr in attrs:
+                    text = fmt_str % (self.ATTRIBUTES[attr], text)
+
+            text += self.RESET
+        return text
 
 
 class IndentedPrintHelper(object):
+
+    _exposed_properties = ('crlf','stack','lf')
+    _exposed_methods = ('counter','func_name','sep_line','new_line','color',
+                        'f','c','nl','sep','co', 'color_preset', 'cp')
 
     _stack_format = '{caller_name} [{last_dir}.{file_name}:{line_num}] |'
     _stack_length_limits = {'__full_string__': {'max_length': 40,
@@ -38,44 +212,48 @@ class IndentedPrintHelper(object):
                                                 'end_string': '|'},
                                                 'line_num': {'trim_priority': 0}
                             }
-
-    _line_format = '{padding}{stack}{line}{end}'
-    _render_queue = ''
-    _cw = ColorWrap()
+    _default_color_presets = {'prefix':'bold',
+                              'var':'underline',
+                              'critical':'red',
+                              'minor':'grey'}
+    #_render_queue = ''
+    #_cw = ColorWrap()
     _color_string = None
     _currently_colored = False
 
-    _format_proxy = None
-
+    # accessible properties
+    prefix = ''
+    suffix = ''
     counter = Clicker()
     crlf = '\n'
 
-    @property
-    def format_proxy(self):
-        if not self._format_proxy:
-            self._format_proxy = FormatProxy(self)
-        return self._format_proxy
-
     def __init__(self,
                  stack_format=None,
-                 stack_length_limits=None):
+                 stack_length_limits=None,
+                 color_presets=_default_color_presets):
 
         if stack_format:
             self._stack_format = stack_format
         if stack_length_limits:
             self._stack_length_limits = stack_length_limits
-        self.string_lookup = {}
-        self.flags = []
-        self.trouble_flag = False
+        #self.string_lookup = {}
+        #self.flags = []
+        #self.trouble_flag = False
         self._pp = pprint.PrettyPrinter(indent=3)
+
+        self._ipf = IPFormatter(self)
+        self._colorizer = Colorizer(presets=color_presets)
+        self._templates = {}
 
     # ====================================
     # color
     # ====================================
 
     def color(self, color=None):
-        self._color_string = color
+        return self._colorizer(color)
 
+    def color_preset(self, preset):
+        return self._colorizer[preset]
 
     # ====================================
     # lines and spaces
@@ -91,6 +269,14 @@ class IndentedPrintHelper(object):
     def sep_line(sep_str='-', strlen=80):
         return ''.ljust(strlen, sep_str)
 
+    @property
+    def lf(self):
+        return self.crlf
+
+    # ====================================
+    # System Data
+    # ====================================
+
     @staticmethod
     def func_name(add_offset=0):
         import traceback
@@ -98,138 +284,40 @@ class IndentedPrintHelper(object):
         offset = len(tmp_trace) - 4 + add_offset
         return traceback.extract_stack(None)[offset][2]
 
-
-    def pretty_print(self, *args, **kwargs):
-        self.__pprint(*args, **kwargs)
-        return self
-
-    def __call__(self, format_string):
-        return format_string.format_map(self.format_proxy)
-
-    # ====================================
-    # keystring saving methods
-    # ====================================
-
-    def keystring_save(self, key, *args, **kwargs):
-        self.string_lookup[key] = {'args': args, 'kwargs': kwargs}
-        return self
-
-    def keystring_print(self, key):
-        try:
-            self.println(*self.string_lookup[key]['args'], **self.string_lookup[key]['kwargs'])
-        except KeyError:
-            pass
-        return self
-
-    # ====================================
-    # support methods
-    # ====================================
-
-    def _print(self, *args , mt_lines = None, end = '', inc_stack = None):
-        self._trouble_print()
-        if not self.silence:
-            if mt_lines:
-                for i in range(mt_lines):
-                    print('',)
-            if args:
-                print_str = self.g(*args, end = end, inc_stack = inc_stack, console = True)
-                # if self.color_str:
-                #    print_str = self.cw.wrap(self.color_str, print_str)
-                print(print_str , end = end)
-            # print(tmp_padding, *args)
-
-    def __pprint(self, *args, outside_sep = "=", inside_sep = "-", indent = 3):
-        self._trouble_print()
-        self.pl()
-        if outside_sep:
-            self.sep(sep_str=outside_sep,indent=0)
-
-        prnt_sep = False
-        for arg in args:
-            if prnt_sep:
-                self.sep(sep_str=inside_sep, indent=0)
-            self._pp.pprint(arg)
-            prnt_sep = True
-
-        if outside_sep:
-            self.sep(sep_str=outside_sep,indent=0)
-        self.pl()
-
-    def g(self, *args , **kwargs):
-        end = kwargs.get('end', '\n')
-        sep = kwargs.get('sep', '')
-        console = kwargs.get('console', False)
-        inc_stack = kwargs.get('inc_stack', self.inc_stack)
-        tmp_stack_str = ''
-        tmp_list = []
-
-        padding = ' '.ljust(self.current_indent * self.indent_spaces)
-
-        for s in args:
-            tmp_list.append(self._stringify_with_vars(s, console = console))
-            # if self._currently_colored and console:
-            #    tmp_list.append(self.cw.default)
-
-        if inc_stack:
-            tmp_stack_str = self._parse_stack()
-
-        return self._line_format.format(padding = padding, stack = tmp_stack_str, line = sep.join(tmp_list), end = end)
-
-    def _stringify_with_vars(self, item, console = True):
-        tmp_ret = ''
-        if isinstance(item, str):
-            if item.startswith('#[') and item.endswith(']#'):
-                tmp_str = item[2:-2]
-                tmp_split = tmp_str.split(':')
-                tmp_var = tmp_split[0]
-
-                try:
-                    tmp_sub_var = tmp_split[1]
-                except:
-                    tmp_sub_var = None
-
-                if tmp_var == 'counter':
-
-                    if tmp_sub_var:
-                        tmp_ret = str(self.get_c(tmp_sub_var))
-                    else:
-                        tmp_ret = str(self.get_c())
-
-                if tmp_var == 'color':
-                    if tmp_sub_var:
-                        if tmp_sub_var == 'default':
-                            self._currently_colored = False
-                        else:
-                            self._currently_colored = tmp_sub_var
-                        return ''
-
-                    else:
-                        self._currently_colored = False
-                        return ''
-
-        tmp_ret = str(item)
-
-        if self._currently_colored:
-            return colored(tmp_ret, self._currently_colored)
-        else:
-            return tmp_ret
-
-    def _combine_strings(self, *args, **kwargs):
-        end = kwargs.get('end', '')
-        sep = kwargs.get('sep', '')
-        tmp_list = []
-
-        for s in args:
-            tmp_str = str(s)
-            tmp_list.append(tmp_str)
-        tmp_list.append(end)
-        return sep.join(tmp_list)
-
-
-
     def stack(self):
-        self._print('', inc_stack = True)
-        return self
+        return self._parse_stack()
+
+    # ====================================
+    # template
+    # ====================================
+
+    def template_save(self, key, template):
+        self._templates[key] = template
+        return template
+
+    def template(self, key, *args, **kwargs):
+        return self.formatted(self._templates[key], *args, **kwargs)
+
+    def __getitem__(self, item):
+        return self.template(item)
+
+    def __setitem__(self, key, value):
+        self.template_save(key, value)
+
+    # ====================================
+    # formatting
+    # ====================================
+
+    def __call__(self, format_string, *args, **kwargs):
+        self.formatted(format_string, *args, **kwargs)
+
+    def formatted(self, format_string, *args, **kwargs):
+        format_string = self.prefix+format_string+self.suffix
+        return self._ipf.format(format_string, *args, **kwargs)
+
+    # ====================================
+    # stack
+    # ====================================
 
 
     def _parse_stack(self):
@@ -265,22 +353,6 @@ class IndentedPrintHelper(object):
         tmp_path, tmp_dir = path.split(tmp_path)
         return {'start_path':tmp_path, 'last_dir':tmp_dir, 'file_name':tmp_fn}
 
-
-
-    def troubleshoot(self, troubleshoot = False):
-        self.trouble_flag = troubleshoot
-
-    def _trouble_print(self):
-        if self.trouble_flag:
-            print('Indent Spaces  : ', self.indent_spaces)
-            print('Current Indent : ', self.current_indent)
-            print('Silence        : ', self.silence)
-            print('Counters       : ', self.counters)
-            print('Memories       : ', self.indent_mems)
-            print('Push Queue     : ', self.pop_queue)
-            print('Flags          : ', self.flags)
-
-
     # ====================================
     # Shortcuts
     # ====================================
@@ -288,60 +360,18 @@ class IndentedPrintHelper(object):
     def co(self, color=None):
         return self.color(color)
 
-    def ca(self, count_diff=1, counter_key=None):
-        return self.counter_add(count_diff, counter_key)
+    def cp(self, preset):
+        return self.color_preset(preset)
 
-    def cs(self, count_diff=1, counter_key=None):
-        return self.counter_sub(count_diff, counter_key)
-
-    def cc(self, count=0, counter_key=None):
-        return self.counter_clear(count, counter_key)
-
-    @property
-    def c(self):
-        return self.get_counter()
-
-    def p(self, *args , **kwargs):
-        return self.print(*args, **kwargs)
-
-    def pl(self, *args , **kwargs):
-        return self.println(*args, **kwargs)
-
-    def ks(self, key, *args, **kwargs):
-        return self.keystring_save(key, *args, **kwargs)
-
-    def kp(self, key):
-        return self.keystring_print(key)
-
-    def pp(self, *args, **kwargs):
-        return self.pretty_print(*args, **kwargs)
-
-    def lp(self, *args, **kwargs):
-        return self.println(*args, **kwargs)
-
-    def nl(self, new_line_count=1):
-        return self.new_line(new_line_count)
-
-    def i(self, indent=0):
-        return self.indent(indent)
-
-    def a(self, indent=1):
-        return self.indent_add(indent)
-
-    def s(self, indent=1):
-        return self.indent_sub(indent)
-
-    def ms(self, key=None, indent=None):
-        return self.indent_mem_save(key, indent)
-
-    def mr(self, key=None):
-        return self.indent_mem(key)
+    def c(self, *args):
+        return self.counter(*args)
 
     def sep(self, sep_str='-', strlen=80, indent=None):
-        return self.sep_line(sep_str, strlen, indent)
+        return self.sep_line(sep_str, strlen)
 
     def f(self, offset=0):
         return self.func_name(offset+1)
+
 
 
 class IndentedPrinter(object):
@@ -443,101 +473,117 @@ class IndentedPrinter(object):
                           }
     """
 
-    current_indent = 0
-    inc_stack = False
-    stack_format = '{caller_name} [{last_dir}.{file_name}:{line_num}] |'
-    stack_length_limits = {'__full_string__': {'max_length':40,
-                                               'pad_to_max':True,
-                                               'end_string':'|'},
-                            'line_num':       {'trim_priority':0}
-                            }
+    _current_indent = 0
+    _line_format = '{prefix}{padding}{line}{end}{suffix}'
+    #render_queue = ''
+    #cw = ColorWrap()
+    #color_string = None
+    #_currently_colored = False
 
-    line_format = '{padding}{stack}{line}{end}'
-    render_queue = ''
-    cw = ColorWrap()
-    color_string = None
-    _currently_colored = False
+    prefix = ''
+    suffix = ''
 
     def __init__(self,
-                  indent_spaces = 5,
-                  silence = False,
-                  line_format = None,
-                  inc_stack = False,
-                  stack_format = None,
-                  stack_length_limits = None):
+                 indent_spaces = 5,
+                 silence = False,
+                 line_format=_line_format,
+                 stack_format = None,
+                 stack_length_limits = None,
+                 prefix=prefix):
 
-        self.indent_spaces = indent_spaces
-        self.silence = silence
-        self.inc_stack = inc_stack
-        if stack_format:
-            self.stack_format = stack_format
-        if stack_length_limits:
-            self.stack_length_limits = stack_length_limits
-        if line_format:
-            self.line_format = line_format
-        self.counters = {}
-        self.counters['__default__'] = 0
-        self.indent_mems = {}
-        self.pop_queue = []
-        self.string_lookup = {}
-        self.flags = []
-        self.trouble_flag = False
+        self._indent_spaces = indent_spaces
+        self._silence = silence
+        self._indent_mems = {}
+        self._pop_queue = []
+        self._string_lookup = {}
+
+        self._current_flags = []
+        self._inc_flags = []
+        self._exc_flags = []
+
+        self._line_format = line_format
+        self._trouble_flag = False
+
         self._pp = pprint.PrettyPrinter(indent=3)
+        self._iph = IndentedPrintHelper(stack_format, stack_length_limits)
+
+        # accessible attributes
+        self._prefix = pefix
+        self._suffix = prefix
 
     # ====================================
-    # color
+    # pre-suffix methods
     # ====================================
 
-    def color(self, color=None):
-        self.color_string = color
+    def set_suffix(self, suffix):
+        self._suffix = suffix
         return self
 
-    # ====================================
-    # counter methods
-    # ====================================
-
-    def counter_add(self, count_diff=1, counter_key=None):
-        self._update_counter(counter_key, count_diff)
+    def set_prefix(self, prefix):
+        self._prefix = prefix
         return self
 
-    def counter_sub(self, count_diff=1, counter_key=None):
-        count_diff = count_diff * -1
-        self._update_counter(counter_key, count_diff)
-        return self
-
-    def counter_clear(self, count = 0, counter_key=None):
-        self._update_counter(counter_key, count, reset=True)
-        return self
-
-    def get_counter(self, counter_key=None):
-        if not counter_key:
-            counter_key = '__default__'
-        try:
-            tmp_ret = self.counters[counter_key]
-        except KeyError:
-            tmp_ret = 0
-        return tmp_ret
-
-    def _update_counter(self, counter_key, counter_change=0, reset=False):
-        if not counter_key:
-            counter_key = '__default__'
-
-        if reset:
-            cur_cnt = counter_change
+    @property
+    def suffix(self):
+        if self._suffix:
+            return self._iph(self._suffix)
         else:
-            try:
-                cur_cnt = self.counters[counter_key]
-            except KeyError:
-                cur_cnt = 0
-            cur_cnt = cur_cnt + counter_change
+            return ''
 
-        if cur_cnt < 1:
+    @property
+    def prefix(self):
+        if self._prefix:
+            return self._iph(self._prefix)
+        else:
+            return ''
+
+    # ====================================
+    # indent control methods
+    # ====================================
+
+    def indent(self, indent=0):
+        self._current_indent = indent
+        return self
+
+    def indent_add(self, indent=1):
+        self._current_indent += indent
+        return self
+
+    def indent_sub(self, indent=1):
+        self._current_indent -= indent
+        if self._current_indent < 0:
+            self._current_indent = 0
+        return self
+
+    def indent_mem_save(self, key=None, indent=None):
+        if indent:
+            tmp_indent = indent
+        else:
+            tmp_indent = self._current_indent
+
+        if key:
+            self._indent_mems[key] = tmp_indent
+        else:
+            self._pop_queue.append(tmp_indent)
+        return self
+
+    def indent_mem(self, key=None):
+        if key:
             try:
-                del self.counters[counter_key]
+                self._current_indent = self._indent_mems[key]
             except KeyError:
                 pass
         else:
-            self.counters[counter_key] = cur_cnt
+            self.pop()
+        return self
+
+    def push(self):
+        self._pop_queue.append(self._current_indent)
+        return self
+
+    def pop(self):
+        self._current_indent = self._pop_queue.pop()
+        return self
 
     # ====================================
     # printing methods
@@ -553,275 +599,83 @@ class IndentedPrinter(object):
         self._print(*args, **kwargs)
         return self
 
-    def pretty_print(self, *args, **kwargs):
-        self.__pprint(*args, **kwargs)
-        return self
+    def get(self, *args, **kwargs):
+        return self._make_string(*args, **kwargs)
 
-    def new_line(self, new_line_count = 1):
-        self._print(mt_lines = new_line_count)
-        return self
+    def _print(self, *args , end = '', **kwargs):
+        """
+        prints the content to stdout
 
-    def sep_line(self, sep_str='-', strlen=80, indent=None):
-        sep_line = ''.ljust(strlen, sep_str)
-        if indent:
-            self.ms('__internal_seperator__').i(indent)
-        self._print(sep_line, inc_stack=False)
+        NOTE: should not generate any strings or content (other than \n or console only content)
+        """
+        self._trouble_print()
+        if not self._silence:
+            if args:
+                print_str = self._make_string(*args, **kwargs)
+                print(print_str , end=end)
+            elif end != '':
+                print('', end=end)
 
-        if indent:
-            self.mr('__internal_seperator__')
-        return self
+    def _make_string(self, *args , **kwargs):
+        """
+        generates the string to be printed
+        """
+        sep = kwargs.get('sep', '')
+        skip_helper = kwargs.get('skip_helper',False)
 
-    def func_name(self, add_offset=0):
-        try:
-            tmp_trace = traceback.extract_stack(None)
-            offset = len(tmp_trace) - 3 + add_offset
-            self.println('function: ', traceback.extract_stack(None)[offset][2])
-        except UnboundLocalError:
-            import traceback
-            tmp_trace = traceback.extract_stack(None)
-            offset = len(tmp_trace) - 3 + add_offset
-            self.println('function: ', traceback.extract_stack(None)[offset][2])
-        return self
+        padding = ' '.ljust(self._current_indent * self._indent_spaces)
+        line = self._make_line(*args, **kwargs)
 
-    # ====================================
-    # keystring saving methods
-    # ====================================
+        return self._line_format.format(padding = padding,
+                                        line = line,
+                                        prefix = self.prefix,
+                                        suffix = self.suffix)
 
-    def keystring_save(self, key, *args, **kwargs):
-        self.string_lookup[key] = {'args': args, 'kwargs': kwargs}
-        return self
+    def _make_line(self, *args, **kwargs):
+        """
+        generates the line to be printed (text without pre/suffix or indent)
+        """
+        sep = kwargs.get('sep', '')
+        skip_helper = kwargs.get('skip_helper',False)
 
-    def keystring_print(self, key):
-        try:
-            self.println(*self.string_lookup[key]['args'], **self.string_lookup[key]['kwargs'])
-        except KeyError:
-            pass
-        return self
+        line = ''
+        for s in args:
+            if line != '':
+                line += sep
 
-    # ====================================
-    # indent control methods
-    # ====================================
+            if isinstance(s, str):
+                line += self._iph(s)
+            else:
+                line += str(s)
 
-    def indent(self, indent=0):
-        self.current_indent = indent
-        return self
-
-    def indent_add(self, indent=1):
-        self.current_indent += indent
-        return self
-
-    def indent_sub(self, indent=1):
-        self.current_indent -= indent
-        if self.current_indent < 0:
-            self.current_indent = 0
-        return self
-
-    def indent_mem_save(self, key=None, indent=None):
-        if indent:
-            tmp_indent = indent
-        else:
-            tmp_indent = self.current_indent
-
-        if key:
-            self.indent_mems[key] = tmp_indent
-        else:
-            self.pop_queue.append(tmp_indent)
-        return self
-
-    def indent_mem(self, key=None):
-        if key:
-            try:
-                self.current_indent = self.indent_mems[key]
-            except KeyError:
-                pass
-        else:
-            self.pop()
-        return self
-
-    def push(self):
-        self.pop_queue.append(self.current_indent)
-        return self
-
-    def pop(self):
-        self.current_indent = self.pop_queue.pop()
-        return self
+        return line
 
     # ====================================
     # support methods
     # ====================================
 
-    def _print(self, *args , mt_lines = None, end = '', inc_stack = None):
-        self._trouble_print()
-        if not self.silence:
-            if mt_lines:
-                for i in range(mt_lines):
-                    print('',)
-            if args:
-                print_str = self.g(*args, end = end, inc_stack = inc_stack, console = True)
-                # if self.color_str:
-                #    print_str = self.cw.wrap(self.color_str, print_str)
-                print(print_str , end = end)
-            # print(tmp_padding, *args)
-
-    def __pprint(self, *args, outside_sep = "=", inside_sep = "-", indent = 3):
-        self._trouble_print()
-        self.pl()
-        if outside_sep:
-            self.sep(sep_str=outside_sep,indent=0)
-
-        prnt_sep = False
-        for arg in args:
-            if prnt_sep:
-                self.sep(sep_str=inside_sep, indent=0)
-            self._pp.pprint(arg)
-            prnt_sep = True
-
-        if outside_sep:
-            self.sep(sep_str=outside_sep,indent=0)
-        self.pl()
-
-    def g(self, *args , **kwargs):
-        end = kwargs.get('end', '\n')
-        sep = kwargs.get('sep', '')
-        console = kwargs.get('console', False)
-        inc_stack = kwargs.get('inc_stack', self.inc_stack)
-        tmp_stack_str = ''
-        tmp_list = []
-
-        padding = ' '.ljust(self.current_indent * self.indent_spaces)
-
-        for s in args:
-            tmp_list.append(self._stringify_with_vars(s, console = console))
-            # if self._currently_colored and console:
-            #    tmp_list.append(self.cw.default)
-
-        if inc_stack:
-            tmp_stack_str = self._parse_stack()
-
-        return self.line_format.format(padding = padding, stack = tmp_stack_str, line = sep.join(tmp_list), end = end)
-
-    def _stringify_with_vars(self, item, console = True):
-        tmp_ret = ''
-        if isinstance(item, str):
-            if item.startswith('#[') and item.endswith(']#'):
-                tmp_str = item[2:-2]
-                tmp_split = tmp_str.split(':')
-                tmp_var = tmp_split[0]
-
-                try:
-                    tmp_sub_var = tmp_split[1]
-                except:
-                    tmp_sub_var = None
-
-                if tmp_var == 'counter':
-
-                    if tmp_sub_var:
-                        tmp_ret = str(self.get_c(tmp_sub_var))
-                    else:
-                        tmp_ret = str(self.get_c())
-
-                if tmp_var == 'color':
-                    if tmp_sub_var:
-                        if tmp_sub_var == 'default':
-                            self._currently_colored = False
-                        else:
-                            self._currently_colored = tmp_sub_var
-                        return ''
-
-                    else:
-                        self._currently_colored = False
-                        return ''
-
-
-                    '''
-                    if console:
-                        if tmp_sub_var:
-                            if tmp_sub_var == 'default':
-                                self._currently_colored = False
-                            else:
-                                self._currently_colored = True
-                            return self.cw[tmp_sub_var]
-
-                        else:
-                            self._currently_colored = False
-                            return self.cw.default
-                    else:
-                        return ''
-                        
-                    '''
-        tmp_ret = str(item)
-
-        if self._currently_colored:
-            return colored(tmp_ret, self._currently_colored)
-        else:
-            return tmp_ret
-
-    def _combine_strings(self, *args, **kwargs):
-        end = kwargs.get('end', '')
-        sep = kwargs.get('sep', '')
-        tmp_list = []
-
-        for s in args:
-            tmp_str = str(s)
-            tmp_list.append(tmp_str)
-        tmp_list.append(end)
-        return sep.join(tmp_list)
-
-
-
-    def stack(self):
-        self._print('', inc_stack = True)
-        return self
-
-
-    def _parse_stack(self):
-        off_path = 1
-        off_line = 2
-        off_attrib = 3
-        tmp_attribs = dir(self)
-        my_attribs = []
-        format_kwargs = {}
-
-        stack = inspect.stack()
-
-        for s in tmp_attribs:
-            if not s.startswith('__'):
-                my_attribs.append(s)
-
-
-        for s in stack:
-            if not s[off_attrib] in my_attribs:
-
-                format_kwargs['full_path'] = s[off_path]
-                format_kwargs['line_num'] = s[off_line]
-                format_kwargs['caller_name'] = s[off_attrib]
-                break
-
-        format_kwargs.update(self._parse_path(format_kwargs['full_path']))
-
-        tmp_ret = self.stack_format.format(**format_kwargs)
-        return tmp_ret
-
-    def _parse_path(self, in_path):
-        tmp_path, tmp_fn = path.split(in_path)
-        tmp_path, tmp_dir = path.split(tmp_path)
-        return {'start_path':tmp_path, 'last_dir':tmp_dir, 'file_name':tmp_fn}
-
-
 
     def troubleshoot(self, troubleshoot = False):
-        self.trouble_flag = troubleshoot
+        self._trouble_flag = troubleshoot
 
     def _trouble_print(self):
-        if self.trouble_flag:
-            print('Indent Spaces  : ', self.indent_spaces)
-            print('Current Indent : ', self.current_indent)
-            print('Silence        : ', self.silence)
+        if self._trouble_flag:
+            print('Indent Spaces  : ', self._indent_spaces)
+            print('Current Indent : ', self._current_indent)
+            print('Silence        : ', self._silence)
             print('Counters       : ', self.counters)
-            print('Memories       : ', self.indent_mems)
-            print('Push Queue     : ', self.pop_queue)
-            print('Flags          : ', self.flags)
+            print('Memories       : ', self._indent_mems)
+            print('Push Queue     : ', self._pop_queue)
+            print('Flags          : ', self._flags)
 
+    # ====================================
+    # flag methods
+    # ====================================
+
+    def _flags(self):
+        """
+        boolean to show if flags are in use
+        """
 
     '''
     def fa(self, flag):
@@ -870,14 +724,12 @@ class IndentedPrinter(object):
     def _check_filter(self):
     '''
 
-    def _swap_bool(self, bool_in):
-        if bool_in == True:
-            return  False
-        else:
-            return True
 
-    def silent(self, silence):
-        self.silence = silence
+    def silent(self, silence=None):
+        if silence:
+            self._silence = silence
+        else:
+            self._silence = swap(self._silence)
         return self
 
     # ====================================
@@ -1061,17 +913,4 @@ class FakeIndentedPrint(object):
             return self
         return self
 '''
-
-
-class IP(IndentedPrinter):
-    pass
-
-'''
-class IndentedPrint(IndentedPrinter):
-    pass
-
-
-ip = IndentedPrint()
-'''
-
 

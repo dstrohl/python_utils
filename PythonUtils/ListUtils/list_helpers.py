@@ -140,6 +140,23 @@ def remove_dupes(l1):
 # ===============================================================================
 
 
+def list_in_list(is_this, in_this):
+    is_this = make_list(is_this)
+    for item in is_this:
+        if item in in_this:
+            return True
+    return False
+
+
+def list_not_in_list(is_this, not_in_this):
+    is_this = make_list(is_this)
+    for item in is_this:
+        if item in not_in_this:
+            return False
+    return True
+
+
+
 def count_unique(data_in, dict_key=None, on_key_error='raise'):
     """
     :param data_in: list or tuple of items to be counted

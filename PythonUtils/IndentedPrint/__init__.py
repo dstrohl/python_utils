@@ -1,5 +1,5 @@
 __author__ = 'dstrohl'
 
-from PythonUtils.IndentedPrint.indented_print import IndentedPrinter, IP
+from PythonUtils.IndentedPrint.indented_print import IndentedPrinter
 
-__all__ = ['IndentedPrinter', 'IP']
+__all__ = ['IndentedPrinter']

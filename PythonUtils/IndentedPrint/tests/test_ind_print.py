@@ -4,10 +4,23 @@ Created on Aug 16, 2014
 @author: Dan Strohl
 '''
 import unittest
-from PythonUtils.IndentedPrint.indented_print import IndentedPrinter, IndentedPrintHelper
-
+from PythonUtils.IndentedPrint.indented_print import IndentedPrinter, IndentedPrintHelper, Colorizer
 
 class Test(unittest.TestCase):
+
+
+    def test_flag_class(self):
+
+
+
+
+    def test_colorizer(self):
+        c = Colorizer()
+        c['test_preset'] = 'bold'
+        t1 = c('underline red on_white')+'RED'+c()
+        t2 = c['test_preset']+'BOLD'+c()+' NOT BOLD'
+        print(t2)
+
 
     def test_ip_helper(self):
         iph = IndentedPrintHelper()
@@ -16,7 +29,8 @@ class Test(unittest.TestCase):
         self.assertEqual(iph.f(), 'test_ip_helper')
 
         self.assertEqual(iph('this is a test{crlf}'), 'this is a test\n')
-        self.assertEqual(iph('this is a test{counter:12}'), 'this is a test\n')
+        self.assertEqual(iph('this is a test {counter()}'), 'this is a test 1')
+        self.assertEqual(iph('this is a test {counter}'), 'this is a test 2')
 
 
     """
