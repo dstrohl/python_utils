@@ -9,8 +9,6 @@ from PythonUtils.IndentedPrint.indented_print import IndentedPrinter, IndentedPr
 class Test(unittest.TestCase):
 
 
-    def test_flag_class(self):
-
 
 
 
