@@ -10,11 +10,14 @@ import pprint
 from Lib.string import Formatter
 import ast
 import os
+import logging
 
-from PythonUtils.TermColor.termcolor import colored
-from PythonUtils.IndentedPrint.color_wrap import ColorWrap
-from PythonUtils import get_before, get_after, get_between
-from PythonUtils import Clicker, swap, list_in_list, list_not_in_list
+#from PythonUtils import colored
+#from PythonUtils.IndentedPrint.color_wrap import ColorWrap
+from PythonUtils.BaseUtils import get_before, get_after, get_between
+from PythonUtils.BaseUtils import swap, list_in_list, list_not_in_list
+from PythonUtils.Clicker import Clicker
+from PythonUtils.IndentedPrint.flag_manager import Flagger
 from os import path
 # import copy
 # from sys import stdout
@@ -62,18 +65,24 @@ class IPFormatter(Formatter):
                 tmp_str = tmp_arg_list[offset-1]+tmp_arg_list[offset]+tmp_arg_list[offset+1]
                 tmp_arg_list_2.append(tmp_str)
                 skip_next = True
+            elif arg == '':
+                pass
+
             else:
                 if not skip_next:
                     tmp_arg_list_2.append(arg)
+
 
         for arg in tmp_arg_list_2:
             if '=' in arg:
                 tmp_kwarg = arg.split('=')
                 kwargs_dict[tmp_kwarg[0]] = ast.literal_eval(tmp_kwarg[1])
             else:
-                args_list.append(ast.literal_eval(arg))
+                args_list.append(arg)
+                #args_list.append(ast.literal_eval(arg))
 
         return args_list, kwargs_dict
+
 
 class Colorizer(object):
     ATTRIBUTES = dict(list(zip(['bold', 'dark', '', 'underline', 'blink', '',
@@ -99,11 +108,8 @@ class Colorizer(object):
             raise KeyError('preset '+item+' not found in list of presets')
 
     def __call__(self, *args):
-        if args:
-            color, on_color, attrs = self._param(*args)
-            return self._colored(color, on_color, attrs)
-        else:
-            return self._colored(reset=True)
+        color, on_color, attrs = self._param(*args)
+        return self._colored(color, on_color, attrs)
 
     def _param(self, *args):
 
@@ -120,21 +126,22 @@ class Colorizer(object):
         on_color = None
 
         for a in args:
-            a = a.lower()
-            if a in self.ATTRIBUTES:
-                attrib.append(a)
+            if isinstance(a, str):
+                a = a.lower()
+                if a in self.ATTRIBUTES:
+                    attrib.append(a)
 
-            elif a in self.COLORS:
-                color = a
+                elif a in self.COLORS:
+                    color = a
 
-            elif a in self.HIGHLIGHTS:
-                on_color = a
+                elif a in self.HIGHLIGHTS:
+                    on_color = a
 
 
         return color, on_color, attrib
 
 
-    def _colored(self, color=None, on_color=None, attrs=None, reset=False):
+    def _colored(self, color=None, on_color=None, attrs=None):
         """Generate Color String.
 
         Available text colors:
@@ -147,20 +154,25 @@ class Colorizer(object):
             bold, dark, underline, blink, reverse, concealed.
         """
         text = ''
+        reset = True
         if os.getenv('ANSI_COLORS_DISABLED') is None:
             fmt_str = '\033[%dm%s'
             if color is not None:
                 text = fmt_str % (self.COLORS[color], text)
+                reset = False
 
             if on_color is not None:
                 text = fmt_str % (self.HIGHLIGHTS[on_color], text)
+                reset = False
 
             if attrs is not None:
                 if isinstance(attrs, str):
                     text = fmt_str % (self.ATTRIBUTES[attrs], text)
+                    reset = False
                 else:
                     for attr in attrs:
                         text = fmt_str % (self.ATTRIBUTES[attr], text)
+                        reset = False
 
             if reset:
                 text += self.RESET
@@ -309,7 +321,7 @@ class IndentedPrintHelper(object):
     # ====================================
 
     def __call__(self, format_string, *args, **kwargs):
-        self.formatted(format_string, *args, **kwargs)
+        return self.formatted(format_string, *args, **kwargs)
 
     def formatted(self, format_string, *args, **kwargs):
         format_string = self.prefix+format_string+self.suffix
@@ -371,7 +383,6 @@ class IndentedPrintHelper(object):
 
     def f(self, offset=0):
         return self.func_name(offset+1)
-
 
 
 class IndentedPrinter(object):
@@ -474,14 +485,23 @@ class IndentedPrinter(object):
     """
 
     _current_indent = 0
-    _line_format = '{prefix}{padding}{line}{end}{suffix}'
-    #render_queue = ''
-    #cw = ColorWrap()
-    #color_string = None
-    #_currently_colored = False
+    _line_format = '{prefix}{padding}{line}{suffix}'
+    _enable_flags = True
 
-    prefix = ''
-    suffix = ''
+    _prefix = ''
+    _suffix = ''
+
+    _print_buffer = ''
+
+    _logger_default_formatter = '%(name)s - %(levelname)s - %(message)s'
+    _current_logging_level = logging.INFO
+    _logger_levels = {
+        'critical': logging.ERROR,
+        'error': logging.ERROR,
+        'warning': logging.WARNING,
+        'info': logging.INFO,
+        'debug': logging.DEBUG
+    }
 
     def __init__(self,
                  indent_spaces = 5,
@@ -489,27 +509,30 @@ class IndentedPrinter(object):
                  line_format=_line_format,
                  stack_format = None,
                  stack_length_limits = None,
-                 prefix=prefix):
+                 prefix=_prefix,
+                 suffix=_suffix,
+                 logger=None):
 
         self._indent_spaces = indent_spaces
-        self._silence = silence
+        self._silence_flag = silence
         self._indent_mems = {}
         self._pop_queue = []
         self._string_lookup = {}
 
-        self._current_flags = []
-        self._inc_flags = []
-        self._exc_flags = []
-
         self._line_format = line_format
         self._trouble_flag = False
 
+        self._log_manager = None
         self._pp = pprint.PrettyPrinter(indent=3)
         self._iph = IndentedPrintHelper(stack_format, stack_length_limits)
+        self._flag_manager = None
 
         # accessible attributes
-        self._prefix = pefix
-        self._suffix = prefix
+        self._prefix = prefix
+        self._suffix = suffix
+
+        if logger:
+            self.set_logger(logger=logger)
 
     # ====================================
     # pre-suffix methods
@@ -556,7 +579,7 @@ class IndentedPrinter(object):
         return self
 
     def indent_mem_save(self, key=None, indent=None):
-        if indent:
+        if indent is not None:
             tmp_indent = indent
         else:
             tmp_indent = self._current_indent
@@ -586,8 +609,99 @@ class IndentedPrinter(object):
         return self
 
     # ====================================
+    # logger integration
+    # ====================================
+
+    @property
+    def _logger(self):
+        if not self._log_manager:
+            raise AttributeError('logger not defined or initialized')
+        return self._log_manager
+
+    @property
+    def _check_for_logger(self):
+        if self._log_manager:
+            return True
+        return False
+
+    def set_logger(self, logger=None, logger_format=None, logging_disp_level=None):
+        """
+        sets up the logger if integration with the logging module is desired.
+        :param logger: can be a logger instance or a string,  if this is  a string, a new default logging instance
+        is created with the string as the name.
+        :param logger_format: if a string is passed in the logger field, this can be set to generate a logger formatter
+        using the string.
+        :return:
+        """
+        if logger is None:
+            logger = 'IP Log'
+
+        if isinstance(logger, logging.Logger):
+            self._log_manager = logger
+        else:
+            self._log_manager = logging.getLogger(str(logger))
+            if not logger_format:
+                logger_format = self._logger_default_formatter
+
+            ch = logging.StreamHandler()
+            fm = logging.Formatter(logger_format)
+            ch.setFormatter(fm)
+            self._logger.addHandler(ch)
+
+        if logging_disp_level:
+            self.set_logger_level(logging_disp_level)
+        return self
+
+    def set_logger_disp_level(self, level):
+        self._logger.setLevel(self._convert_log_level(level))
+        return self
+
+    def log_level(self, level):
+        self._current_logging_level = self._convert_log_level(level)
+
+    def _convert_log_level(self, level):
+
+        if isinstance(level, str):
+            level = level.lower()
+            ret_level = self._logger_levels[level]
+            return ret_level
+        else:
+            return level
+
+    def _log(self, log_level, msg):
+        log_level = self._convert_log_level(log_level)
+        if self._log_manager and self._logger.isEnabledFor(log_level):
+            self._logger.log(log_level, msg)
+
+    def critical(self, *args):
+        self.println(*args,log_level=logging.CRITICAL)
+        return self
+
+    def error(self, *args):
+        self.println(*args,log_level=logging.ERROR)
+        return self
+
+    def warning(self, *args):
+        self.println(*args,log_level=logging.WARNING)
+        return self
+
+    def info(self, *args):
+        self.println(*args,log_level=logging.INFO)
+        return self
+
+    def debug(self, *args):
+        self.println(*args,log_level=logging.DEBUG)
+        return self
+
+
+
+    # ====================================
     # printing methods
     # ====================================
+
+    def buffer(self, *args):
+        self._print_buffer = self._make_line(self._print_buffer, *args)
+        return self
 
     def print(self, *args , **kwargs):
         kwargs['end'] = ''
@@ -596,11 +710,25 @@ class IndentedPrinter(object):
 
     def println(self, *args , **kwargs):
         kwargs['end'] = '\n'
-        self._print(*args, **kwargs)
+        self._print(self._print_buffer, *args, **kwargs)
+        self._print_buffer = ''
         return self
 
     def get(self, *args, **kwargs):
-        return self._make_string(*args, **kwargs)
+        if not self._silence:
+            return self._make_string(*args, **kwargs)
+        else:
+            return ''
+
+    def getln(self, *args, **kwargs):
+        if not self._silence:
+            tmp_str = self._print_buffer
+            self._print_buffer = ''
+            return self._make_string(tmp_str, *args, **kwargs)
+        else:
+            self._print_buffer = ''
+            return ''
+
 
     def _print(self, *args , end = '', **kwargs):
         """
@@ -610,10 +738,14 @@ class IndentedPrinter(object):
         """
         self._trouble_print()
         if not self._silence:
+            print_str = ''
             if args:
                 print_str = self._make_string(*args, **kwargs)
-                print(print_str , end=end)
-            elif end != '':
+
+            if self._check_for_logger:
+                log_level = kwargs.pop('log_level',self._current_logging_level)
+                self._log(log_level, print_str)
+            else:
                 print('', end=end)
 
     def _make_string(self, *args , **kwargs):
@@ -623,7 +755,10 @@ class IndentedPrinter(object):
         sep = kwargs.get('sep', '')
         skip_helper = kwargs.get('skip_helper',False)
 
-        padding = ' '.ljust(self._current_indent * self._indent_spaces)
+
+        padding = ''
+        for i in range(self._current_indent * self._indent_spaces): padding += ' '
+
         line = self._make_line(*args, **kwargs)
 
         return self._line_format.format(padding = padding,
@@ -663,180 +798,87 @@ class IndentedPrinter(object):
             print('Indent Spaces  : ', self._indent_spaces)
             print('Current Indent : ', self._current_indent)
             print('Silence        : ', self._silence)
-            print('Counters       : ', self.counters)
             print('Memories       : ', self._indent_mems)
             print('Push Queue     : ', self._pop_queue)
-            print('Flags          : ', self._flags)
+            print('Flags          :')
+            print('    Current    : ', str(self._flagger.cur))
+            print('    Include    : ', str(self._flagger.inc))
+            print('    Exclude    : ', str(self._flagger.exc))
 
     # ====================================
     # flag methods
     # ====================================
 
-    def _flags(self):
-        """
-        boolean to show if flags are in use
-        """
+    @property
+    def _flagger(self):
+        if self._flag_manager == None:
+            self._flag_manager = Flagger()
+        return self._flag_manager
 
     '''
-    def fa(self, flag):
-        if flag not in self.flags:
-            self.flags.append(flag)
+    @property
+    def _flags_in_use(self):
+        if self._enable_flags:
+            if self._flag_manager == None:
+                return False
+            else:
+                return True
 
-        return self
-
-    def fr(self, flag):
-        try:
-            self.flags.remove(flag)
-        except:
-            pass
-        return self
-
-
-    def ff(self, flag = None):
-
-        if flag:
-
-            self.allowed_flags.append = flag
-            self.silence = True
-
-
-
-
-        self.filter_scope = all_except
-
-        if all_except:
-            self.silence = True
-        else:
-            self.silence = False
-
-
-
-        if flag:
-
-            if flag in self.flags:
-                self.silence = self._swap_bool(self.silence)
-
-        else:
-            self.silence = False
-
-        return self
-
-    def _check_filter(self):
+        return False
     '''
 
+    def include_if_flag(self, flags):
+        self._flagger(include=flags)
+        return self
 
-    def silent(self, silence=None):
+    def exclude_if_flags(self, flags):
+        self._flagger(exclude=flags)
+        return self
+
+    def current_flags(self, flags):
+        self._flagger(flags)
+        return self
+
+    def toggle_flag_enable(self, new_state):
+        swap(self._enable_flags)
+        return self
+
+    @property
+    def _check_flags(self):
+        if self._flag_manager is not None:
+            return self._flagger()
+        else:
+            return True
+
+    # ====================================
+    # silencer
+    # ====================================
+
+    @property
+    def _silence(self):
+        if self._silence_flag:
+            return True
+        if not self._check_flags:
+            return True
+        return False
+
+    def toggle_silent(self, silence=None):
         if silence:
-            self._silence = silence
+            self._silence_flag = silence
         else:
-            self._silence = swap(self._silence)
+            self._silence_flag = swap(self._silence)
         return self
 
     # ====================================
     # call parser
     # ====================================
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args):
         """
-        :param args: string or strings to print
-        :param kwargs:
-
-            silent = False
-
-            pre_indent = 0
-            pre_pop = False
-            pre_push = False
-            pre_new_lines = 0
-            pre_sep = False
-
-            post_indent = 0
-            post_pop = False
-            post_push = False
-            post_new_lines = 0
-            post_sep = False
-
-        :return: self
+        same as println()
         """
-
-        try:
-            self.silent(kwargs['silent'])
-        except KeyError:
-            pass
-
-        # -------- pre-actions ---------
-
-        try:
-            self.indent_add(kwargs['pre_indent'])
-        except KeyError:
-            pass
-
-        try:
-            self.indent_sub(kwargs['pre_outdent'])
-        except KeyError:
-            pass
-
-        try:
-            self.new_line(new_line_count=kwargs['pre_new_lines'])
-        except KeyError:
-            pass
-
-        try:
-            if kwargs['pre_pop']:
-                self.pop()
-        except KeyError:
-            pass
-
-        try:
-            if kwargs['pre_push']:
-                self.push()
-        except KeyError:
-            pass
-
-        try:
-            if kwargs['pre_sep']:
-                self.sep_line()
-        except KeyError:
-            pass
-
-
-        # ---- actions ---------------
-
         self.println(*args)
 
-        #  ----- post actions ---------
-
-        try:
-            self.indent_add(kwargs['post_indent'])
-        except KeyError:
-            pass
-
-        try:
-            self.indent_sub(kwargs['post_outdent'])
-        except KeyError:
-            pass
-
-        try:
-            self.new_line(kwargs['post_new_lines'])
-        except KeyError:
-            pass
-
-        try:
-            if kwargs['post_pop']:
-                self.pop()
-        except KeyError:
-            pass
-
-        try:
-            if kwargs['post_push']:
-                self.push()
-        except KeyError:
-            pass
-
-        try:
-            if kwargs['post_sep']:
-                self.sep_line()
-        except KeyError:
-            pass
 
     # ====================================
     # Shortcuts
@@ -900,17 +942,29 @@ class IndentedPrinter(object):
     def f(self, offset=0):
         return self.func_name(offset)
 
+    def fi(self, flags):
+        return self.include_if_flag(flags)
 
-'''
-class FakeIndentedPrint(object):
-    def __getattr__(self, name):
-        def foo(self):
-            return self
-        return self
+    def fe(self, flags):
+        return self.exclude_if_flags(flags)
 
-    def __setattr__(self, name, value):
-        def foo(self):
-            return self
-        return self
-'''
+    def fc(self, flags):
+        return self.current_flags(flags)
 
+    def cr(self, *args):
+        return self.critical(*args)
+
+    def er(self, *args):
+        return self.error(*args)
+
+    def wa(self, *args):
+        return self.warning(*args)
+
+    def inf(self, *args):
+        return self.info(*args)
+
+    def de(self, *args):
+        return self.debug(*args)
+
+    def b(self, *args):
+        return self.buffer(*args)
