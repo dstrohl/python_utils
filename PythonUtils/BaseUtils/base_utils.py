@@ -81,7 +81,7 @@ def args_handler(parent_obj,
                  attr_list=None,
                  kwargs=None,
                  skip_list=None,
-                 skip_startswith='_',
+                 skip_startswith='-',
                  overwrite=True,
                  do_not_check_parent_attrs=False):
     """
