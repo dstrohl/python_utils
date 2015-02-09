@@ -8,7 +8,7 @@ __all__ = ['args_handler', 'GenericMeta', 'DictKey2Method', 'AdvDict', 'DBList',
            'get_before', 'get_not_in', 'get_same', 'get_meta_attrs', 'remove_dupes', 'list_in_list', 'list_not_in_list',
            'count_unique', 'index_of_count', 'ListPlus', 'LookupManager', 'is_iterable', 'is_string',
            'OrderedSet', 'swap', 'replace_between', 'format_as_decimal_string',
-           'elipse_trim', 'concat']
+           'elipse_trim', 'concat', 'generate_percentages', 'convert_to_boolean']
 
 import copy
 import sys
@@ -45,12 +45,12 @@ def generate_percentages(data_array, row_fieldname, data_fieldname, newfieldname
     for col in range(len(data_array[1][row_fieldname])):
 
         col_total = 0
-        print('new col')
+        # print('new col')
         for row in range(len(data_array)):
             rec = data_array[row][row_fieldname][col]
             # print( rec )
             col_total = col_total + rec[data_fieldname]
-            print(col_total)
+            # print(col_total)
 
         for row in range(len(data_array)):
             rec = data_array[row][row_fieldname][col][data_fieldname]
@@ -67,7 +67,7 @@ def generate_percentages(data_array, row_fieldname, data_fieldname, newfieldname
 
                 # print( rec_perc )
 
-    print(data_array)
+    # print(data_array)
 
     return data_array
 
@@ -86,7 +86,11 @@ def args_handler(parent_obj,
                  do_not_check_parent_attrs=False):
     """
     Args Handler that will take an args or kwargs list and set contents as attributes.  This also allows some control
-    over which values to set
+    over which values to set.
+
+    This can be used when creating that may have to take different types of arguments as it can intelligently detect
+    fields passed as arguments, keyword arguments, or a dictionary of arguments, it can handle required arguments as
+    as well as long lists of arguments very simply.
 
     :param parent_obj: the object that gets the attributes
     :param args: a list from the args parameter
@@ -369,10 +373,10 @@ def make_list(in_obj):
     :param in_obj:
     :return:
     """
-    if is_string(in_obj):
-        return [in_obj]
-    else:
+    if is_iterable(in_obj):
         return in_obj
+    else:
+        return [in_obj]
 
 
 def flatten(l, ltypes=(list, tuple), force=None):
@@ -864,9 +868,9 @@ class OrderedSet(collections.MutableSet):
         return set(self) == set(other)
 
 
-#===============================================================================
+# ===============================================================================
 # swap tool
-#===============================================================================
+# ===============================================================================
 
 
 def swap(item, opt1=True, opt2=False):
@@ -878,9 +882,9 @@ def swap(item, opt1=True, opt2=False):
         raise AttributeError(str(item)+' not in available options')
 
 
-#===============================================================================
+# ===============================================================================
 # text utils
-#===============================================================================
+# ===============================================================================
 
 
 def replace_between(instring, start_key, end_key, replace, keep_keys=False, offset_count=1, count=9999):
@@ -935,6 +939,7 @@ def replace_between(instring, start_key, end_key, replace, keep_keys=False, offs
 
     return outstring+instring[curs_pos:]
 
+
 def index_of_count(instring, find, offset_count=1, start=0):
     if instring:
         offset_loc = start
@@ -971,6 +976,7 @@ def get_after(instring, find, offset_count=1):
             return instring[return_size:]
         return instring
     return instring
+
 
 def get_between(instring, start_key, end_key):
     return get_after(get_before(instring, end_key), start_key)
@@ -1016,6 +1022,27 @@ def format_as_decimal_string(num, max_decimal_points=6):
         return tmp_num_str
 
 
+# ===============================================================================
+# return boolean from varied strings
+# ===============================================================================
+
+def convert_to_boolean(obj):
+
+    istrue = ('true', 'yes', 'ok', '1', 'on', '+', 'True', 'Yes', 'Ok', 'On', 'TRUE', 'YES', 'OK', 'ON',  1, 1.0)
+    isfalse = ('false', 'no', '0', '-', 'off', 'False', 'No', 'Off', 'FALSE', 'NO', 'OFF', 0, 0.0)
+
+    if isinstance(obj, (str, int, float)):
+        if obj in istrue:
+            return True
+        elif obj in isfalse:
+            return False
+        else:
+            raise TypeError('could not convert to boolean')
+
+    elif hasattr(obj, '__bool__'):
+        return bool(obj)
+
+    raise TypeError('could not convert to boolean')
 
 # ===============================================================================
 # text / string utils

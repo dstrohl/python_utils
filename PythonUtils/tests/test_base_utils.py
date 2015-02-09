@@ -10,6 +10,73 @@ from PythonUtils.BaseUtils.base_utils import *
 # from PythonUtils.ClassUtils.args_kwargs_handlers import args_handler
 
 
+class CFB_Test(object):
+    def __bool__(self):
+        return True
+
+
+class CFB_No_Bool_Test(object):
+    pass
+
+class ConvertToBooleanTests(TestCase):
+
+    def test_from_string(self):
+        self.assertEqual(convert_to_boolean('true'), True)
+        self.assertEqual(convert_to_boolean('True'), True)
+        self.assertEqual(convert_to_boolean('Yes'), True)
+        self.assertEqual(convert_to_boolean('No'), False)
+        self.assertEqual(convert_to_boolean('+'), True)
+        self.assertEqual(convert_to_boolean('-'), False)
+        self.assertEqual(convert_to_boolean('OK'), True)
+
+    def test_fail_from_string(self):
+        with self.assertRaises(TypeError):
+            convert_to_boolean('test')
+
+    def test_from_boolean(self):
+        self.assertEqual(convert_to_boolean(False), False)
+        self.assertEqual(convert_to_boolean(True), True)
+
+    def test_from_obj(self):
+        bo = CFB_Test()
+        self.assertEqual(convert_to_boolean(bo), True)
+
+    def test_fail_from_obj(self):
+        nbo = CFB_No_Bool_Test()
+        with self.assertRaises(TypeError):
+            convert_to_boolean(nbo)
+
+    def test_from_int(self):
+        self.assertEqual(convert_to_boolean(0), False)
+        self.assertEqual(convert_to_boolean(1), True)
+
+        with self.assertRaises(TypeError):
+            convert_to_boolean(12)
+
+    def test_from_float(self):
+        self.assertEqual(convert_to_boolean(0.0), False)
+        self.assertEqual(convert_to_boolean(1.0), True)
+
+        with self.assertRaises(TypeError):
+            convert_to_boolean(1.1)
+
+class MakeListTests(TestCase):
+    def test_string(self):
+        self.assertEqual(make_list('test'), ['test'])
+
+    def test_list(self):
+        self.assertEqual(make_list(['test', 'test']), ['test', 'test'])
+
+    def test_set(self):
+        self.assertEqual(make_list({'test', 'test2'}), {'test', 'test2'})
+
+    def test_tuple(self):
+        self.assertEqual(make_list(('test', 'test')), ('test', 'test'))
+
+    def test_others(self):
+        self.assertEqual(make_list(1), [1, ])
+
+
 class UtilityTests(TestCase): 
     def test_generatePercentages(self): 
 
@@ -531,145 +598,6 @@ class TestTextUtils(TestCase):
         test_string = '...|{..}|....|....|{..}|....|'
         resp_string = replace_between(test_string, '{', '}', '++++', count=1, keep_keys=True)
         self.assertEqual('...|{++++}|....|....|{..}|....|', resp_string)
-
-
-
-class TestFieldHandler(TestCase): 
-
-    ff = None
-    fields = []
-    field_instrings = []
-
-    default_dict = {
-                    'max_length': None, 
-                    'min_length': 10, 
-                    'do_not_show_length': 4, 
-                    'pad_to_max': False, 
-                    'justification': 'left', 
-                    'end_string': '', 
-                    'padding_string': ' ', 
-                    'trim_string': '+', 
-                    'trim_priority': 1, }
-
-
-    def load_data(self, 
-                       counter = 0, 
-                       init_size = 40, 
-                       format_string = None, 
-                       field_def = {}, 
-                      ): 
-
-
-
-        name = 'name_{}'.format(counter)
-        if not format_string: 
-            format_string = '{' + name + '}'
-        in_string = 'name_'.ljust(init_size, '*')
-        # print('in_string: ', in_string)
-        # print('in_size: ', init_size)
-
-        self.ff = FormatField(
-                         name, 
-                         format_string, 
-                         field_def, 
-                         initial_string = in_string
-                        )
-
-
-    def test_formatfield_full(self): 
-        self.load_data(1)
-
-        self.assertEqual(self.ff.length_ok, True)
-        self.assertEqual(self.ff.curr_length, 40)
-
-
-    def test_formatfield_20(self): 
-        self.load_data(1)
-        self.ff.max_length(20)
-        self.assertEqual(self.ff.length_ok, False)
-
-    def test_formatfield_mt(self): 
-        self.load_data(1)
-        self.ff._trim_me()
-        self.assertEqual(self.ff.length_ok, True)
-        self.assertEqual(self.ff.curr_length, 40)
-
-
-    def test_formatfield_15(self): 
-        self.load_data(1)
-        self.ff._trim_me(15)
-        self.assertEqual(self.ff.curr_length, 15)
-
-
-    def test_formatfield_7(self): 
-        self.load_data(1)
-        self.ff._trim_me(7, True)
-        self.assertEqual(self.ff.curr_length, 7)
-
-    def test_formatfield_2(self): 
-        self.load_data(1)
-        self.ff._trim_me(2)
-        self.assertEqual(self.ff.curr_length, 10)
-
-    def test_formatfield_2_ignore_min(self): 
-        self.load_data(1)
-        self.ff._trim_me(2 , True)
-        self.assertEqual(self.ff.curr_length, 0)
-
-
-    def test_formatfield_pad_none(self): 
-        self.load_data(1, 12)
-        self.ff._pad_me()
-        self.assertEqual(self.ff.curr_length, 12)
-
-    def test_formatfield_pad_to_max_no_max(self): 
-        self.load_data(1, 12)
-        self.ff.pad_to_max = True
-        self.ff._pad_me()
-        self.assertEqual(self.ff.curr_length, 12)
-
-    def test_formatfield_pad_to_max_max_40(self): 
-        self.load_data(1, 12)
-        self.ff.pad_to_max = True
-        self.ff.max_length(40)
-        self.ff.padding_string = '.'
-        self.ff._pad_me()
-        # print(self.ff)
-        self.assertEqual(self.ff.curr_length, 40)
-        self.assertEqual(self.ff.current_string, 'name_******* ...........................')
-
-    def test_formatfield_pad_to_max_left(self): 
-        self.load_data(1, 12)
-        self.ff.pad_to_max = True
-        self.ff.max_length(40)
-        self.ff.padding_string = '.'
-        self.ff.justification = 'left'
-        self.ff._pad_me()
-        # print(self.ff)
-        self.assertEqual(self.ff.curr_length, 40)
-        self.assertEqual(self.ff.current_string, 'name_******* ...........................')
-
-    def test_formatfield_pad_to_max_right(self): 
-        self.load_data(1, 12)
-        self.ff.pad_to_max = True
-        self.ff.max_length(40)
-        self.ff.padding_string = '.'
-        self.ff.justification = 'right'
-        self.ff._pad_me()
-        # print(self.ff)
-        self.assertEqual(self.ff.curr_length, 40)
-        self.assertEqual(self.ff.current_string, '........................... name_*******')
-
-    def test_formatfield_pad_to_max_center(self): 
-        self.load_data(1, 12)
-        self.ff.pad_to_max = True
-        self.ff.max_length(40)
-        self.ff.padding_string = '.'
-        self.ff.justification = 'center'
-        self.ff._pad_me()
-        # print(self.ff)
-        self.assertEqual(self.ff.curr_length, 40)
-        self.assertEqual(self.ff.current_string, '............. name_******* .............')
 
 
 
