@@ -7,7 +7,7 @@ __all__ = ['args_handler', 'GenericMeta', 'DictKey2Method', 'AdvDict', 'DBList',
            'TreeDict', 'TreeItem', 'make_list', 'flatten', 'unpack_class_method', 'get_between', 'get_after',
            'get_before', 'get_not_in', 'get_same', 'get_meta_attrs', 'remove_dupes', 'list_in_list', 'list_not_in_list',
            'count_unique', 'index_of_count', 'ListPlus', 'LookupManager', 'is_iterable', 'is_string',
-           'OrderedSet', 'swap', 'replace_between', 'format_as_decimal_string',
+           'OrderedSet', 'swap', 'replace_between', 'format_as_decimal_string', 'ml_dict', 'MultiLevelDictManager',
            'elipse_trim', 'concat', 'generate_percentages', 'convert_to_boolean']
 
 import copy
@@ -20,6 +20,191 @@ from decimal import Decimal
 # from django.utils.text import slugify
 # from PythonUtils.TextUtils import is_string
 
+# ===============================================================================
+# UnSet Class
+# ===============================================================================
+
+class UnSet(object):
+    UnSetValidationString = '_*_This is the Unset Object_*_'
+    """
+    Used in places to indicated an unset condition where None may be a valid option
+    """
+    def __repr__(self):
+        return 'Empty Value'
+
+    def __str__(self):
+        return 'Empty Value'
+
+    def __get__(self):
+        return str(self)
+
+    def __eq__(self, other):
+        return isinstance(other, UnSet)
+
+
+_UNSET = UnSet()
+
+
+# ===============================================================================
+# Multi Level Dictionary Lookup
+# ===============================================================================
+
+class MultiLevelDictManager(object):
+    dict_db = None
+    key_sep = '.'
+
+    def __init__(self,
+                 dict_db=None,
+                 current_path='',
+                 key_sep='.'):
+        self.dict_db = dict_db
+        if current_path == '':
+            self._pwd = []
+        else:
+            self._pwd = current_path.split(key_sep)
+        self.key_sep = key_sep
+
+    def load(self,
+             dict_db,
+             current_path=''):
+        self.dict_db = dict_db
+        if current_path == '':
+            self._pwd = []
+        else:
+            self._pwd = current_path.split(self.key_sep)
+
+    def _parse_full_path(self, key):
+        if key[0] == self.key_sep and key[1] != self.key_sep:
+            key = key[1:]
+            return key.split(self.key_sep)
+        else:
+            key_path = copy.copy(self._pwd)
+            if key[0] == self.key_sep:
+                key = key[1:]
+                while key[0] == self.key_sep:
+                    if len(key_path) > 0:
+                        key_path.pop()
+                    key = key[1:]
+            key_path.extend(key.split(self.key_sep))
+            return key_path
+
+    def _get_path_from_full(self, full_path):
+        tmp_path = full_path.split(self.key_sep)
+        tmp_path.pop()
+        return self.key_sep.join(tmp_path)
+
+    def _get_item_from_full(self, full_path):
+        tmp_path = full_path.split(self.key_sep)
+        return tmp_path.pop()
+
+    def cd(self, key):
+        """
+        Change directory path to key
+
+        :param key:
+        :return:
+        """
+        self._pwd = self._parse_full_path(key)
+
+    def get(self, key, *args, cwd=False):
+
+        cur_resp = self.dict_db
+        key_path = self._parse_full_path(key)
+
+        for k in key_path:
+            try:
+                cur_resp = cur_resp[k]
+            except KeyError:
+                if args:
+                    return args[0]
+                else:
+                    msg = "Key: {} not found in dict {}".format(k)
+                    raise KeyError(msg)
+            except TypeError:
+                msg = "parameter passed is not a dict or does not implement key lookups"
+                raise TypeError(msg)
+
+        if cwd:
+            self._pwd = key_path.pop()
+
+        return cur_resp
+
+    def pwd(self):
+        return self.key_sep.join(self._pwd)
+
+    def __getitem__(self, item):
+        return self.get(item)
+
+
+def ml_dict(dict_map,
+            key,
+            key_sep='.',
+            current_path='',
+            default_response=_UNSET
+            ):
+    """
+    this function will pull a response from a multi-level dictionary by passing a string with seperators
+    such as "level_1_key.level_2_key.level_3_key"
+
+    :param dict_map: The dict to pull from.  The keys that will be used must be strings.
+    :param key: the key string to find
+    :param key_sep: the seperator char used
+    :param current_path: the current path to be used.  This is used when a full path is not passed in the key.
+
+    NOTE: below the default key seperator of "." is used for the examples, however this will work with any key seperator.
+
+    starting the key with '.' will make the key based on the root, ignoring the current path
+    starting the key with '..' will make the system go up a level in the path for each extra '.'
+        so, up 1 level for '..', up 2 levels for '...', etc...
+        this will stop at the root level.
+
+    examples:
+            key = 'test', current_path = '' : final path = 'test'
+            key = '.test',  current_path = 'level_1.level_2':  final path = 'test'
+            key = 'test', current_path = 'level_1.level_t' : final path = 'level_1.level_2.test'
+            key = '..test' current_path = 'level_1.level_2' : final path = 'level_1.test'
+            key = '.level_1b.test' current_path = 'level_1.level_2' : final path = 'level1b.test'
+
+
+    :param default_response: if this is set, if no result is found at any level, this will be returned.
+        if this is not set, a key error will be generated if no key is found.
+    :return: object found
+    """
+
+
+    if key[0] == key_sep and key[1] != key_sep:
+        key = key[1:]
+        key_path = key.split(key_sep)
+    else:
+        if current_path == '':
+            key_path = []
+        else:
+            key_path = current_path.split(key_sep)
+
+        if key[0] == key_sep:
+            key = key[1:]
+            while key[0] == key_sep:
+                if len(key_path) > 0:
+                    key_path.pop()
+                key = key[1:]
+        key_path.extend(key.split(key_sep))
+
+    cur_resp = dict_map
+
+    for k in key_path:
+        try:
+            cur_resp = cur_resp[k]
+        except KeyError:
+            if default_response is _UNSET:
+                msg = "Key: {} not found in dict {}".format(k, cur_resp.__repr__)
+                raise KeyError(msg)
+            else:
+                return default_response
+        except TypeError:
+            msg = "{} is not a dict or does not implement key lookups".format(cur_resp.__repr__)
+            raise TypeError(msg)
+
+    return cur_resp
 
 # ===============================================================================
 # Generate Percentages
