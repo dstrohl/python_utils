@@ -387,6 +387,10 @@ class IndentedPrintHelper(object):
 
 class IndentedPrinter(object):
     """
+    The main class for the Indented Printing Module.
+    """
+
+    """
         Methods:
         
         That return itself are:  (these can be chained together)

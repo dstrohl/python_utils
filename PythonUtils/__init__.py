@@ -6,5 +6,6 @@ from PythonUtils.BaseUtils import *
 from PythonUtils.IntelligentFormatter import *
 from PythonUtils.Clicker import *
 from PythonUtils.FilterEngine import *
+from PythonUtils.Interpolator import *
 
 

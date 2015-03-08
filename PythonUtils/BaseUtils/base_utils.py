@@ -1,13 +1,13 @@
 __author__ = 'dstrohl'
 """
-Utilities that need no local imports
+A collection of simple(ish) functions and classes.
 """
 
-__all__ = ['args_handler', 'GenericMeta', 'DictKey2Method', 'AdvDict', 'DBList',
+__all__ = ['args_handler', 'GenericMeta', 'DictKey2Method', 'AdvDict', 'DBList', 'UnSet',
            'TreeDict', 'TreeItem', 'make_list', 'flatten', 'unpack_class_method', 'get_between', 'get_after',
            'get_before', 'get_not_in', 'get_same', 'get_meta_attrs', 'remove_dupes', 'list_in_list', 'list_not_in_list',
-           'count_unique', 'index_of_count', 'ListPlus', 'LookupManager', 'is_iterable', 'is_string',
-           'OrderedSet', 'swap', 'replace_between', 'format_as_decimal_string', 'ml_dict', 'MultiLevelDictManager',
+           'count_unique', 'index_of_count', 'ListPlus', 'LookupManager', 'is_iterable', 'is_string', 'Error', 'Path',
+           'OrderedSet', 'swap', 'replace_between', 'format_as_decimal_string', 'MultiLevelDictManager',
            'elipse_trim', 'concat', 'generate_percentages', 'convert_to_boolean']
 
 import copy
@@ -16,19 +16,35 @@ import collections
 from string import Formatter
 from decimal import Decimal
 
-# from PythonUtils.ListUtils.list_plus import ListPlus
-# from django.utils.text import slugify
-# from PythonUtils.TextUtils import is_string
+
+
+# ===============================================================================
+# Error Class
+# ===============================================================================
+
+class Error(Exception):
+    """Base class for custom exceptions."""
+
+    def __init__(self, msg=''):
+        self.message = msg
+        Exception.__init__(self, msg)
+
+    def __repr__(self):
+        return self.message
+
+    __str__ = __repr__
 
 # ===============================================================================
 # UnSet Class
 # ===============================================================================
 
 class UnSet(object):
-    UnSetValidationString = '_*_This is the Unset Object_*_'
     """
     Used in places to indicated an unset condition where None may be a valid option
+
+    .. note:: *I borrowed the concept from* :py:mod:`configparser` *module*
     """
+    UnSetValidationString = '_*_This is the Unset Object_*_'
     def __repr__(self):
         return 'Empty Value'
 
@@ -44,10 +60,176 @@ class UnSet(object):
 
 _UNSET = UnSet()
 
+# ===============================================================================
+# Path Class
+# ===============================================================================
 
-# ===============================================================================
-# Multi Level Dictionary Lookup
-# ===============================================================================
+
+class Path(object):
+    """
+    A class for managing a path, this could be a file path, but it is more aimed at a path through modules
+    or dictionaries.
+
+    Path strings:
+
+    ================    ===========================     ========================================
+    Path String         Current                         Result
+    ================    ===========================     ========================================
+    'p3.p4.p5.thing'    Path: 'p1.p1' Item: ''          Path: 'p1.p2.p3.p4.p5'  Item: 'thing'
+    '.p1.p2.thing'      Path: 'p3.p4' Item: 'thing'     Path: 'p1.p2'  Item: 'thing'
+    '.p1.p2.'           Path: 'p3.p4' Item: 'thing'     Path: 'p1.p2'  Item: 'thing'
+    '.'                 Path: 'p3.p4' Item: 'thing'     Path: ''    Item: 'thing'
+    'thing'             Path: 'p3.p4' Item: ''          Path: 'p3.p4'  Item: 'thing'
+    ================    ===========================     ========================================
+
+    Examples:
+
+
+        p = path()
+
+
+    """
+
+    def __init__(self, current_path='', cd='', key_sep='.'):
+        """
+        :param current_path: The current path to be set, this can be a text string, or it can be another :class:`path`
+            object
+        :param cd:
+        :param key_sep:
+        :return:
+        """
+        self._pwd = []
+        self.item = ''
+        self.key_sep = key_sep
+        self.cd(current_path)
+        self.cd(cd)
+
+    def cd(self, new_path):
+
+        if isinstance(new_path, Path):
+            new_path = new_path.path_str(self.key_sep, full=True)
+
+        if new_path == '':
+            pass
+        elif new_path == self.key_sep:
+            # if the new path is root
+            self._pwd = []
+        elif new_path[0] == self.key_sep and new_path[1] != self.key_sep:
+            # if the new path starts at the root
+            parse_key = new_path[1:]
+            self._pwd = parse_key.split(self.key_sep)
+            tmp_item = self._pwd.pop()
+            if tmp_item != '':
+                self.item = tmp_item
+        else:
+            if new_path[0] == self.key_sep:
+                # if the new path starts with a seperator
+                new_path = new_path[1:]
+                while new_path[0] == self.key_sep:
+                    # if there are multiple seperators
+                    if len(self) > 0:
+                        self._pwd.pop()
+                    new_path = new_path[1:]
+                    if new_path == '':
+                        break
+
+            self._pwd.extend(new_path.split(self.key_sep))
+            tmp_item = self._pwd.pop()
+            if tmp_item != '':
+                self.item = tmp_item
+
+        return self
+
+    def cwd(self, new_path):
+        if new_path.endswith(self.key_sep):
+            return self.cd(new_path)
+        else:
+            new_path += self.key_sep
+            return self.cd(new_path)
+
+    @property
+    def pwd(self):
+        return self._pwd
+
+    @property
+    def path(self):
+        tmp_ret = []
+        tmp_ret.extend(self._pwd)
+        if self.item != '':
+            tmp_ret.append(self.item)
+        return tmp_ret
+
+    def path_str(self, key_sep=None, full=False, inc_item=True):
+        if key_sep is None:
+            key_sep = self.key_sep
+
+        tmp_ret = ''
+
+        if inc_item and self.item == '':
+            inc_item = False
+
+        if full:
+            tmp_ret += key_sep
+
+        tmp_ret += key_sep.join(self.pwd)
+
+        if full or inc_item:
+            tmp_ret += key_sep
+            if inc_item:
+                tmp_ret += self.item
+                if full:
+                    tmp_ret += key_sep
+        return tmp_ret
+
+
+
+    def __call__(self, new_path=''):
+        return self.cd(new_path)
+
+    def __str__(self):
+        return self.path_str()
+
+    def __len__(self):
+        if self.item=='':
+            return len(self._pwd)
+        else:
+            return len(self.pwd)+1
+
+    def __getitem__(self, item):
+        if isinstance(item, int):
+            if item > len(self._pwd):
+                return self.item
+            else:
+                return self._pwd[item]
+        else:
+            raise TypeError('path indices must be integers')
+
+    def __iter__(self):
+        for i in self._pwd:
+            yield i
+        yield self.item
+
+    def __eq__(self, other):
+        if isinstance(other, str):
+            tmp_path = Path(other)
+        elif isinstance(other, Path):
+            tmp_path = other
+        else:
+            raise TypeError('compared items must be either string or path object')
+        if tmp_path._pwd == self._pwd and tmp_path.item == self.item:
+            return True
+        else:
+            return False
+
+
+    def __bool__(self):
+        if self._pwd == [] and self.item == '':
+            return False
+        else:
+            return True
+
+    __repr__ = __str__
+
 
 class MultiLevelDictManager(object):
     dict_db = None
@@ -58,35 +240,38 @@ class MultiLevelDictManager(object):
                  current_path='',
                  key_sep='.'):
         self.dict_db = dict_db
-        if current_path == '':
-            self._pwd = []
-        else:
-            self._pwd = current_path.split(key_sep)
-        self.key_sep = key_sep
+        self.path = Path(current_path, key_sep=key_sep)
+        #self.key_sep = key_sep
 
     def load(self,
              dict_db,
              current_path=''):
         self.dict_db = dict_db
+        self.path(current_path)
+        '''
         if current_path == '':
             self._pwd = []
         else:
             self._pwd = current_path.split(self.key_sep)
+        '''
+    '''
+    def _parse_full_path(self, parse_key):
 
-    def _parse_full_path(self, key):
-        if key[0] == self.key_sep and key[1] != self.key_sep:
-            key = key[1:]
-            return key.split(self.key_sep)
+        if parse_key == self.key_sep:
+            return []
+        if parse_key[0] == self.key_sep and parse_key[1] != self.key_sep:
+            parse_key = parse_key[1:]
+            return parse_key.split(self.key_sep)
         else:
-            key_path = copy.copy(self._pwd)
-            if key[0] == self.key_sep:
-                key = key[1:]
-                while key[0] == self.key_sep:
-                    if len(key_path) > 0:
-                        key_path.pop()
-                    key = key[1:]
-            key_path.extend(key.split(self.key_sep))
-            return key_path
+            parse_key_path = copy.deepcopy(self._pwd)
+            if parse_key[0] == self.key_sep:
+                parse_key = parse_key[1:]
+                while parse_key[0] == self.key_sep:
+                    if len(parse_key_path) > 0:
+                        parse_key_path.pop()
+                    parse_key = parse_key[1:]
+            parse_key_path.extend(parse_key.split(self.key_sep))
+            return parse_key_path
 
     def _get_path_from_full(self, full_path):
         tmp_path = full_path.split(self.key_sep)
@@ -97,6 +282,12 @@ class MultiLevelDictManager(object):
         tmp_path = full_path.split(self.key_sep)
         return tmp_path.pop()
 
+    def make_path_from_key(self, key):
+        tmp_path = self._parse_full_path(key)
+
+        return self._get_path_from_full(tmp_path)
+    '''
+
     def cd(self, key):
         """
         Change directory path to key
@@ -104,19 +295,21 @@ class MultiLevelDictManager(object):
         :param key:
         :return:
         """
-        self._pwd = self._parse_full_path(key)
+        self.path(key)
+        # self._pwd = self._parse_full_path(key)
 
-    def get(self, key, *args, cwd=False):
+    def get(self, key, default=_UNSET, cwd=False):
 
         cur_resp = self.dict_db
-        key_path = self._parse_full_path(key)
+        tmp_path = Path(key)
+        #key_path = self._parse_full_path(key)
 
-        for k in key_path:
+        for k in tmp_path:
             try:
                 cur_resp = cur_resp[k]
             except KeyError:
-                if args:
-                    return args[0]
+                if default is not _UNSET:
+                    return default
                 else:
                     msg = "Key: {} not found in dict {}".format(k)
                     raise KeyError(msg)
@@ -125,86 +318,30 @@ class MultiLevelDictManager(object):
                 raise TypeError(msg)
 
         if cwd:
-            self._pwd = key_path.pop()
+            self.path = tmp_path
 
         return cur_resp
 
+    def cwd(self, key):
+        self.path.cwd(key)
+
+
+    @property
     def pwd(self):
-        return self.key_sep.join(self._pwd)
+        return self.path.path_str()
+        #        return self.key_sep.join(self._pwd)
 
     def __getitem__(self, item):
         return self.get(item)
 
+    __call__ = get
 
-def ml_dict(dict_map,
-            key,
-            key_sep='.',
-            current_path='',
-            default_response=_UNSET
-            ):
-    """
-    this function will pull a response from a multi-level dictionary by passing a string with seperators
-    such as "level_1_key.level_2_key.level_3_key"
+    def __repr__(self):
+        return 'MultiLevelLookupDict: current_path:{}  Dict:{}'.format(self.path, self.dict_db)
 
-    :param dict_map: The dict to pull from.  The keys that will be used must be strings.
-    :param key: the key string to find
-    :param key_sep: the seperator char used
-    :param current_path: the current path to be used.  This is used when a full path is not passed in the key.
-
-    NOTE: below the default key seperator of "." is used for the examples, however this will work with any key seperator.
-
-    starting the key with '.' will make the key based on the root, ignoring the current path
-    starting the key with '..' will make the system go up a level in the path for each extra '.'
-        so, up 1 level for '..', up 2 levels for '...', etc...
-        this will stop at the root level.
-
-    examples:
-            key = 'test', current_path = '' : final path = 'test'
-            key = '.test',  current_path = 'level_1.level_2':  final path = 'test'
-            key = 'test', current_path = 'level_1.level_t' : final path = 'level_1.level_2.test'
-            key = '..test' current_path = 'level_1.level_2' : final path = 'level_1.test'
-            key = '.level_1b.test' current_path = 'level_1.level_2' : final path = 'level1b.test'
+    __call__ = get
 
 
-    :param default_response: if this is set, if no result is found at any level, this will be returned.
-        if this is not set, a key error will be generated if no key is found.
-    :return: object found
-    """
-
-
-    if key[0] == key_sep and key[1] != key_sep:
-        key = key[1:]
-        key_path = key.split(key_sep)
-    else:
-        if current_path == '':
-            key_path = []
-        else:
-            key_path = current_path.split(key_sep)
-
-        if key[0] == key_sep:
-            key = key[1:]
-            while key[0] == key_sep:
-                if len(key_path) > 0:
-                    key_path.pop()
-                key = key[1:]
-        key_path.extend(key.split(key_sep))
-
-    cur_resp = dict_map
-
-    for k in key_path:
-        try:
-            cur_resp = cur_resp[k]
-        except KeyError:
-            if default_response is _UNSET:
-                msg = "Key: {} not found in dict {}".format(k, cur_resp.__repr__)
-                raise KeyError(msg)
-            else:
-                return default_response
-        except TypeError:
-            msg = "{} is not a dict or does not implement key lookups".format(cur_resp.__repr__)
-            raise TypeError(msg)
-
-    return cur_resp
 
 # ===============================================================================
 # Generate Percentages
@@ -273,34 +410,50 @@ def args_handler(parent_obj,
     Args Handler that will take an args or kwargs list and set contents as attributes.  This also allows some control
     over which values to set.
 
-    This can be used when creating that may have to take different types of arguments as it can intelligently detect
+    This can be used when creating that may need to take different types of arguments as it can intelligently detect
     fields passed as arguments, keyword arguments, or a dictionary of arguments, it can handle required arguments as
     as well as long lists of arguments very simply.
 
-    :param parent_obj: the object that gets the attributes
-    :param args: a list from the args parameter
-    :param kwargs: a dict from the kwargs parameter
-    :param attr_list: a list of the attributes to use, required if args are passed
-        * if the attribute '_attr_list' exists in the parent object, this will be used.
-        * if an attr_list exists for kwargs dicts, only the keys in the args list will be included.
-        * if there are more items in the args list than in the attr list, only the ones in the list will be used.
-        * if there are more items in the attr list than in the args list, only the ones in the args list will be used.
-        * if both args and kwargs are passed, the attr list will ONLY be used for the args
-        * if the same attr is in both args and kwargs, kwargs will take precedence.
-        * if the attribute name starts with a /*, (star) it will be required and a AttributeError will be raised
-            if it is not found in either the args or kwargs.
-        * if a list of tuples can be passed to handle default settings, these should be in the format of:
-            ('attribute name',default_setting)
-            not all items need to be tuples, you can mix and match strings and tuples for fields with no requirement.
-    :param skip_list: a list of attributes to skip
-        * if the attribute '_args_skip_list' exists in the parent object, this will be used.
-    :param skip_startswith: skip attributes that start with this string (defaults to '_')
-        * if the attribute '_args_skip_startswith' exists in the parent object, this will be used.
-    :param overwrite: overwrite existing attributes, can be set to False if you do not want to update existing attributes
-        * if the attribute '_args_overwrite' exists in the parent object, this will be used.
-    :param do_not_check_parent_attrs: will not check parent attributes for skip parameters.  (used when these fields are
-        in use in the parent object for something else)
-        * this only happens if the parameter is not passed, otherwise the check is skipped.
+    Parameters:
+        parent_obj: the object that gets the attributes
+        args: a list from the args parameter
+        kwargs: a dict from the kwargs parameter
+        attr_list: a list of the attributes to use, required if args are passed
+
+            .. note::
+                * if the attribute '_attr_list' exists in the parent object, this will be used.
+                * if an attr_list exists for kwargs dicts, only the keys in the args list will be included.
+                * if there are more items in the args list than in the attr list, only the ones in the list will be used.
+                * if there are more items in the attr list than in the args list, only the ones in the args list will be used.
+                * if both args and kwargs are passed, the attr list will ONLY be used for the args
+                * if the same attr is in both args and kwargs, kwargs will take precedence.
+                * if the attribute name starts with a \*, (star) it will be required and a AttributeError will be raised
+                    if it is not found in either the args or kwargs.
+                * if a list of tuples can be passed to handle default settings, these should be in the format of:
+                    ('attribute name',default_setting)
+                    not all items need to be tuples, you can mix and match strings and tuples for fields with no
+                    requirement.
+
+        skip_list: a list of attributes to skip
+
+            .. note::
+                * if the attribute '_args_skip_list' exists in the parent object, this will be used.
+
+        skip_startswith: skip attributes that start with this string (defaults to '_')
+
+            .. note::
+                * if the attribute '_args_skip_startswith' exists in the parent object, this will be used.
+
+        overwrite: overwrite existing attributes, can be set to False if you do not want to update existing attributes
+
+            .. note::
+                * if the attribute '_args_overwrite' exists in the parent object, this will be used.
+
+        do_not_check_parent_attrs: will not check parent attributes for skip parameters.  (used when these fields are
+            in use in the parent object for something else)
+
+            .. note::
+                * this only happens if the parameter is not passed, otherwise the check is skipped.
     """
 
     def _save(save_arg, save_attr, clean_default=True):
@@ -554,7 +707,7 @@ class DBList():
 
 def make_list(in_obj):
     """
-    Will take in an object, and if it is not already a list, it will convert it to one.
+    Will take in an object, and if it is not already a list or other iterables, it will convert it to one.
     :param in_obj:
     :return:
     """
@@ -575,6 +728,7 @@ def flatten(l, ltypes=(list, tuple), force=None):
     :param force: forces return to be of this type.
     :return: single level list or tuple (same as what went in)
     """
+
     if is_string(l):
         if force is None:
             return []
@@ -629,9 +783,9 @@ def get_same(l1, l2):
     """
     Returns a list with any items that are the same in both lists
 
-    :param l1:
-    :param l2:
-    :return:
+    :param l1: list 1
+    :param l2: list 2
+    :return: a list of items in both "list 1" and "list 2"
     """
     tmp_list = []
     for li in l1:
@@ -730,10 +884,13 @@ def count_unique(data_in, dict_key=None, on_key_error='raise'):
 class ListPlus(list):
     """
     adds some additional features to the list object.
-        ListPlus.add             : allows insert new records past the existing last record
-        ListPlus.update          : allows updating records or adding them past the existing last record
-        ListPlus[key] = value    : same as listPlus.update though uses list key notation
-        ListPlus.get             : allows for setting a default response instead of generating an error if rec does not exist.
+
+    =====================    ===========================================================================================
+    ListPlus.add             allows insert new records past the existing last record
+    ListPlus.update          allows updating records or adding them past the existing last record
+    ListPlus[key] = value    same as listPlus.update though uses list key notation
+    ListPlus.get             allows for setting a default response instead of generating an error if rec does not exist.
+    =====================    ===========================================================================================
     """
 
     def _update_function(self, curr_obj, new_obj ):
@@ -795,7 +952,7 @@ class ListPlus(list):
         :param i: list offset to update.
         :param x: the new item to update in the list
         :param new_items_default: the default item that will be added as padding if needed,
-        this overrides the class setting if present
+            this overrides the class setting if present
         """
         new_item_default = kwargs.get('new_item_default', self.new_item_default)
 
@@ -1126,6 +1283,21 @@ def replace_between(instring, start_key, end_key, replace, keep_keys=False, offs
 
 
 def index_of_count(instring, find, offset_count=1, start=0):
+    """
+    Returns the string index (offset) for the x iteration of a substring.
+
+    :param instring: the string to search
+    :param find: the string to search for
+    :param offset_count: return the 'offset_count' iteration of find string
+    :param start: start looking at this point in the string
+    :return: the offset for the find string
+    :rtype int:
+
+    example:
+        >>> index_of_count('abcd abcd abcd abcd','abcd',2)
+        6
+
+    """
     if instring:
         offset_loc = start
         current_off = 0
@@ -1142,6 +1314,21 @@ def index_of_count(instring, find, offset_count=1, start=0):
 
 
 def get_before(instring, find, offset_count=1):
+    """
+    Returns the string that occurs before the find string. If the find string is not in the string,
+    this returns the entire string.
+
+    :param instring: the string to search
+    :param find: the string to look for
+    :param offset_count: find the nth copy of the find string
+    :return: the string that immediatly preceeds the find string.
+
+
+    example:
+        >>> get_before('look for the [key] in the lock','[')
+        'look for the '
+
+    """
     if find in instring:
         offset_loc = index_of_count(instring, find, offset_count)
 
@@ -1152,6 +1339,21 @@ def get_before(instring, find, offset_count=1):
 
 
 def get_after(instring, find, offset_count=1):
+    """
+    Returns the string that occurs after the find string. If the find string is not in the string,
+    this returns the entire string.
+
+    :param instring: the string to search
+    :param find: the string to look for
+    :param offset_count: find the nth copy of the find string
+    :return: the string that is immediatly after the find string.
+
+
+    example:
+        >>> get_after('look for the [key] in the lock',']')
+        ' in the lock'
+
+    """
     if find in instring:
         offset_len = len(find)
         offset_loc = index_of_count(instring, find, offset_count)
@@ -1164,6 +1366,18 @@ def get_after(instring, find, offset_count=1):
 
 
 def get_between(instring, start_key, end_key):
+    """
+    Returns the string that occurs between the keys
+    :param instring: the string to search
+    :param start_key: the string to use to start capturing
+    :param end_key: the key to use to end capturing
+    :return: the string that is between the start_key and the after_key
+
+    example:
+        >>> get_betweem('look for the [key] in the lock','[',']')
+        'key'
+
+    """
     return get_after(get_before(instring, end_key), start_key)
 
 
@@ -1176,8 +1390,9 @@ from unicodedata import normalize
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 
+
 def slugify(text, delim=u'-'):
-    """Generates an slightly worse ASCII-only slug."""
+    """Generates a slightly worse ASCII-only slug."""
     result = []
     for word in _punct_re.split(text.lower()):
         word = normalize('NFKD', word).encode('ascii', 'ignore')
@@ -1235,7 +1450,7 @@ def convert_to_boolean(obj):
 
 
 def is_string(in_obj):
-    return isinstance(in_obj, str )
+    return isinstance(in_obj, str)
 
 
 def elipse_trim(instr, trim_length, elipse_string='...'):

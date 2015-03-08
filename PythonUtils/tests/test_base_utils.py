@@ -10,17 +10,74 @@ from PythonUtils.BaseUtils.base_utils import *
 # from PythonUtils.ClassUtils.args_kwargs_handlers import args_handler
 
 
+class PathTests(TestCase):
 
-class ML_DictManagerTests(TestCase):
-    '''
-    def ml_dict(dict_map,
-                key,
-                key_sep='.',
-                fixed_depth=0,
-                default_path=None,
-                default_response=_UNSET
-                ):
-    '''
+    def test_new_create(self):
+        p = Path('p1.p2')
+        self.assertEqual(p.path, ['p1', 'p2'])
+
+    def test_create_from_path(self):
+        p = Path('p1.p2')
+        q = Path(p)
+        self.assertEqual(q.path, ['p1', 'p2'])
+
+    def test_create_from_path_with_cd(self):
+        p = Path('p1.p2.')
+        q = Path(p, 'p3.p4.item')
+        self.assertEqual(q.path, ['p1', 'p2', 'p3', 'p4', 'item'])
+
+    def test_cd(self):
+        p = Path('p1.p2')
+        self.assertEqual(p.cd('..').path, ['p2'])
+        self.assertEqual(p.item, 'p2')
+        self.assertEqual(p.pwd, [])
+
+
+    def test_cd_up_2(self):
+        p = Path('p1.p2.p3.p4.')
+        self.assertEqual(p.cd('...').path, ['p1', 'p2'])
+        self.assertEqual(p.item, '')
+
+    def test_cd_to_root(self):
+        p = Path('p1.p2.p3.p4.')
+        self.assertEqual(p.cd('.').path, [])
+
+
+    def test_str(self):
+        p = Path('p1.p2.p3.p4')
+        self.assertEqual(str(p), 'p1.p2.p3.p4')
+
+    def test_len(self):
+        p = Path('p1.p2.p3.p4')
+        self.assertEqual(len(p), 4)
+
+    def test_iter(self):
+        c = 0
+        p = Path('p1.p2.p3.p4')
+        for i in p:
+            c += 1
+        self.assertEqual(c, 4)
+
+    def test_eq_str(self):
+        p = Path('p1.p2.p3.p4')
+        self.assertEqual(p,'p1.p2.p3.p4' )
+
+    def test_eq_path(self):
+        p = Path('p1.p2.p3.p4')
+        q = Path('p1.p2.p3.p4')
+        self.assertEqual(p, q)
+
+    def test_bool(self):
+        p = Path('p1.p2.p3.p4')
+        if p:
+            tmp_ret = True
+        else:
+            tmp_ret = False
+
+        self.assertEqual(tmp_ret, True)
+
+
+class MLDictManagerTests(TestCase):
 
     test_dict = {
         'level': '1',
@@ -32,27 +89,58 @@ class ML_DictManagerTests(TestCase):
                 'l4aab': {'level': '4aab'}},
             'l3ab': {
                 'level': '3ab',
-                'l4aaa': {'level': '4aba'},
-                'l4aab': {'level': '4abb'}}},
+                'l4aba': {'level': '4aba'},
+                'l4abb': {'level': '4abb'}}},
         'l2b': {
             'level': '2b',
             'l3ba': {
-                'level': '3aa',
-                'l4aaa': {'level': '4baa'},
-                'l4aab': {'level': '4bab'}},
+                'level': '3ba',
+                'l4baa': {'level': '4baa'},
+                'l4bab': {'level': '4bab'}},
             'l3bb': {
-                'level': '3ab',
-                'l4aaa': {'level': '4bba'},
-                'l4aab': {'level': '4bbb'}}}
+                'level': '3bb',
+                'l4bba': {'level': '4bba'},
+                'l4bbb': {'level': '4bbb'}}}
     }
 
     mldm = MultiLevelDictManager(test_dict)
 
     def test_simple_lookup(self):
+        self.mldm.cd('.')
         self.assertEqual(self.mldm['level'], '1')
 
     def test_2_level_lookup(self):
-        self.assertEqual(self.mldm['l2a.level'], '2a')
+        self.assertEqual(self.mldm['.l2a.level'], '2a')
+
+    def test_2_level_from_cur_level(self):
+        self.mldm('.l2a.')
+        self.assertEqual(self.mldm.get('level'), '2a')
+
+    def test_3_level_down_1(self):
+        self.mldm.cd('.l2b.l3bb')
+        self.assertEqual(self.mldm['..level'], '2b')
+
+    def test_4_level_down_2(self):
+        self.mldm.cd('.l2b.l3bb.l4bbb')
+        self.assertEqual(self.mldm['....level'], '1')
+
+    def test_4_level_down_5(self):
+        self.mldm.cd('.l2b.l3bb.14bbb')
+        self.assertEqual(self.mldm['......level'], '1')
+
+    def test_get_default(self):
+        self.mldm.cd('.l2b.l3bb.l4bbb')
+        self.assertEqual(self.mldm.get('......leddvel', 'noanswer'), 'noanswer')
+
+
+    def test_pwd(self):
+        self.mldm.cd('.l2b.l3bb.l4bbb')
+        self.assertEqual(self.mldm.pwd, 'l2b.l3bb.l4bbb')
+
+    def test_get_cwd(self):
+        self.mldm.cd('.')
+        self.assertEqual(self.mldm.get('l2b.l3bb.l4bbb.level', cwd=True), '4bbb')
+        self.assertEqual(self.mldm.get('..level', cwd=True), '3bb')
 
 
 

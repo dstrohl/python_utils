@@ -1,0 +1,67 @@
+Base Utilities (all the simple ones)
+======================================
+
+.. automodule:: PythonUtils.BaseUtils.base_utils
+    :members:
+
+
+
+    Dict Methods
+        DictKey2Method, AdvDict,
+        MultiLevelDictManager,
+        TreeDict, TreeItem,
+
+    Generic Helpers
+        UnSet,
+        Error,
+        Path,
+        LookupManager,
+
+
+    List Utilities
+        make_list, flatten,
+        list_in_list, list_not_in_list,
+        is_iterable,
+        remove_dupes,
+        count_unique,
+        DBList,
+        ListPlus,
+        OrderedSet,
+
+
+    String Utilities
+        get_between, get_after, get_before, get_not_in, get_same,
+        elipse_trim, concat,
+        replace_between,
+        is_string,index_of_count,
+        format_as_decimal_string,
+
+
+    Boolean Utilities
+        swap,
+        convert_to_boolean
+
+
+    Class Helpers
+        args_handler,
+
+        GenericMeta,
+        get_meta_attrs,
+        unpack_class_method,
+
+
+    Calculators
+        generate_percentages,
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -36,7 +36,16 @@ class ClickItem(object):
         self._current = self.initial
 
     def _change(self, change_by):
-        change_by = int(change_by) * self.step
+
+        if not isinstance(change_by, int):
+            if isinstance(change_by, float):
+                change_by = int(change_by)
+            elif isinstance(change_by, str) and change_by.isnumeric():
+                change_by = int(change_by)
+            else:
+                change_by = len(change_by)
+
+        change_by = change_by * self.step
         self._current += change_by
         while self._current > self.max_value or self._current < self.min_value:
             if self._current > self.max_value:
@@ -179,15 +188,56 @@ class ClickItem(object):
 
 
 class Clicker():
-    '''
-    Arguments:
-        initial = initial counter number
-        echo = print each set to console
-        step = print only on increments of x
-        name = name of clicker
-        max = max number (when set, echo will return %xx)
-        format = format to use for echo, default = '{name} : {counter}'
-    '''
+    """
+    This object will create and manage a set of counters that can be used to count steps, items, etc...
+        *[defaults in brackets]*
+
+    Keyword Arguments:
+        initial (int): [0] initial counter number
+        step (int): [1] print only on increments of x
+        max_value (int): [sys.maxsize] maximum possible counter number, when set echo will return %xx and number stops at max
+        min_value (int): [0] minimum possible counter number, when set echo will return %xx and number stops at min
+        console_format (format string): ['{counter}']format to use for excoint to console
+        format (format string: ['{counter}'] format to use for echo, default = '{name} : {counter}'
+        return_every (int): [1] will only echo on multiples of this
+        rollover (boolean): [False] Should the counter start back at *min_value* after hitting *max_value*
+        rollunder (boolean): [False] Should the counter start back at *max_value* after hitting *min_value*
+        autoadd (boolean): [True] will automatically add a counter if it is called.
+
+    Example:
+        Clicker can be used in multiple ways,
+
+            >>> c = Clicker()
+            >>> c()   # when called, it will increment by :param:step
+            1
+            >>> c(2)   # an integrer could be passed that would change the step value (for that step)
+            3
+            >>> c(-1)  # you can also go backwards
+            2
+            >>> c('my_counter', 1)  # you can pass a counter name and it will track that counter seperatly
+            1
+            >>> c('my_counter', 3)  # you will have to pass that name each time you call it to get that counter.
+            4
+            >>> c(5)    # and of couse, the other counter is still running in the background
+            7
+            >>> c['my_counter', 0] # you can also access the counters this way
+            4
+            >>> c.my_counter(10)   # or access them this way
+            14
+            >>> del c['my_counter'] # and delete them this way
+
+        you can use any of the following methods to add / subtrack from a counter:
+            * c += 1
+            * c(1)
+            * c = c + 1
+            * c()
+            * c += object
+
+        if an object is passed, the following rules will apply:
+            * if an int/long is passed, it will be added/subtracted,
+            * if a string is passed and is_numeric = True, it will be converted to an int and added/subtracted
+            * for all other objects, the len of the object will be added to the counter.
+    """
 
     default_name = '__default__'
 
@@ -205,15 +255,40 @@ class Clicker():
         self.rollover = kwargs.get('rollover', False)
         self.rollunder = kwargs.get('rollunder', False)
         self.autoadd = kwargs.get('autoadd', True)
-        self.autoadd_name_prefix = kwargs.get('AutoCounter_', True)
+        # self.autoadd_name_prefix = kwargs.get('AutoCounter_', True)
 
         self.add_counter(self.default_name)
         self._default_counter = self._counters[self.default_name]
 
     def add_counter(self, name, **kwargs):
+        """
+        adds a new counter
+
+        *if not passed, keyword params will use the base* :class:`Clicker` *settings*
+
+        Parameters:
+            name: the name of the counter
+
+
+        Keyword Arguments:
+            initial: [0] initial counter number
+            step: [1] print only on increments of x
+            max_value: [sys.maxsize] maximum possible counter number, when set echo will return %xx and number stops at max
+            min_value: [0] minimum possible counter number, when set echo will return %xx and number stops at min
+            console_format: ['{counter}']format to use for excoint to console
+            format: ['{counter}'] format to use for echo, default = '{name} : {counter}'
+            return_every: [1] will only echo on multiples of this
+            rollover: [False] Should the counter start back at *min_value* after hitting *max_value*
+            rollunder: [False] Should the counter start back at *max_value* after hitting *min_value*
+        """
+
         self._counters[name] = ClickItem(self, name, **kwargs)
 
     def del_counter(self, name):
+        """
+        Will delete a counter by name
+        :param name: the name of the counter to delete
+        """
         del self._counters[name]
 
     def __getattr__(self, item):
