@@ -34,6 +34,7 @@ class Error(Exception):
 
     __str__ = __repr__
 
+
 # ===============================================================================
 # UnSet Class
 # ===============================================================================
@@ -43,8 +44,13 @@ class UnSet(object):
     Used in places to indicated an unset condition where None may be a valid option
 
     .. note:: *I borrowed the concept from* :py:mod:`configparser` *module*
+    
+    Example:
+        For an example of this, see :py:class:`MultiLevelDictManager.get`
+    
     """
     UnSetValidationString = '_*_This is the Unset Object_*_'
+
     def __repr__(self):
         return 'Empty Value'
 
@@ -101,6 +107,7 @@ class Path(object):
         self._pwd = []
         self.item = ''
         self.key_sep = key_sep
+        #: TODO Shortcut current path
         self.cd(current_path)
         self.cd(cd)
 
@@ -141,6 +148,13 @@ class Path(object):
         return self
 
     def cwd(self, new_path):
+        """
+        will change the working directory, but will assume that there is a trailing key_sep
+        (so, assuming there is no item).
+
+        this is a helper method for cd.
+        :param new_path: new path
+        """
         if new_path.endswith(self.key_sep):
             return self.cd(new_path)
         else:
@@ -149,17 +163,43 @@ class Path(object):
 
     @property
     def pwd(self):
+        """
+        returns the present working directory list
+        :return:
+        """
         return self._pwd
 
     @property
-    def path(self):
+    def path_list(self):
+        """
+        returns the current path as a list object of path and item.
+        :return:
+        """
         tmp_ret = []
         tmp_ret.extend(self._pwd)
         if self.item != '':
             tmp_ret.append(self.item)
         return tmp_ret
 
+    def new_path(self, cd='', key_sep=None):
+        """
+        Creates an new path object from this one
+        :param cd: change directory of new object
+        :param key_sep: new key seperator
+        """
+        if key_sep is None:
+            key_sep = self.key_sep
+
+        return Path(self, cd, key_sep)
+
     def path_str(self, key_sep=None, full=False, inc_item=True):
+        """
+        returns the current path as a string.
+
+        :param key_sep: allows setting the key_sep for the string
+        :param full: if True will return the full path, including a leading sep and final key_sep if needed.
+        :param inc_item: if set False will only return the path, not the item.
+        """
         if key_sep is None:
             key_sep = self.key_sep
 
@@ -177,10 +217,9 @@ class Path(object):
             tmp_ret += key_sep
             if inc_item:
                 tmp_ret += self.item
-                if full:
-                    tmp_ret += key_sep
+                # if full:
+                #     tmp_ret += key_sep
         return tmp_ret
-
 
 
     def __call__(self, new_path=''):
@@ -190,10 +229,10 @@ class Path(object):
         return self.path_str()
 
     def __len__(self):
-        if self.item=='':
+        if self.item == '':
             return len(self._pwd)
         else:
-            return len(self.pwd)+1
+            return len(self.pwd) + 1
 
     def __getitem__(self, item):
         if isinstance(item, int):
@@ -232,6 +271,78 @@ class Path(object):
 
 
 class MultiLevelDictManager(object):
+    """
+    This provides a dictionary view that can be accessed via a :py:class:`Path` object or string.
+    
+    Examples:
+        >>> mld = MultiLevelDictManager()
+    
+        >>> test_dict = {
+                'level': '1',
+                'l2a': {
+                    'level': '2a',
+                    'l3aa': {
+                        'level': '3aa',
+                        'l4aaa': {'level': '4aaa'},
+                        'l4aab': {'level': '4aab'}},
+                    'l3ab': {
+                        'level': '3ab',
+                        'l4aba': {'level': '4aba'},
+                        'l4abb': {'level': '4abb'}}},
+                'l2b': {
+                    'level': '2b',
+                    'l3ba': {
+                        'level': '3ba',
+                        'l4baa': {'level': '4baa'},
+                        'l4bab': {'level': '4bab'}},
+                    'l3bb': {
+                        'level': '3bb',
+                        'l4bba': {'level': '4bba'},
+                        'l4bbb': {'level': '4bbb'}}}
+                }
+ 
+
+        >>> mldm = MultiLevelDictManager(test_dict)
+
+        >>> mldm.cd['level']
+        1
+        
+        >>>mldm['.l2a.level']
+        '2a'
+
+        >>>mldm('.l2a.')
+        >>>mldm.get('level')
+        '2a'
+
+        >>>mldm.cd('.l2b.l3bb')
+        >>>mldm['..level']
+        '2b'
+
+        >>>mldm.cd('.l2b.l3bb.l4bbb')
+        >>>mldm['....level']
+        '1'
+
+        >>>mldm.cd('.l2b.l3bb.14bbb')
+        >>>mldm['......level']
+        '1'
+
+        >>>mldm.cd('.l2b.l3bb.l4bbb')
+        >>>mldm.get('......leddvel', 'noanswer')
+        'noanswer'
+
+        >>>mldm.cd('.l2b.l3bb.l4bbb')
+        >>>mldm.pwd
+        'l2b.l3bb.l4bbb'
+
+        >>>mldm.cd('.')
+        >>>mldm.get('l2b.l3bb.l4bbb.level', cwd=True)
+        '4bbb'
+        
+        >>>mldm.get('..level', cwd=True)
+        '3bb'
+
+    
+    """
     dict_db = None
     key_sep = '.'
 
@@ -239,70 +350,50 @@ class MultiLevelDictManager(object):
                  dict_db=None,
                  current_path='',
                  key_sep='.'):
+        """
+        :param dict_db: the dictionary to use for lookups.  The keys for this must be strings.
+        :param current_path: the current path string (see :py:class:`Path` for more info on path strings)
+        :param key_sep: the string to use to seperate the keys in the path, by default '.'
+        """
         self.dict_db = dict_db
+        if isinstance(current_path, str):
+            current_path += key_sep
         self.path = Path(current_path, key_sep=key_sep)
-        #self.key_sep = key_sep
+        # self.key_sep = key_sep
 
     def load(self,
              dict_db,
              current_path=''):
+        """
+        Allows you to load a new dictionary, the path will be reset unless passed
+        :param dict_db: The new dictionary for lookups
+        :param current_path: The new path to use (will be reset to '.' unless passed)
+        """
         self.dict_db = dict_db
         self.path(current_path)
-        '''
-        if current_path == '':
-            self._pwd = []
-        else:
-            self._pwd = current_path.split(self.key_sep)
-        '''
-    '''
-    def _parse_full_path(self, parse_key):
-
-        if parse_key == self.key_sep:
-            return []
-        if parse_key[0] == self.key_sep and parse_key[1] != self.key_sep:
-            parse_key = parse_key[1:]
-            return parse_key.split(self.key_sep)
-        else:
-            parse_key_path = copy.deepcopy(self._pwd)
-            if parse_key[0] == self.key_sep:
-                parse_key = parse_key[1:]
-                while parse_key[0] == self.key_sep:
-                    if len(parse_key_path) > 0:
-                        parse_key_path.pop()
-                    parse_key = parse_key[1:]
-            parse_key_path.extend(parse_key.split(self.key_sep))
-            return parse_key_path
-
-    def _get_path_from_full(self, full_path):
-        tmp_path = full_path.split(self.key_sep)
-        tmp_path.pop()
-        return self.key_sep.join(tmp_path)
-
-    def _get_item_from_full(self, full_path):
-        tmp_path = full_path.split(self.key_sep)
-        return tmp_path.pop()
-
-    def make_path_from_key(self, key):
-        tmp_path = self._parse_full_path(key)
-
-        return self._get_path_from_full(tmp_path)
-    '''
 
     def cd(self, key):
         """
-        Change directory path to key
+        Change directory path to a new path string (key)
 
-        :param key:
+        :param key: the new path string to chance to, see :py:class:`Path` for info on path strings
         :return:
         """
-        self.path(key)
+        self.cd(key)
         # self._pwd = self._parse_full_path(key)
 
     def get(self, key, default=_UNSET, cwd=False):
+        """
+        will get the data from the specified path string
+        
+        :param key: The path string to use (see :py:class:`Path` for info on path strings)
+        :param default: if passed, a default to return if the key is not found at any level.
+        :param cwd: Will change the current path to the path of the key passed.
+        """
 
         cur_resp = self.dict_db
-        tmp_path = Path(key)
-        #key_path = self._parse_full_path(key)
+        tmp_path = Path(self.path, key)
+        # key_path = self._parse_full_path(key)
 
         for k in tmp_path:
             try:
@@ -311,7 +402,7 @@ class MultiLevelDictManager(object):
                 if default is not _UNSET:
                     return default
                 else:
-                    msg = "Key: {} not found in dict {}".format(k)
+                    msg = 'Key: "{}" not found in dict: {}'.format(k, self.dict_db)
                     raise KeyError(msg)
             except TypeError:
                 msg = "parameter passed is not a dict or does not implement key lookups"
@@ -323,24 +414,32 @@ class MultiLevelDictManager(object):
         return cur_resp
 
     def cwd(self, key):
+        """
+        Changes the current working directory to the passed path string (key).
+        
+        This is a shortcut for having to pass a path with a '.' at the end to signify a path
+        
+        :param key: The path string to use (see :py:class:`Path` for info on path strings)
+        """
         self.path.cwd(key)
 
 
     @property
     def pwd(self):
+        """
+        Returns the current working directory and item (if present)
+        """
+
         return self.path.path_str()
-        #        return self.key_sep.join(self._pwd)
+        # return self.key_sep.join(self._pwd)
 
     def __getitem__(self, item):
         return self.get(item)
-
-    __call__ = get
 
     def __repr__(self):
         return 'MultiLevelLookupDict: current_path:{}  Dict:{}'.format(self.path, self.dict_db)
 
     __call__ = get
-
 
 
 # ===============================================================================
@@ -351,17 +450,19 @@ class MultiLevelDictManager(object):
 def generate_percentages(data_array, row_fieldname, data_fieldname, newfieldname=""):
     '''
 
-    computes percentage of the total column per item and adds it to the array (or replaces an existing field.
+    Computes percentage of the total column per item and adds it to the array (or replaces an existing field.)
 
     assumes data_array will be in the format of:
-    [
-    { 'row_fieldname' : [{field1:data1, field2,data2, field3:data3},{field1:data1, field2,data2, field3:data3},{field1:data1, field2,data2, field3:data3}]}
-
-    ]
-    if no newfieldname, fieldname is replaced with percentages
-    if fieldnames are numeric, a set is assumed instead of a dict
-    if new_fieldname is numeric, the data will be inserted at that position (zero based).
-
+    ::
+        [
+        { 'row_fieldname' : [{field1:data1, field2,data2, field3:data3},{field1:data1, field2,data2, field3:data3},{field1:data1, field2,data2, field3:data3}]}
+    
+        ]
+    ::
+    
+    * if no newfieldname, fieldname is replaced with percentages
+    * if fieldnames are numeric, a set is assumed instead of a dict
+    * if new_fieldname is numeric, the data will be inserted at that position (zero based).
     '''
 
     for col in range(len(data_array[1][row_fieldname])):
@@ -392,6 +493,7 @@ def generate_percentages(data_array, row_fieldname, data_fieldname, newfieldname
     # print(data_array)
 
     return data_array
+
 
 # ===============================================================================
 # Argument Handler
@@ -454,6 +556,102 @@ def args_handler(parent_obj,
 
             .. note::
                 * this only happens if the parameter is not passed, otherwise the check is skipped.
+
+        Example of use:
+
+            class MyObject(object):
+
+                def __init__(self, *args, **kwargs):
+                    args_handler(self, args, ['f_name', 'l_name'], kwargs)
+                    # this would apply the first two args as MyObject.f_name and MyObject.l_name, as well as any kwargs
+
+
+        Examples of options:
+
+            >>> tc = TmpClass()
+    
+            test_args = [1, 2, 3, 4]
+            test_args_list_1 = ['t1', 't2', 't3', '_t4']
+            test_kwargs = {'t5': 5, 't6': 6, 't7': 7, '_t8': 8}
+            test_kwargs_ovr = {'t3': 33, '_t4': 44, 't5': 5, 't6': 6, 't7': 7, '_t8': 8}
+            test_skip_list = ['t4', 't5']
+
+            test_args_req = [1, 2, 4]
+            test_args_list_req = ['t1', '*t2', 't3', '_t4', '*t6']
+            test_kwargs_req = {'t5': 5, 't7': 7, '_t8': 8}
+
+            >>> args_handler(tc, test_args, test_args_list_1)
+            >>> tc.t2
+            2
+
+            >>> args_handler(tc, kwargs=test_kwargs)
+            >>> tc.t5
+            5
+
+            >>> args_handler(tc, test_args, test_args_list_1, test_kwargs)
+            >>> tc.t2
+            2
+            >>> tc.t5
+            5
+
+            >>> args_handler(tc, test_args, test_args_list_1, test_kwargs_ovr)
+            >>> tc.t3
+            33
+            >>> tc.t5
+            5
+            >>> tc.t2
+            2
+
+
+
+            >>> args_handler(tc, test_args, test_args_list_1, test_kwargs, skip_list=test_skip_list)
+            >>> tc.t2
+            2
+            >>> tc.t6
+            6
+
+            tc.t1 = 11
+            >>> args_handler(tc, test_args, test_args_list_1, test_kwargs, skip_list=test_skip_list)
+            >>> tc.t1
+            1
+
+            >>> tc.t1 = 11
+            >>> args_handler(tc, test_args, test_args_list_1, skip_list=test_skip_list, overwrite=False)
+            >>> tc.t1
+            11
+
+
+            >>> args_handler(tc, test_args, test_args_list_1, test_kwargs, skip_list=test_skip_list)
+            >>> tc.t2
+            2
+            >>> tc.t6
+            6
+
+            >>> tc._args_skip_list = test_skip_list
+            >>> args_handler(tc, test_args, test_args_list_1, test_kwargs)
+            >>> tc.t2
+            2
+            >>> tc.t6
+            6
+
+            >>> tc._args_skip_list = test_skip_list
+            >>> args_handler(tc, kwargs=test_kwargs, do_not_check_parent_attrs=True)
+            >>> tc.t5
+            5
+
+
+            >>> test_args = [1, 2, 4]
+            >>> test_args_list = [('t1', 11), '*t2', 't3', '_t4', ('t5', 55), ('*t6', 66)]
+            >>> test_kwargs = {'t6': 6, 't7': 7, '_t8': 8}
+            >>> args_handler(tc, test_args, test_args_list, test_kwargs)
+
+            >>> tc.t1
+            1
+            >>> tc.t5
+            55
+            >>> tc.t6
+            6
+
     """
 
     def _save(save_arg, save_attr, clean_default=True):
@@ -502,7 +700,6 @@ def args_handler(parent_obj,
     if skip_list is None:
         skip_list = []
 
-
     attr_defaults = {}
 
     # ---- verify required fields and build defaults list from tuples ------
@@ -528,7 +725,7 @@ def args_handler(parent_obj,
                     attr_found = True
 
                 if not attr_found:
-                    raise AttributeError('ArgsHandler: Required attribute '+attr+' is not found in args or kwargs')
+                    raise AttributeError('ArgsHandler: Required attribute ' + attr + ' is not found in args or kwargs')
 
             tmp_attr_list.append(attr)
 
@@ -548,39 +745,77 @@ def args_handler(parent_obj,
 
     _args_dict_iterator(attr_defaults, clean_default=False)
 
+
 # ===============================================================================
 # Generic Meta Object
 # ===============================================================================
 
 
 class GenericMeta(object):
+    """
+    Base object to use for creating meta objects.  This will copy all attrs from the meta object to the parent object.
 
-    def get_meta_attrs(self, parent_obj, skip_list = [], skip_startswith = '_', overwrite = True):
+    This can be used to assign lists or other mutatable objects to Classes as well as to create standard sets of metadata
+    for classes that can be reused.
+
+    This uses :py:func:`args_handler` to copy kwargs to the class on init.
+
+    Example:
+
+        >>> class MyObject(object):
+        >>>     meta = GenericMeta(name='coolObject', number_list=[1,2,3,4])
+
+        >>> mo = MyObject()
+        >>> mo.name
+        'coolObject'
+        >>> mo.number_list
+        [1,2,3,4]
+
+    """
+
+    def __init__(self, *kwargs):
+        args_handler(self, kwargs=kwargs)
+
+    def get_meta_attrs(self, parent_obj, skip_list=None, skip_startswith='_', overwrite=True):
+        """
+        Function to copy the atttrs.
+
+        :param parent_obj: The object to copy the attrs TO
+        :param skip_list:  A list of attrs to skip copying.
+        :param skip_startswith:  If an attr starts with this (default = '_'), do not copy
+        :param overwrite: if False (default = True) will not not overwrite existing attributes if they exist.
+        """
+        if skip_list is None:
+            skip_list = []
         for attr, value in iter(self.__dict__.items()):
             if not attr.startswith(skip_startswith) and attr not in skip_list:
-                if not hasattr(parent_obj,attr) or overwrite:
-                    setattr(parent_obj,attr,value)
+                if not hasattr(parent_obj, attr) or overwrite:
+                    setattr(parent_obj, attr, value)
 
 
-def get_meta_attrs(meta, parent_obj, skip_list = [], skip_startswith = '_', overwrite = True):
-    for attr in dir(meta):
-        if not attr.startswith(skip_startswith) and attr not in skip_list:
-            if not hasattr(parent_obj,attr) or overwrite:
-                tmp_value = getattr(meta,attr)
-                setattr(parent_obj,attr,tmp_value)
+def get_meta_attrs(meta, parent_obj, skip_list=None, skip_startswith='_', overwrite=True):
+    """
+    Standalone version of the get_meta_attrs from the generic meta object for use in other custom classes.
 
-
-def get_meta_attrs2(meta, parent_obj, skip_list = [], skip_startswith = '_', overwrite = True):
+    :param meta: The object to copy the attrs FROM
+    :param parent_obj: The object to copy the attrs TO
+    :param skip_list:  A list of attrs to skip copying.
+    :param skip_startswith:  If an attr starts with this (default = '_'), do not copy
+    :param overwrite: if False (default = True) will not not overwrite existing attributes if they exist.
+    """
+    if skip_list is None:
+        skip_list = []
     for attr, value in iter(meta.__dict__.items()):
         if not attr.startswith(skip_startswith) and attr not in skip_list:
-            if not hasattr(parent_obj,attr) or overwrite:
-                setattr(parent_obj,attr,value)
+            if not hasattr(parent_obj, attr) or overwrite:
+                setattr(parent_obj, attr, value)
 
 
 # ===============================================================================
-# Generic Meta Object
+# Quarter Calc  (not flexible enough to use broadly at this point)
 # ===============================================================================
 
+#: TODO make this work for more options
 
 def quarter_calc(*args):
     arg = []
@@ -598,7 +833,6 @@ def quarter_calc(*args):
             response_item['word'] = '{year}-Q{quarter}'.format(**response_item)
 
         return response_item
-
 
     elif ( len(args) ) == 2:
         response_item = 0
@@ -621,7 +855,16 @@ def quarter_calc(*args):
 
 class DictKey2Method(object):
     """
-    creates a dictionary that the keys are available as properties
+    Helper utility to allow dict keys to be accessed by attrs.
+
+    Example:
+
+        >>> d = {'one': 1, 'two': 2}
+        >>> dk2m = DictKey2Method(d)
+        >>> dk2m.one
+        1
+        >>> dk2m.two
+        2
     """
 
     def __init__(self, mydict):
@@ -644,61 +887,88 @@ class AdvDict(dict):
     """
     A dictionary that allows you to access contents as if they were methods.
 
-    :param property_name: The name of the property to use to access the fields.
-        Default = 'key'
+    This uses the :py:class:`DictKey2Method` class and wraps it in a :py:class:`dict`.  This also forces the method
+    lookups to use a special method name, thus minimizing conflicts with the existing dict methods.
+
+    :param property_name: The name of the property to use to access the fields. (Default = 'key')
 
     Example:
 
-    >>> d = AdvDict()
-    >>> d['one'] = 1
-    >>> d['two'] = 2
-    >>> d['three'] = 3
-    >>> d.key.one
-    1
+        >>> d = AdvDict()
+        >>> d['one'] = 1
+        >>> d['two'] = 2
+        >>> d['three'] = 3
+        >>> d.key.one
+        1
 
-    >>> d = AdvDict(property_name='number')
-    >>> d['one'] = 1
-    >>> d['two'] = 2
-    >>> d['three'] = 3
-    >>> d.number.two
-    2
+        >>> d = AdvDict(property_name='number')
+        >>> d['one'] = 1
+        >>> d['two'] = 2
+        >>> d['three'] = 3
+        >>> d.number.two
+        2
+
     """
+
     def __init__(self, *args, **kwargs):
         property_name = kwargs.pop('property_name', 'key')
         super(AdvDict, self).__init__(*args, **kwargs)
         setattr(self, property_name, DictKey2Method(self))
+
 
 # ===============================================================================
 # a list that allows for lookups more like a dictionary.
 # ===============================================================================
 
 
-class DBList():
-    '''
-    this is a list type object that also allows for lookups like a dictionary
-    this assumes a list of dictionary entries.
+class DBList(object):
+    """
+    This is a list type object that also allows for lookups like a dictionary based on stored dict keys.
+
+    The only way this works if if dictionaries are stored in the list, each with a key matching the key string.
 
     NOTE: if there are dupe items (by defined key) in the starting list, only the last one will be kept.
 
-    '''
+    :param starting_list: A list of dictionaries, each must contain a key matching the "dict_key" field
+    :param dict_key: the key used to find the keys for looking up the dictionaries.
+
+    Example:
+
+        >>> dict_list = [{'name':'john','age':21},{'name':'jane','age':22}]
+        >>> dl = DBList(dict_list, 'name')
+        >>> dl['john']
+        {'name':'john','age':21}
+        >>> dl['jane']['age']
+        22
+
+    """
+
     internal_dict = {}
 
+    #: TODO Add rest of list and dict functionality
 
-    def __init__( self,
+    def __init__(self,
                  starting_list,
-                 dict_key,
-                 ):
+                 dict_key):
+
         for item in starting_list:
             self.internal_dict[item[dict_key]] = item
 
-    def __iter__( self, key ):
+    def __iter__(self, key):
         return self.internal_dict[key]
 
-    def get_list( self ):
+    def get_list(self):
+        """
+        returns a list of the items.
+        """
         return self.internal_dict.items()
 
-    def get_dict( self ):
+    def get_dict(self):
+        """
+        returns the internal dictionary.
+        """
         return self.internal_dict
+
 
 # ===============================================================================
 # general list utilities.
@@ -708,9 +978,16 @@ class DBList():
 def make_list(in_obj):
     """
     Will take in an object, and if it is not already a list or other iterables, it will convert it to one.
-    :param in_obj:
-    :return:
+
+    This is helpfull when you dotn know if someone will pass a single string, or a list of strings (since strings
+    are iterable you cant just assume)
+
+    This uses the :py:func:`is_iterable` function from this module.
+
+    :param in_obj: list, string, or other iterable.
+    :return: a list object.
     """
+
     if is_iterable(in_obj):
         return in_obj
     else:
@@ -721,12 +998,18 @@ def flatten(l, ltypes=(list, tuple), force=None):
     """
     Will flatten lists and tuples to a single level
 
-    from: http://rightfootin.blogspot.com/2006/09/more-on-python-flatten.html
+    .. note:: from: http://rightfootin.blogspot.com/2006/09/more-on-python-flatten.html
 
     :param l: list or tuple to be flattened
     :param ltypes: the types of items allowed to be flattened, default = (list, tuple)
     :param force: forces return to be of this type.
     :return: single level list or tuple (same as what went in)
+
+    Example:
+        >>> l = [1, 2, 3, [4, 5, [6, 7]]]
+        >>> flatten(l)
+        [1, 2, 3, 4, 5, 6, 7]
+
     """
 
     if is_string(l):
@@ -735,7 +1018,7 @@ def flatten(l, ltypes=(list, tuple), force=None):
         elif force == list:
             return [l]
         elif force == tuple:
-            return tuple(l,)
+            return tuple(l, )
     ltype = type(l)
     l = list(l)
     i = 0
@@ -754,7 +1037,7 @@ def flatten(l, ltypes=(list, tuple), force=None):
         return force(l)
 
 
-def unpack_class_method(class_object_list, method, ret_type=str, args_list=[], kwargs_dict={}):
+def unpack_class_method(class_object_list, method, ret_type=str, args_list=None, kwargs_dict=None):
     """
     This will iterate through a list of objects and pull a value from each one, even if the items are functions.
 
@@ -765,8 +1048,13 @@ def unpack_class_method(class_object_list, method, ret_type=str, args_list=[], k
         for example, the default is str, but int, float are also options.
     :param args_list: if the method is a function, a list of arguments to pass
     :param kwargs_dict: if the method is a function, a dict of keyword arguments to pass.
-    :return:
+
     """
+    if args_list is None:
+        args_list = []
+    if kwargs_dict is None:
+        kwargs_dict = {}
+
     tmpretset = []
     class_object_list = flatten(class_object_list)
     for obj in class_object_list:
@@ -818,12 +1106,24 @@ def remove_dupes(l1):
     """
     return list(set(l1))
 
+
 # ===============================================================================
 # checking for the presence (or absence) of lists in other lists
 # ===============================================================================
 
 
 def list_in_list(is_this, in_this):
+    """
+    Checks to see if ALL of the items in a list are in the other list
+
+    :param is_this: list of items to check for
+    :param in_this: list of items to check against
+    :return: booleanTrue if all items in is_this are in in_this.
+
+    .. Warning: currently broken!!!
+
+    """
+    #: TODO FIX THIS!!
     is_this = make_list(is_this)
     for item in is_this:
         if item in in_this:
@@ -838,6 +1138,7 @@ def list_not_in_list(is_this, not_in_this):
             return False
     return True
 
+
 # ===============================================================================
 # Utility counts unique values in a list or dict
 # ===============================================================================
@@ -845,6 +1146,8 @@ def list_not_in_list(is_this, not_in_this):
 
 def count_unique(data_in, dict_key=None, on_key_error='raise'):
     """
+    Counts the unique items a list of items, or counts the unique keys in a list of dicts.
+
     :param data_in: list or tuple of items to be counted
     :param dict_key: if data_in is a list of dict's, this is the key for which item to compare
     :param on_key_error:
@@ -859,7 +1162,7 @@ def count_unique(data_in, dict_key=None, on_key_error='raise'):
     tmp_list = []
 
     if not isinstance(data_in, (list, tuple)):
-        raise TypeError('count_unique requires a list or tuple, not a '+type(data_in).__name__)
+        raise TypeError('count_unique requires a list or tuple, not a ' + type(data_in).__name__)
 
     if dict_key:
         for item in data_in:
@@ -867,7 +1170,7 @@ def count_unique(data_in, dict_key=None, on_key_error='raise'):
                 tmp_list.append(item[dict_key])
             except KeyError:
                 if on_key_error == 'raise':
-                    raise KeyError('count_unique: dict key "'+dict_key+'" not found')
+                    raise KeyError('count_unique: dict key "' + dict_key + '" not found')
                 elif on_key_error == 'count':
                     tmp_list.append('__<no_key_item>__')
 
@@ -875,6 +1178,7 @@ def count_unique(data_in, dict_key=None, on_key_error='raise'):
         tmp_list = data_in
 
     return len(set(tmp_list))
+
 
 # ===============================================================================
 # Advanced List Object
@@ -893,7 +1197,7 @@ class ListPlus(list):
     =====================    ===========================================================================================
     """
 
-    def _update_function(self, curr_obj, new_obj ):
+    def _update_function(self, curr_obj, new_obj):
         """
         Allows overriding to allow for manipulating or validating updated information if needed'
 
@@ -980,7 +1284,7 @@ class ListPlus(list):
             except IndexError:
                 return args[1]
         else:
-            raise TypeError('ListPlus takes at most 2 arguments, '+str(len(args))+' given')
+            raise TypeError('ListPlus.get takes at most 2 arguments, ' + str(len(args)) + ' given')
 
     '''
     def __setitem__(self, i, x):
@@ -998,7 +1302,6 @@ LookupTuple = collections.namedtuple('LookupTuple', ['stored', 'display', 'refer
 
 
 class LookupItem(LookupTuple):
-
     '''
     def __init__(self, *args, **kwargs):
         super(LookupItem, self).__init__(*args, **kwargs)
@@ -1006,15 +1309,27 @@ class LookupItem(LookupTuple):
             self.reference = copy.deepcopy(self.stored)
         self.reference = slugify(self.reference)
     '''
+
+    def __init__(self, *args):
+        self.stored = args[0]
+        self.display = args[1]
+        try:
+            self.reference = args[2]
+        except IndexError:
+            pass
+
     def __str__(self):
         return self.stored
 
 
 class LookupManager(object):
-
-
     def __init__(self, lookup_list):
         """
+        This handles a list of tuples where you want to have one string for a lookup, which returns a
+        different string, and is called by a third thing.
+
+        This takes a list of tuples and
+
         :param lookup_list:
                 lookup list is a list of tuples (stored_value, display_value [, referenced_name] ):
                     stored value = the value that would be stored in the db
@@ -1022,7 +1337,11 @@ class LookupManager(object):
                     referenced value is the name used in coding (if not present stored_value is used)
         :param case_sensitive:
                 determines if lookups are case sensitive or not.
+
+        .. warning:: still needs work
+
         """
+        #: TODO fix this, needs more thought in how it works
         self.stored_dict = {}
         self.display_dict = {}
         self.reference_dict = {}
@@ -1031,14 +1350,13 @@ class LookupManager(object):
         self.master_dict = {}
 
         for l in lookup_list:
-
             tmp_l = LookupItem(*l)
 
             self.stored_dict[tmp_l.stored] = tmp_l
             self.display_dict[tmp_l.display] = tmp_l
             self.reference_dict[slugify(tmp_l.reference)] = tmp_l
             self.data_list.append(tmp_l)
-            self.lookup_list.append( (tmp_l.stored, tmp_l.display ))
+            self.lookup_list.append((tmp_l.stored, tmp_l.display ))
             self.master_dict[tmp_l.stored] = tmp_l
             self.master_dict[tmp_l.display] = tmp_l
             self.master_dict[slugify(tmp_l.reference)] = tmp_l
@@ -1053,7 +1371,7 @@ class LookupManager(object):
     def __getitem__(self, item):
         return self.master_dict[item]
 
-    def get_by_stored(self,item):
+    def get_by_stored(self, item):
         return self.stored_dict[item]
 
     def get_by_display(self, item):
@@ -1103,7 +1421,22 @@ class OrderedSet(collections.MutableSet):
     """
     An OrderedSet is a custom MutableSet that remembers its order, so that
     every entry has an index that can be looked up.
+
+
+    Based on a recipe originally posted to ActiveState Recipes by Raymond Hettiger,
+    and released under the MIT license.
+
+    Rob Speer's changes are as follows:
+
+    * changed the content from a doubly-linked list to a regular Python list.
+        Seriously, who wants O(1) deletes but O(N) lookups by index?
+    * add() returns the index of the added item
+    * index() just returns the index of an item
+    * added a __getstate__ and __setstate__ so it can be pickled
+    * added __getitem__
     """
+
+
     def __init__(self, iterable=None):
         self.items = []
         self.map = {}
@@ -1137,7 +1470,7 @@ class OrderedSet(collections.MutableSet):
             return OrderedSet([self.items[i] for i in index])
         else:
             raise TypeError("Don't know how to index an OrderedSet by %r" %
-                    index)
+                            index)
 
     def copy(self):
         return OrderedSet(self)
@@ -1174,6 +1507,7 @@ class OrderedSet(collections.MutableSet):
             self.map[key] = len(self.items)
             self.items.append(key)
         return self.map[key]
+
     append = add
 
     def index(self, key):
@@ -1216,12 +1550,33 @@ class OrderedSet(collections.MutableSet):
 
 
 def swap(item, opt1=True, opt2=False):
+    """
+    This will take an item and swap it for another item.  By default this is True/False, so if True is passed, False
+    is returned.  However, any pair of items can be passed and swapped
+
+    This is used to simplify coding when you dotn want to do lots of if **not** that and the variable can be
+    permenantly changed, or when you are swapping non-boolean values.
+
+    :param item: the item to swap
+    :param opt1: (default = True) option 1
+    :param opt2: (default = False) option 2
+    :return: the option that is not used.
+
+    Examples:
+        >>> swap(True)
+        False
+        >>> swap(False)
+        True
+        >>> swap('Blue', 'Blue', 'Red')
+        'Red'
+
+    """
     if item == opt1:
         return opt2
     elif item == opt2:
         return opt1
     else:
-        raise AttributeError(str(item)+' not in available options')
+        raise AttributeError(str(item) + ' not in available options')
 
 
 # ===============================================================================
@@ -1261,25 +1616,25 @@ def replace_between(instring, start_key, end_key, replace, keep_keys=False, offs
         if count <= found or start_pos == -1:
             break
 
-        end_pos = instring.find(end_key, start_pos+start_key_len)
+        end_pos = instring.find(end_key, start_pos + start_key_len)
 
         if end_pos == -1:
             break
 
         if keep_keys:
-            suffix = instring[end_pos:end_pos+end_key_len]
-            outstring = outstring + instring[curs_pos:start_pos+start_key_len] + replace + suffix
-            curs_pos = end_pos+end_key_len
+            suffix = instring[end_pos:end_pos + end_key_len]
+            outstring = outstring + instring[curs_pos:start_pos + start_key_len] + replace + suffix
+            curs_pos = end_pos + end_key_len
 
         else:
             outstring = outstring + instring[curs_pos:start_pos] + replace
-            curs_pos = end_pos+end_key_len
+            curs_pos = end_pos + end_key_len
 
-        found = found+1
+        found = found + 1
 
         start_pos = instring.find(start_key, curs_pos)
 
-    return outstring+instring[curs_pos:]
+    return outstring + instring[curs_pos:]
 
 
 def index_of_count(instring, find, offset_count=1, start=0):
@@ -1304,9 +1659,9 @@ def index_of_count(instring, find, offset_count=1, start=0):
         for i in range(offset_count):
             offset_loc = instring.find(find, current_off)
             if offset_loc > -1:
-                if i == offset_count-1:
+                if i == offset_count - 1:
                     return offset_loc
-                current_off = offset_loc+1
+                current_off = offset_loc + 1
             else:
                 return current_off
         return offset_loc
@@ -1359,7 +1714,7 @@ def get_after(instring, find, offset_count=1):
         offset_loc = index_of_count(instring, find, offset_count)
 
         if offset_loc != -1:
-            return_size = offset_loc+offset_len
+            return_size = offset_loc + offset_len
             return instring[return_size:]
         return instring
     return instring
@@ -1400,12 +1755,24 @@ def slugify(text, delim=u'-'):
             result.append(word)
     return str(delim.join(result))
 
+
 # ===============================================================================
 # Format number as clean string
 # ===============================================================================
 
 
 def format_as_decimal_string(num, max_decimal_points=6):
+    """
+    This will format a number as a string including decimals, but will correctly trim the decimal.
+    :param num: number to format
+    :param max_decimal_points: the max decimals to show
+    :return: a string of the number with decimals.
+
+    Examples:
+        >>> format_as_decimal_string(1.234)
+        '1.234'       # this would normally be '1.234000' when done by the normal format
+
+    """
     if isinstance(num, str):
         if num.isnumeric():
             num = Decimal(num)
@@ -1427,8 +1794,19 @@ def format_as_decimal_string(num, max_decimal_points=6):
 # ===============================================================================
 
 def convert_to_boolean(obj):
+    """
+    Converts an object to a boolean, mostly for strings, but can also accept objects that will convert correctly.
+    :param obj: the object to convert
+    :return: a boolean representing the object
 
-    istrue = ('true', 'yes', 'ok', '1', 'on', '+', 'True', 'Yes', 'Ok', 'On', 'TRUE', 'YES', 'OK', 'ON',  1, 1.0)
+    Examples:
+        >>> convert_to_boolean('yes')
+        True
+        >>> convert_to_boolean(0)
+        False
+
+    """
+    istrue = ('true', 'yes', 'ok', '1', 'on', '+', 'True', 'Yes', 'Ok', 'On', 'TRUE', 'YES', 'OK', 'ON', 1, 1.0)
     isfalse = ('false', 'no', '0', '-', 'off', 'False', 'No', 'Off', 'FALSE', 'NO', 'OFF', 0, 0.0)
 
     if isinstance(obj, (str, int, float)):
@@ -1444,12 +1822,14 @@ def convert_to_boolean(obj):
 
     raise TypeError('could not convert to boolean')
 
+
 # ===============================================================================
 # text / string utils
 # ===============================================================================
 
 
 def is_string(in_obj):
+    """ is this a string or not """
     return isinstance(in_obj, str)
 
 
@@ -1461,9 +1841,14 @@ def elipse_trim(instr, trim_length, elipse_string='...'):
     :param trim_length: The max length, INCLUDING the elipse
     :param elipse_string: the string used for the elipse.  Default: '...'
     :return: Trimmed string
+
+    Examples:
+        >>> elipse_trim('this is a long string',10)
+        'this is...'
+
     """
     instr = str(instr)
-    str_len = trim_length-len(elipse_string)
+    str_len = trim_length - len(elipse_string)
     if len(instr) > trim_length:
         return '{}{}'.format(instr[:str_len], elipse_string)
     else:
@@ -1472,17 +1857,25 @@ def elipse_trim(instr, trim_length, elipse_string='...'):
 
 def concat(*args, separator=' ', trim_items=True):
     """
-    Concatenates strings or lists of strings
+    Concatenates strings or iterables
 
-    :param args: strings or lists / sets of strings
+    :param args: strings or iterables
     :param separator: the string that will be used between strings.  Default: ' '
-    :param trim: True/False, trim strings before concatenating.
+    :param trim_items: True/False, trim strings before concatenating.
     :return: string created from contents passed
     """
-    tmp_str = ""
+    # tmp_str = ""
 
+    args = flatten(args)
+    tmp_args = []
+    for a in args:
+        if trim_items:
+            tmp_args.append(str(a).strip())
+        else:
+            tmp_args.append(str(a))
+    return separator.join(tmp_args)
 
-
+    '''
     for arg in args:
         if is_string(arg):
             if trim_items:
@@ -1499,6 +1892,7 @@ def concat(*args, separator=' ', trim_items=True):
                 tmp_str = str(arg)
 
     return tmp_str
+    '''
 
 # ===============================================================================
 # Tree dictionary
@@ -1511,11 +1905,11 @@ class TreeItem():
     _children = []
     _item_dict = {}
 
-    def __init__( self,
-                 key = '',
-                 parent = None,
-                 children = {},
-                 item = {} ):
+    def __init__(self,
+                 key='',
+                 parent=None,
+                 children={},
+                 item={}):
         self._key = key
         self._parent = parent
         self._children = children
@@ -1523,70 +1917,67 @@ class TreeItem():
 
 
 class TreeDict():
-
     _root_dict = {}
-    _root_node = TreeItem( key = 'root'
-                          )
+    _root_node = TreeItem(key='root'
+    )
 
-    def __init__( self,
+    def __init__(self,
                  initial_list,
-                 key_field = 'key',
-                 parent_key = 'parent',
-                 children_field = 'children',
-                 ):
+                 key_field='key',
+                 parent_key='parent',
+                 children_field='children'):
         self._initial_list = initial_list
         self._key_field = key_field
         self._parent_key = parent_key
         self._children_field = children_field
 
         for item in initial_list:
-            self._add_to_tree( item )
+            self._add_to_tree(item)
 
 
-    def _search_tree( self, key, dict_tree ):
+    def _search_tree(self, key, dict_tree):
         if key in dict_tree:
             return dict_tree[key]
         else:
-            for item in iter( dict_tree.values() ):
+            for item in iter(dict_tree.values()):
                 if item._children:
-                    return self._search_tree( key, item._children )
+                    return self._search_tree(key, item._children)
         return None
 
-    def _add_to_tree( self, node_dict ):
+    def _add_to_tree(self, node_dict):
         parent_node = None
         if node_dict[self._parent_key]:
-            parent_node = self._search_tree( node_dict[self._parent_key], self._root_node._children )
+            parent_node = self._search_tree(node_dict[self._parent_key], self._root_node._children)
 
         if not parent_node:
             parent_node = self._root_node
 
-        parent_node._children[node_dict[self._key_field]] = TreeItem( key = node_dict[self._key_field],
-                                                                      parent = parent_node,
-                                                                      children = {},
-                                                                      item = node_dict,
-                                                                )
+        parent_node._children[node_dict[self._key_field]] = TreeItem(key=node_dict[self._key_field],
+                                                                     parent=parent_node,
+                                                                     children={},
+                                                                     item=node_dict,
+        )
 
-    def add_list( self, list_in ):
+    def add_list(self, list_in):
         for item in list_in:
-            self._add_to_tree( item )
+            self._add_to_tree(item)
 
 
-    def _get_dnk( self, dict_list ):
+    def _get_dnk(self, dict_list):
         tmp_list = []
-        for item in iter( dict_list.values() ):
+        for item in iter(dict_list.values()):
             if item._children:
-                children_list = self._get_dnk( item._children )
+                children_list = self._get_dnk(item._children)
             else:
                 children_list = []
 
             tmp_dict = {}
-            tmp_dict.update( item._item_dict )
+            tmp_dict.update(item._item_dict)
             tmp_dict[self._children_field] = children_list
 
-            tmp_list.append( tmp_dict )
+            tmp_list.append(tmp_dict)
 
         return tmp_list
 
-    def get_dict_no_key( self ):
-        return self._get_dnk( self._root_node._children )
-
+    def get_dict_no_key(self):
+        return self._get_dnk(self._root_node._children)
