@@ -867,6 +867,15 @@ class IndentedPrinter(object):
         return False
 
     def toggle_silent(self, silence=None):
+        """
+        will toggle silent on if off, or vice-versa, unless the silence flag is set, in which case it will follow the
+        flag
+
+        .. note:: Shortcutted to si
+
+        :param silence: True/False, to silence the IP process.
+        :return:
+        """
         if silence:
             self._silence_flag = silence
         else:
@@ -881,7 +890,7 @@ class IndentedPrinter(object):
         """
         same as println()
         """
-        self.println(*args)
+        return self.println(*args)
 
 
     # ====================================
@@ -889,6 +898,9 @@ class IndentedPrinter(object):
     # ====================================
 
     def co(self, color=None):
+        """
+        Shortcut for :meth:`IndentedPrinter.color`
+        """
         return self.color(color)
 
     def ca(self, count_diff=1, counter_key=None):
@@ -972,3 +984,6 @@ class IndentedPrinter(object):
 
     def b(self, *args):
         return self.buffer(*args)
+
+    def si(self, *args, **kwargs):
+        return self.toggle_silent(*args, **kwargs)
