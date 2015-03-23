@@ -8,7 +8,7 @@ __all__ = ['args_handler', 'GenericMeta', 'DictKey2Method', 'AdvDict', 'DBList',
            'get_before', 'get_not_in', 'get_same', 'get_meta_attrs', 'remove_dupes', 'list_in_list', 'list_not_in_list',
            'count_unique', 'index_of_count', 'ListPlus', 'LookupManager', 'is_iterable', 'is_string', 'Error', 'Path',
            'OrderedSet', 'swap', 'replace_between', 'format_as_decimal_string', 'MultiLevelDictManager',
-           'elipse_trim', 'concat', 'generate_percentages', 'convert_to_boolean']
+           'elipse_trim', 'concat', 'generate_percentages', 'convert_to_boolean', 'slugify']
 
 import copy
 import sys
@@ -1746,15 +1746,56 @@ from unicodedata import normalize
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 
 
-def slugify(text, delim=u'-'):
+def slugify2(text, delim=u'-'):
     """Generates a slightly worse ASCII-only slug."""
     result = []
     for word in _punct_re.split(text.lower()):
         word = normalize('NFKD', word).encode('ascii', 'ignore')
         if word:
             result.append(word)
+    print('sluggify result:', result)
     return str(delim.join(result))
 
+
+def slugify(text, delim='_', case='lower', allowed=None, punct_replace='', encode=None):
+    """
+    generates a simpler text string.
+
+    :param text:
+    :param delim: a string used to delimit words
+    :param case: ['lower'/'upper'/'no_change']
+    :param allowed: a string of characters allowed that will not be replaced.  (other than normal alpha-numeric which
+        are never replaced.
+    :param punct_replace: a string used to replace punction characters, if '', the characters will be deleted.
+    :param encode: Will encode the result in this format.
+    :return:
+    """
+    punct = '[\t!"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+'
+    if allowed is not None:
+        for c in allowed:
+            punct = punct.replace(c, '')
+
+    result = []
+
+    for word in text.split():
+        word = normalize('NFKD', word)
+        for c in punct:
+            word = word.replace(c, punct_replace)
+        result.append(word)
+
+    delim = str(delim)
+    # print('sluggify results: ', result)
+    text_out = delim.join(result)
+
+    if encode is not None:
+        text_out.encode(encode, 'ignore')
+
+    if case == 'lower':
+        return text_out.lower()
+    elif case == 'upper':
+        return text_out.upper()
+    else:
+        return text_out
 
 # ===============================================================================
 # Format number as clean string
