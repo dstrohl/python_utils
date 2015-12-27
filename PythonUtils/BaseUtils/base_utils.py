@@ -3,11 +3,11 @@ __author__ = 'dstrohl'
 A collection of simple(ish) functions and classes.
 """
 
-__all__ = ['args_handler', 'GenericMeta', 'DictKey2Method', 'AdvDict', 'DBList', 'UnSet',
+__all__ = ['args_handler', 'GenericMeta', 'DictKey2Method', 'AdvDict', 'DBList', 'UnSet', '_UNSET', 'max_len',
            'TreeDict', 'TreeItem', 'make_list', 'flatten', 'unpack_class_method', 'get_between', 'get_after',
            'get_before', 'get_not_in', 'get_same', 'get_meta_attrs', 'remove_dupes', 'list_in_list', 'list_not_in_list',
            'count_unique', 'index_of_count', 'ListPlus', 'LookupManager', 'is_iterable', 'is_string', 'Error', 'Path',
-           'OrderedSet', 'swap', 'replace_between', 'format_as_decimal_string', 'MultiLevelDictManager',
+           'OrderedSet', 'swap', 'replace_between', 'format_as_decimal_string', 'MultiLevelDictManager', 'unslugify',
            'elipse_trim', 'concat', 'generate_percentages', 'convert_to_boolean', 'slugify', 'merge_dictionaries']
 
 import copy
@@ -17,6 +17,23 @@ from string import Formatter
 from decimal import Decimal
 
 
+# ===============================================================================
+# max_len
+#  ===============================================================================
+
+def max_len(*lists_in, field_key=None):
+    ret_max = 0
+    if field_key is None:
+        for l in lists_in:
+            l = make_list(l)
+            for i in l:
+                ret_max = max(ret_max, len(i))
+    else:
+        for l in lists_in:
+            l = make_list(l)
+            for i in l:
+                ret_max = max(ret_max, len(i[field_key]))
+    return ret_max
 
 # ===============================================================================
 # Error Class
@@ -56,9 +73,6 @@ class UnSet(object):
 
     def __str__(self):
         return 'Empty Value'
-
-    def __get__(self):
-        return str(self)
 
     def __eq__(self, other):
         return isinstance(other, UnSet)
@@ -1756,11 +1770,37 @@ def get_between(instring, start_key, end_key):
 
 
 # ===============================================================================
-# Format number as clean string
+# Format string
 # ===============================================================================
 
 import re
 from unicodedata import normalize
+
+def unslugify(text, case='caps', end=''):
+    """
+    Converts a string to a more clean version.
+    :param text:
+    :param case: ['caps','upper','lower','title']
+    :param end:
+    :return:
+    """
+    tmp_str = ''
+    for c in text:
+        if c.isupper():
+            tmp_str += ' '
+        tmp_str += c
+    tmp_str = tmp_str.replace('_', ' ').strip()
+    if case == 'caps':
+        tmp_str = tmp_str.capitalize()
+    elif case == 'title':
+        tmp_str = tmp_str.title()
+    elif case == 'upper':
+        tmp_str = tmp_str.upper()
+    elif case == 'lower':
+        tmp_str = tmp_str.lower()
+    tmp_str += end
+    return tmp_str
+
 
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 
@@ -1785,7 +1825,7 @@ def slugify(text, delim='_', case='lower', allowed=None, punct_replace='', encod
     :param case: ['lower'/'upper'/'no_change']
     :param allowed: a string of characters allowed that will not be replaced.  (other than normal alpha-numeric which
         are never replaced.
-    :param punct_replace: a string used to replace punction characters, if '', the characters will be deleted.
+    :param punct_replace: a string used to replace punctuation characters, if '', the characters will be deleted.
     :param encode: Will encode the result in this format.
     :return:
     """
