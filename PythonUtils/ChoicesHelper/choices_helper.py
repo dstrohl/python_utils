@@ -279,12 +279,16 @@ class ChoicesHelper(object):
         if selected is None:
             return self._choices_list
         tmp_ret = []
+        sel_found = False
         for c in self._choices_list:
             if c[0] == selected:
                 tmp_sel = selected
+                sel_found = True
             else:
                 tmp_sel = ''
             tmp_ret.append((tmp_sel, c[0], c[1]))
+        if not sel_found:
+            tmp_ret.append((selected, selected, selected))
         return tmp_ret
 
     def __iter__(self):
@@ -346,7 +350,7 @@ class ChoicesHelper(object):
             raise ChoiceInvalidChoiceError(choice, self._stored_lookup)
 
     def __repr__(self):
-        tmp_msg = 'Choice Helper: %s', self._choices
+        tmp_msg = 'Choice Helper: %r' % self.display_list
         return tmp_msg
 
     def __call__(self, stored):

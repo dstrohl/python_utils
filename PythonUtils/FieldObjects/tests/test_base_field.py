@@ -151,7 +151,7 @@ class TestConversions(unittest.TestCase):
 
 class TestChoiceMixins(unittest.TestCase):
 
-    option_1_place_tuple = ['sto_and_disp_1', 'sto_and_disp_1', 'sto_and_disp_1']
+    option_1_place_tuple = ['sto_and_disp_1', 'sto_and_disp_2', 'sto_and_disp_3']
 
     option_2_place_tuple = [('stored_1', 'display_1'),
                             ('stored_2', 'display_2'),
@@ -185,8 +185,8 @@ class TestChoiceMixins(unittest.TestCase):
 
         self.assertEqual('foo', sf.to_db('foo'))
         self.assertEqual('foo', sf.from_db('foo'))
-        self.assertEqual('sto_and_disp_1', sf.to_user('sto_and_disp_1'))
-        self.assertEqual('sto_and_disp_2', sf.from_user('sto_and_disp_2'))
+        self.assertEqual('Sto and disp 1', sf.to_user('sto_and_disp_1'))
+        self.assertEqual('sto_and_disp_2', sf.from_user('Sto and disp 2'))
 
         self.assertEqual('foo', sf.from_user('foo', raw=True))
 
@@ -212,7 +212,7 @@ class TestChoiceMixins(unittest.TestCase):
         self.assertEqual('foo', sf.to_db('foo'))
         self.assertEqual('foo', sf.from_db('foo'))
         self.assertEqual('display_1', sf.to_user('stored_1'))
-        self.assertEqual('stored_2', sf.from_user('display_1'))
+        self.assertEqual('stored_2', sf.from_user('display_2'))
 
         self.assertEqual('foo', sf.from_user('foo', raw=True))
 
@@ -249,9 +249,16 @@ class TestChoiceMixins(unittest.TestCase):
 
     def test_get_choices(self):
         sf = StringField(choices=self.option_helper, require_choice=False)
-        self.assertEqual(['display_1', 'display_2', 'display_3'], sf.get_choices())
-        self.assertEqual([('', 'display_1'), ('display_2', 'display_2'), ('', 'display_3')], sf.get_choices(value='display_2'))
-        self.assertEqual([('foo', 'foo'), ('', 'display_1'), ('', 'display_2'), ('', 'display_3')], sf.get_choices(value='foo'))
+        self.assertEqual([('stored_1', 'display_1'),
+                          ('stored_2', 'display_2'),
+                          ('stored_3', 'display_3')], sf.get_choices())
+        self.assertEqual([('', 'stored_1', 'display_1'),
+                          ('', 'stored_2', 'display_2'),
+                          ('stored_3', 'stored_3', 'display_3')], sf.get_choices(value='stored_3'))
+        self.assertEqual([('', 'stored_1', 'display_1'),
+                          ('', 'stored_2', 'display_2'),
+                          ('', 'stored_3', 'display_3'),
+                          ('foo', 'foo', 'foo')], sf.get_choices(value='foo'))
 
 
 class TestOtherMixins(unittest.TestCase):

@@ -12,7 +12,7 @@ __all__ = ['ValidateInstance', 'ValidateSubClass',
            ]
 
 import re
-from PythonUtils.ChoicesHelper import ChoicesHelper
+from   .ChoicesHelper import ChoicesHelper
 
 
 class ValidatorBase(object):

@@ -30,7 +30,7 @@ class ChoicesMixin(object):
         """
         super().__init__(*args, **kwargs)
 
-        self._require_choice = kwargs.get('choice_require_choice', self._require_choice)
+        self._require_choice = kwargs.get('require_choice', self._require_choice)
         choices = kwargs.get('choices', self.choices)
 
         if choices is not None:
