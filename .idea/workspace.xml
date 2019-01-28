@@ -1,44 +1,699 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <option name="TRACKING_ENABLED" value="true" />
+    <list default="true" id="eaea9648-e79a-44a8-9923-8b6f09ad016d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/python_utils.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/python_utils.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/Clicker/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/Clicker/clicker_counter.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/Clicker/test_clicker_counter.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_clicker_counter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/Tree/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/Tree/tree.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/tests/test_base_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_PathTests.coverage" NAME="Unittests for test_base_utils.PathTests Coverage Results" MODIFIED="1548371747438" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_in_test_base_utils_py.coverage" NAME="Unittests in test_base_utils.py Coverage Results" MODIFIED="1548450619041" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils.coverage" NAME="Unittests for test_base_utils Coverage Results" MODIFIED="1548272562078" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_TestMathList.coverage" NAME="Unittests for test_base_utils.TestMathList Coverage Results" MODIFIED="1548707549646" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_PathTests_test_create_from_path.coverage" NAME="Unittests for test_base_utils.PathTests.test_create_from_path Coverage Results" MODIFIED="1548094288989" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_TestQuartileCalc.coverage" NAME="Unittests for test_base_utils.TestQuartileCalc Coverage Results" MODIFIED="1548623558974" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_PathTests_test_new_create.coverage" NAME="Unittests for test_base_utils.PathTests.test_new_create Coverage Results" MODIFIED="1548094432818" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_MergeListTest.coverage" NAME="Unittests for test_base_utils.MergeListTest Coverage Results" MODIFIED="1548370837934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_GeneratePercTests.coverage" NAME="Unittests for test_base_utils.GeneratePercTests Coverage Results" MODIFIED="1548451968492" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_PathTests_test_addition_1.coverage" NAME="Unittests for test_base_utils.PathTests.test_addition_1 Coverage Results" MODIFIED="1548272591818" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_PathTests_test_compare.coverage" NAME="Unittests for test_base_utils.PathTests.test_compare Coverage Results" MODIFIED="1548272074691" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+  </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="NamedScopeManager">
-    <order />
+  <component name="FileEditorManager">
+    <splitter split-orientation="horizontal" split-proportion="0.5571827">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="125">
+                  <caret line="1130" lean-forward="true" selection-start-line="1130" selection-end-line="1130" />
+                  <folding>
+                    <element signature="e#24#35#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-52">
+                  <caret line="1209" column="6" selection-start-line="1209" selection-start-column="6" selection-end-line="1209" selection-end-column="6" />
+                  <folding>
+                    <element signature="e#1000#1011#0" expanded="true" />
+                    <element signature="e#18658#19025#0" />
+                    <element signature="e#18828#19131#0" />
+                    <element signature="e#19178#19472#0" />
+                    <element signature="e#19519#19816#0" />
+                    <element signature="e#19854#20361#0" />
+                    <element signature="e#22778#22885#0" />
+                    <element signature="e#22764#22816#0" />
+                    <element signature="e#21974#22234#0" />
+                    <element signature="e#22274#22318#0" />
+                    <element signature="e#20712#20761#0" />
+                    <element signature="e#20812#21255#0" />
+                    <element signature="e#21616#21816#0" />
+                    <element signature="e#23016#23787#0" />
+                    <element signature="e#21869#23819#0" />
+                    <element signature="e#23433#23580#0" />
+                    <element signature="e#23766#23958#0" />
+                    <element signature="e#23998#24118#0" />
+                    <element signature="e#24159#24198#0" />
+                    <element signature="e#24238#24358#0" />
+                    <element signature="e#24399#24438#0" />
+                    <element signature="e#24477#24503#0" />
+                    <element signature="e#24546#24569#0" />
+                    <element signature="e#24618#24668#0" />
+                    <element signature="e#24712#24737#0" />
+                    <element signature="e#24780#24827#0" />
+                    <element signature="e#24857#24906#0" />
+                    <element signature="e#27053#37355#0" />
+                    <element signature="e#34061#34293#0" />
+                    <element signature="e#34326#34348#0" />
+                    <element signature="e#34382#34416#0" />
+                    <element signature="e#34459#34576#0" />
+                    <element signature="e#34628#34764#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
-    <OptionsSetting value="true" id="Add" />
-    <OptionsSetting value="true" id="Remove" />
-    <OptionsSetting value="true" id="Checkout" />
-    <OptionsSetting value="true" id="Update" />
-    <OptionsSetting value="true" id="Status" />
-    <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
-    <ConfirmationsSetting value="0" id="Remove" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>_make_list</find>
+      <find>root_str</find>
+      <find>self._path =</find>
+      <find>self._path.</find>
+      <find>MultiLevelDictManager</find>
+      <find>swap</find>
+      <find>max_len</find>
+      <find>Unset</find>
+      <find>_UNSET</find>
+      <find>generate_per</find>
+      <find>force_to</find>
+      <find>Math</find>
+      <find>print</find>
+      <find>'</find>
+      <find>group_val_1</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>def test_</replace>
+      <replace>MathList</replace>
+      <replace>group_val_</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/PythonUtils/Clicker/clicker_counter.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/__init__.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="216" />
+    <option name="y" value="13" />
+    <option name="width" value="1594" />
+    <option name="height" value="1075" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="BaseUtils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="BaseUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="ChoicesHelper" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="ConverterHelper" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="CsvUtils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="DbDict" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="docs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="FieldObjects" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="FilterEngine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="IndentedPrint" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="IntelligentFormatter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Interpolator" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="RecordUtils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Signals" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="snippits" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="TermColor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="version" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="PyCoverageOptionsProvider">
+    <option name="myUseBundledCoveragePy" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\BaseUtils\tests" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python tests.Unittests for test_base_utils.TestMathList">
+    <configuration name="Unittests for test_base_utils.GeneratePercTests" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="python_utils" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_base_utils.GeneratePercTests&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for test_base_utils.PathTests" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="python_utils" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_base_utils.PathTests&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for test_base_utils.TestMathList" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="python_utils" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_base_utils.TestMathList&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for test_base_utils.TestQuartileCalc" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="python_utils" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_base_utils.TestQuartileCalc&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in test_base_utils.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="python_utils" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Unittests for test_base_utils.TestMathList" />
+        <item itemvalue="Python tests.Unittests for test_base_utils.TestQuartileCalc" />
+        <item itemvalue="Python tests.Unittests for test_base_utils.GeneratePercTests" />
+        <item itemvalue="Python tests.Unittests in test_base_utils.py" />
+        <item itemvalue="Python tests.Unittests for test_base_utils.PathTests" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+      <changelist id="eaea9648-e79a-44a8-9923-8b6f09ad016d" name="Default Changelist" comment="" />
+      <created>1548093513336</created>
       <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1548093513336</updated>
+      <workItem from="1548093514359" duration="17997000" />
+      <workItem from="1548266222480" duration="9368000" />
+      <workItem from="1548365443599" duration="9054000" />
+      <workItem from="1548434567309" duration="34041000" />
+      <workItem from="1548607380274" duration="40531000" />
     </task>
     <servers />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
+  <component name="TestHistory">
+    <history-entry file="Unittests_for_test_base_utils_TestMathList - 2019.01.28 at 12h 10m 53s.xml">
+      <configuration name="Unittests for test_base_utils.TestMathList" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_base_utils_TestMathList - 2019.01.28 at 12h 12m 16s.xml">
+      <configuration name="Unittests for test_base_utils.TestMathList" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_base_utils_TestMathList - 2019.01.28 at 12h 16m 23s.xml">
+      <configuration name="Unittests for test_base_utils.TestMathList" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_base_utils_TestMathList - 2019.01.28 at 12h 17m 18s.xml">
+      <configuration name="Unittests for test_base_utils.TestMathList" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_base_utils_TestMathList - 2019.01.28 at 12h 22m 40s.xml">
+      <configuration name="Unittests for test_base_utils.TestMathList" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_base_utils_TestMathList - 2019.01.28 at 12h 26m 00s.xml">
+      <configuration name="Unittests for test_base_utils.TestMathList" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_base_utils_TestMathList - 2019.01.28 at 12h 26m 20s.xml">
+      <configuration name="Unittests for test_base_utils.TestMathList" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_base_utils_TestMathList - 2019.01.28 at 12h 28m 06s.xml">
+      <configuration name="Unittests for test_base_utils.TestMathList" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_base_utils_TestMathList - 2019.01.28 at 12h 30m 26s.xml">
+      <configuration name="Unittests for test_base_utils.TestMathList" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_base_utils_TestMathList - 2019.01.28 at 12h 32m 29s.xml">
+      <configuration name="Unittests for test_base_utils.TestMathList" configurationId="tests" />
+    </history-entry>
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager />
-    <watches-manager />
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="110991000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="216" y="13" width="1594" height="1075" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6176024" visible="true" weight="0.06518905" />
+      <window_info id="Structure" order="1" sideWeight="0.38239756" side_tool="true" visible="true" weight="0.06518905" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32908705" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.30042464" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39808917" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.28237793" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Coverage" order="5" side_tool="true" weight="0.32995737" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/IndentedPrint/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/pathlib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1094">
+          <caret line="700" column="44" selection-start-line="700" selection-start-column="44" selection-end-line="700" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/RecordUtils/records.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3952" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Signals/signals.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3153" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/version/version.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4717" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Interpolator/Interpolator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-535" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/IntelligentFormatter/intel_format.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Tree/tree.py" />
+    <entry file="file://$PROJECT_DIR$/PythonUtils/DbDict/db_dict.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="363" column="18" selection-start-line="363" selection-start-column="18" selection-end-line="363" selection-end-column="18" />
+          <folding>
+            <element signature="e#447#2588#0" />
+            <element signature="e#2623#3479#0" />
+            <element signature="e#3547#6696#0" />
+            <element signature="e#6734#11213#0" />
+            <element signature="e#11242#23366#0" />
+            <element signature="e#23417#30861#0" />
+            <element signature="e#30901#32350#0" />
+            <element signature="e#32354#41475#1" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/ChoicesHelper/choices_helper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Clicker/clicker_counter.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/typing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1767">
+          <caret line="1220" selection-start-line="1220" selection-end-line="1220" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="e#72#86#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#24#92#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/meta_tests.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/init_for_class.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/decorators.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/ConfigObject.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1963" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/TermColor/termcolor.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/collections/__init__.pyi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="632">
+          <caret line="109" selection-start-line="78" selection-end-line="109" />
+          <folding>
+            <element signature="e#26#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/unittest/case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="838" selection-start-line="838" selection-end-line="838" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/teamcity/diff_tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-52">
+          <caret line="1209" column="6" selection-start-line="1209" selection-start-column="6" selection-end-line="1209" selection-end-column="6" />
+          <folding>
+            <element signature="e#1000#1011#0" expanded="true" />
+            <element signature="e#18658#19025#0" />
+            <element signature="e#18828#19131#0" />
+            <element signature="e#19178#19472#0" />
+            <element signature="e#19519#19816#0" />
+            <element signature="e#19854#20361#0" />
+            <element signature="e#22778#22885#0" />
+            <element signature="e#22764#22816#0" />
+            <element signature="e#21974#22234#0" />
+            <element signature="e#22274#22318#0" />
+            <element signature="e#20712#20761#0" />
+            <element signature="e#20812#21255#0" />
+            <element signature="e#21616#21816#0" />
+            <element signature="e#23016#23787#0" />
+            <element signature="e#21869#23819#0" />
+            <element signature="e#23433#23580#0" />
+            <element signature="e#23766#23958#0" />
+            <element signature="e#23998#24118#0" />
+            <element signature="e#24159#24198#0" />
+            <element signature="e#24238#24358#0" />
+            <element signature="e#24399#24438#0" />
+            <element signature="e#24477#24503#0" />
+            <element signature="e#24546#24569#0" />
+            <element signature="e#24618#24668#0" />
+            <element signature="e#24712#24737#0" />
+            <element signature="e#24780#24827#0" />
+            <element signature="e#24857#24906#0" />
+            <element signature="e#27053#37355#0" />
+            <element signature="e#34061#34293#0" />
+            <element signature="e#34326#34348#0" />
+            <element signature="e#34382#34416#0" />
+            <element signature="e#34459#34576#0" />
+            <element signature="e#34628#34764#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="1130" lean-forward="true" selection-start-line="1130" selection-end-line="1130" />
+          <folding>
+            <element signature="e#24#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>
