@@ -1033,7 +1033,144 @@ THIRTY_THREE_PERC = THIRTY_THREE * 100
 THREE_ONES = [1, 1, 1]
 
 class MathListRecordsTest(TestCase):
-    
+
+
+    def run_records_tests(self):
+
+        if self.load_on_init:
+            mlr = MathListRecords(self.data_array, value_fields=self.value_fields, group_fields=self.group_fields, **self.mlr_kwargs)
+
+        else:
+            mlr = MathListRecords(value_fields=self.value_fields, group_fields=self.group_fields, **self.mlr_kwargs)
+
+            with self.subTest('pre_test_len'):
+                self.assertEqual(0, len(mlr))
+
+            with self.subTest('pre_test_bool'):
+                self.assertFalse(mlr)
+
+            if self.add_recs_as_list:
+                mlr.add_rec_list(self.data_array)
+            else:
+                for rec in self.data_array:
+                    mlr.add_rec(rec)
+
+        with self.subTest('test_len'):
+            self.assertEqual(self.exp_len, len(mlr))
+
+        with self.subTest('test_bool'):
+            self.assertTrue(mlr)
+
+        for test in self.my_tests:
+            with self.subTest(test['name']):
+
+                if test['command'] == '__getitem__':
+                    if test['raises'] is not None:
+                        with self.assertRaises(test['raises']):
+                            tmp_ret = mlr[test['args'][0]]
+                    else:
+                        tmp_ret = mlr[test['args'][0]]
+                        self.assertEqual(test['expected'], tmp_ret)
+
+                else:
+                    test_command = getattr(mlr, test['command'])
+                    if test['raises'] is not None:
+                        with self.assertRaises(test['raises']):
+                            test_command(*test['args'], **test['kwargs'])
+                    else:
+                        tmp_ret = test_command(*test['args'], **test['kwargs'])
+                        self.assertEqual(test['expected'], tmp_ret)
+
+
+
+    def setUp(self):
+        self.data_array = []
+        self.value_fields = None
+        self.group_fields = None
+        self.mlr_kwargs = {}
+        self.exp_len = None
+        self.load_on_init = True
+        self.add_recs_as_list = False
+        """
+                      
+        get_calc_list = {
+            'name': 'get_calc_list',
+             'command': 'get_calc_list',
+             'kwargs': {},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+            
+        get_calc_list_flat = {
+            'name': 'get_calc_list_flat',
+             'command': 'get_calc_list',
+             'kwargs': {'flat': True},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_record_list_as_list = {
+            'name': 'get_record_list_as_list',
+             'command': 'get_record_list',
+             'kwargs': {'ret_as': 'list'},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_record_list_as_dict = {
+            'name': 'get_record_list_as_dict',
+             'command': 'get_record_list',
+             'kwargs': {'ret_as': 'dict'},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_record_list_as_flat_list = {
+            'name': 'get_record_list_as_flat_list',
+             'command': 'get_record_list',
+             'kwargs': {'ret_as': 'list', 'flat': True},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_aggregate = {
+            'name': 'get_aggregate',
+             'command': 'get_aggregate',
+             'kwargs': {},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_item = (
+            'name': '__getitem__',
+             'command': '__getitem__',
+             'kwargs': {},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        
+        
+        self.my_tests = [
+            get_calc_list,
+            get_calc_list_flat,
+            get_record_list_as_list,
+            get_record_list_as_dict,
+            get_record_list_as_flat_list,
+            get_aggregate,
+            get_item,
+        ]
+
+        """
+        self.my_tests = []
+
     def test_records_no_fields(self):
         data_array = [
             (1, 60, 40),
@@ -1042,14 +1179,184 @@ class MathListRecordsTest(TestCase):
             (4, 90, 70),
         ]
 
-        # running_sum
-        exp_ret = [1, 3, 6, 10]
-        
-        mlr = MathListRecords()
-        mlr.add(data_array)
-        tmp_act = mlr.get_record_list('0__running_sum')
-        self.assertListEqual(exp_ret, tmp_act)
-        
+        output_items = '0__running_sum'
+
+        self.data_array = [
+            (1, 60, 40),
+            (2, 70, 50),
+            (3, 80, 60),
+            (4, 90, 70),
+        ]
+
+        self.value_fields = None
+        self.group_fields = None
+        self.mlr_kwargs = {}
+        self.exp_len = 4
+        self.load_on_init = False
+        self.add_recs_as_list = False
+
+        get_calc_list = {
+            'name': 'get_calc_list',
+             'command': 'get_calc_list',
+             'kwargs': {},
+             'args': [output_items],
+             'raises': None,
+             'expected': [1, 3, 6, 10],
+             },
+
+        get_calc_list_flat = {
+            'name': 'get_calc_list_flat',
+             'command': 'get_calc_list',
+             'kwargs': {'flat': True},
+             'args': [output_items],
+             'raises': None,
+             'expected': [1, 3, 6, 10],
+             },
+
+        get_record_list_as_list = {
+            'name': 'get_record_list_as_list',
+             'command': 'get_record_list',
+             'kwargs': {'ret_as': 'list'},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_record_list_as_dict = {
+            'name': 'get_record_list_as_dict',
+             'command': 'get_record_list',
+             'kwargs': {'ret_as': 'dict'},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_record_list_as_flat_list = {
+            'name': 'get_record_list_as_flat_list',
+             'command': 'get_record_list',
+             'kwargs': {'ret_as': 'list', 'flat': True},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_aggregate = {
+            'name': 'get_aggregate',
+             'command': 'get_aggregate',
+             'kwargs': {},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_item = {
+            'name': '__getitem__',
+             'command': '__getitem__',
+             'kwargs': {},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        self.my_tests = [
+            get_calc_list,
+            get_calc_list_flat,
+            get_record_list_as_list,
+            get_record_list_as_dict,
+            get_record_list_as_flat_list,
+            get_aggregate,
+            get_item,
+        ]
+
+
+    def dummy_test_method(self):
+        self.data_array = [
+            (1, 60, 40),
+            (2, 70, 50),
+            (3, 80, 60),
+            (4, 90, 70),
+        ]
+        self.value_fields = None
+        self.group_fields = None
+        self.mlr_kwargs = {}
+        self.exp_len = 4
+        self.load_on_init = True
+        self.add_recs_as_list = False
+
+        get_calc_list = {
+            'name': 'get_calc_list',
+             'command': 'get_calc_list',
+             'kwargs': {},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_calc_list_flat = {
+            'name': 'get_calc_list_flat',
+             'command': 'get_calc_list',
+             'kwargs': {'flat': True},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_record_list_as_list = {
+            'name': 'get_record_list_as_list',
+             'command': 'get_record_list',
+             'kwargs': {'ret_as': 'list'},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_record_list_as_dict = {
+            'name': 'get_record_list_as_dict',
+             'command': 'get_record_list',
+             'kwargs': {'ret_as': 'dict'},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_record_list_as_flat_list = {
+            'name': 'get_record_list_as_flat_list',
+             'command': 'get_record_list',
+             'kwargs': {'ret_as': 'list', 'flat': True},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_aggregate = {
+            'name': 'get_aggregate',
+             'command': 'get_aggregate',
+             'kwargs': {},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        get_item = {
+            'name': '__getitem__',
+             'command': '__getitem__',
+             'kwargs': {},
+             'args': [],
+             'raises': None,
+             'expected': {},
+             },
+
+        self.my_tests = [
+            get_calc_list,
+            get_calc_list_flat,
+            get_record_list_as_list,
+            get_record_list_as_dict,
+            get_record_list_as_flat_list,
+            get_aggregate,
+            get_item,
+        ]
+
+
     def test_records_index_fields(self):
         data_array = [
             (1, 6, 4),
@@ -1058,7 +1365,7 @@ class MathListRecordsTest(TestCase):
             (4, 9, 7),
         ]
         
-        mlr = MathListRecords(data_array)
+        mlr = MathListRecords(data_array, value_fields=[0, 1, 2])
 
         output_items = [
             '0__running_sum',
@@ -1098,7 +1405,7 @@ class MathListRecordsTest(TestCase):
             {'v1': 4, 'v2': 9, 'v3': 7},
         ]
 
-        mlr = MathListRecords(data_array)
+        mlr = MathListRecords(data_array, value_fields=['v1', 'v2', 'v3'])
 
         output_items = [
             'v1__value',
@@ -1255,7 +1562,7 @@ class MathListRecordsTest(TestCase):
 
         with self.subTest('exp_ret_list'):
             tmp_act = mlr.get_calc_list(output_items)
-            self.assertListEqual(exp_ret_list, tmp_act)
+            self.assertEqual(exp_ret_list, tmp_act)
 
         with self.assertRaises(AssertionError):
             tmp_act = mlr.get_calc_list(output_items, flat=True)
@@ -1296,7 +1603,7 @@ class MathListRecordsTest(TestCase):
 
         ]
 
-        mlr = MathListRecords(data_array, value_fields=['v1', 'v2', 'v3'], group_fields='group_val_1')
+        mlr = MathListRecords(data_array, value_fields=['v1', 'v2', 'v3'], group_fields=['group_val_2', 'group_val_1'])
 
         output_items = [
             'v1__value',

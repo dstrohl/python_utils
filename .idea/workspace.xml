@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eaea9648-e79a-44a8-9923-8b6f09ad016d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/python_utils.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/python_utils.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/Clicker/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/Clicker/clicker_counter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/Clicker/test_clicker_counter.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_clicker_counter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/Tree/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/Tree/tree.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/tests/test_base_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,14 +28,14 @@
     <option name="PATCH_PATH" value="" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5571827">
+    <splitter split-orientation="horizontal" split-proportion="0.47452897">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="125">
-                  <caret line="1130" lean-forward="true" selection-start-line="1130" selection-end-line="1130" />
+                <state relative-caret-position="-215">
+                  <caret line="1568" lean-forward="true" selection-start-line="1568" selection-end-line="1568" />
                   <folding>
                     <element signature="e#24#35#0" expanded="true" />
                   </folding>
@@ -60,47 +46,24 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="520">
+                  <caret line="1255" column="22" selection-start-line="1255" selection-start-column="22" selection-end-line="1255" selection-end-column="22" />
+                  <folding>
+                    <element signature="e#24#35#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-52">
-                  <caret line="1209" column="6" selection-start-line="1209" selection-start-column="6" selection-end-line="1209" selection-end-column="6" />
-                  <folding>
-                    <element signature="e#1000#1011#0" expanded="true" />
-                    <element signature="e#18658#19025#0" />
-                    <element signature="e#18828#19131#0" />
-                    <element signature="e#19178#19472#0" />
-                    <element signature="e#19519#19816#0" />
-                    <element signature="e#19854#20361#0" />
-                    <element signature="e#22778#22885#0" />
-                    <element signature="e#22764#22816#0" />
-                    <element signature="e#21974#22234#0" />
-                    <element signature="e#22274#22318#0" />
-                    <element signature="e#20712#20761#0" />
-                    <element signature="e#20812#21255#0" />
-                    <element signature="e#21616#21816#0" />
-                    <element signature="e#23016#23787#0" />
-                    <element signature="e#21869#23819#0" />
-                    <element signature="e#23433#23580#0" />
-                    <element signature="e#23766#23958#0" />
-                    <element signature="e#23998#24118#0" />
-                    <element signature="e#24159#24198#0" />
-                    <element signature="e#24238#24358#0" />
-                    <element signature="e#24399#24438#0" />
-                    <element signature="e#24477#24503#0" />
-                    <element signature="e#24546#24569#0" />
-                    <element signature="e#24618#24668#0" />
-                    <element signature="e#24712#24737#0" />
-                    <element signature="e#24780#24827#0" />
-                    <element signature="e#24857#24906#0" />
-                    <element signature="e#27053#37355#0" />
-                    <element signature="e#34061#34293#0" />
-                    <element signature="e#34326#34348#0" />
-                    <element signature="e#34382#34416#0" />
-                    <element signature="e#34459#34576#0" />
-                    <element signature="e#34628#34764#0" />
-                  </folding>
+                <state relative-caret-position="272">
+                  <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
                 </state>
               </provider>
             </entry>
@@ -133,11 +96,14 @@
       <find>print</find>
       <find>'</find>
       <find>group_val_1</find>
+      <find>perc_val</find>
+      <find>'group_val_1</find>
     </findStrings>
     <replaceStrings>
       <replace>def test_</replace>
       <replace>MathList</replace>
       <replace>group_val_</replace>
+      <replace>v3</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -160,8 +126,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="216" />
-    <option name="y" value="13" />
+    <option name="x" value="232" />
+    <option name="y" value="14" />
     <option name="width" value="1594" />
     <option name="height" value="1075" />
   </component>
@@ -171,6 +137,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -296,7 +263,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -424,8 +390,24 @@
       <workItem from="1548266222480" duration="9368000" />
       <workItem from="1548365443599" duration="9054000" />
       <workItem from="1548434567309" duration="34041000" />
-      <workItem from="1548607380274" duration="40531000" />
+      <workItem from="1548607380274" duration="44551000" />
+      <workItem from="1548792533470" duration="5417000" />
     </task>
+    <task id="LOCAL-00001" summary="re-organized and cleaned up some items.&#10;Pushed more into the base module&#10;created MathList and tests">
+      <created>1548719058449</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1548719058449</updated>
+    </task>
+    <task id="LOCAL-00002" summary="created tests for mathlistrecord">
+      <created>1548722990658</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1548722990658</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -461,18 +443,18 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="110991000" />
+    <option name="totallyTimeSpent" value="120428000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="216" y="13" width="1594" height="1075" extended-state="0" />
+    <frame x="232" y="14" width="1594" height="1075" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6176024" visible="true" weight="0.06518905" />
-      <window_info id="Structure" order="1" sideWeight="0.38239756" side_tool="true" visible="true" weight="0.06518905" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6178344" visible="true" weight="0.06584094" />
+      <window_info id="Structure" order="1" sideWeight="0.3821656" side_tool="true" visible="true" weight="0.06584094" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32908705" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.30042464" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.30042464" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39808917" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -493,6 +475,11 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="re-organized and cleaned up some items.&#10;Pushed more into the base module&#10;created MathList and tests" />
+    <MESSAGE value="created tests for mathlistrecord" />
+    <option name="LAST_COMMIT_MESSAGE" value="created tests for mathlistrecord" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/requirements.txt">
@@ -645,50 +632,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-52">
-          <caret line="1209" column="6" selection-start-line="1209" selection-start-column="6" selection-end-line="1209" selection-end-column="6" />
-          <folding>
-            <element signature="e#1000#1011#0" expanded="true" />
-            <element signature="e#18658#19025#0" />
-            <element signature="e#18828#19131#0" />
-            <element signature="e#19178#19472#0" />
-            <element signature="e#19519#19816#0" />
-            <element signature="e#19854#20361#0" />
-            <element signature="e#22778#22885#0" />
-            <element signature="e#22764#22816#0" />
-            <element signature="e#21974#22234#0" />
-            <element signature="e#22274#22318#0" />
-            <element signature="e#20712#20761#0" />
-            <element signature="e#20812#21255#0" />
-            <element signature="e#21616#21816#0" />
-            <element signature="e#23016#23787#0" />
-            <element signature="e#21869#23819#0" />
-            <element signature="e#23433#23580#0" />
-            <element signature="e#23766#23958#0" />
-            <element signature="e#23998#24118#0" />
-            <element signature="e#24159#24198#0" />
-            <element signature="e#24238#24358#0" />
-            <element signature="e#24399#24438#0" />
-            <element signature="e#24477#24503#0" />
-            <element signature="e#24546#24569#0" />
-            <element signature="e#24618#24668#0" />
-            <element signature="e#24712#24737#0" />
-            <element signature="e#24780#24827#0" />
-            <element signature="e#24857#24906#0" />
-            <element signature="e#27053#37355#0" />
-            <element signature="e#34061#34293#0" />
-            <element signature="e#34326#34348#0" />
-            <element signature="e#34382#34416#0" />
-            <element signature="e#34459#34576#0" />
-            <element signature="e#34628#34764#0" />
-          </folding>
+        <state relative-caret-position="272">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="1130" lean-forward="true" selection-start-line="1130" selection-end-line="1130" />
+        <state relative-caret-position="520">
+          <caret line="1255" column="22" selection-start-line="1255" selection-start-column="22" selection-end-line="1255" selection-end-column="22" />
           <folding>
             <element signature="e#24#35#0" expanded="true" />
           </folding>
