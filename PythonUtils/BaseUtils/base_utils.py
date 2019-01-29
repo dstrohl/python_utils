@@ -10,7 +10,8 @@ __all__ = ['args_handler', 'GenericMeta', 'DictKey2Method', 'AdvDict', 'DBList',
            'OrderedSet', 'swap', 'replace_between', 'format_as_decimal_string', 'MultiLevelDictManager', 'unslugify',
            'elipse_trim', 'concat', 'generate_percentages', 'convert_to_boolean', 'slugify', 'merge_dictionaries',
            'merge_list', 'Clicker', 'NextItem', 'generate_list_perc', 'quartiles', 'quarter_calc', 'MathList', 'simple_kwarg_handler',
-           'SimpleDataClass', 'BasicTreeNode', 'DictOfDict', 'DictOfList', 'PERC_RET', 'format_percentage']
+           'SimpleDataClass', 'BasicTreeNode', 'DictOfDict', 'DictOfList', 'PERC_RET', 'format_percentage', 'MathListRecords',
+           'MATHLIST_OUTLIERS', 'ClickItem']
 
 import copy
 import sys

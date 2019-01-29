@@ -1045,6 +1045,11 @@ class MathListRecordsTest(TestCase):
         # running_sum
         exp_ret = [1, 3, 6, 10]
         
+        mlr = MathListRecords()
+        mlr.add(data_array)
+        tmp_act = mlr.get_record_list('0__running_sum')
+        self.assertListEqual(exp_ret, tmp_act)
+        
     def test_records_index_fields(self):
         data_array = [
             (1, 6, 4),
@@ -1053,10 +1058,14 @@ class MathListRecordsTest(TestCase):
             (4, 9, 7),
         ]
         
-        # 0 = running sum (index 0)
-        # 1 = running sum (index 1)
-        # 2 = perc_of_total (index 2
-        # 3 = perc_of_total (index 0)
+        mlr = MathListRecords(data_array)
+
+        output_items = [
+            '0__running_sum',
+            '1__running_sum',
+            '2__perc_ot_total',
+            '0__perc_of_total',
+        ]
 
         exp_ret_rec = [
             (1, 6, 0, 10),
@@ -1064,26 +1073,40 @@ class MathListRecordsTest(TestCase):
             (6, 21, 0, 60),
             (10, 30, 0, 100),
         ]
+        
+        with self.subTest('exp_ret_rec'):
+            tmp_act = mlr.get_record_list(output_items)
+            self.assertListEqual(exp_ret_rec, tmp_act)
+
         exp_ret_list = {
             '0__running_sum': [1, 2, 6, 10],
             '1__running_sum': [6, 13, 21, 30],
             '2__perc_of_total': [0, 0, 0, 0],
             '0__perc_of_total': [10, 30, 60, 100],
         }
+        
+        with self.subTest('exp_ret_list'):
+            tmp_act = mlr.get_calc_list(output_items)
+            self.assertListEqual(exp_ret_list, tmp_act)
+
 
     def test_records_no_groups_muly_value(self):
-        data_array_2 = [
+        data_array = [
             {'v1': 1, 'v2': 6, 'v3': 4},
             {'v1': 2, 'v2': 7, 'v3': 5},
             {'v1': 3, 'v2': 8, 'v3': 6},
             {'v1': 4, 'v2': 9, 'v3': 7},
         ]
 
-        # 0 = v1__value
-        # 0 = v1__running_sum
-        # 1 = v2__running_sum
-        # 2 = v3__perc_of_total
-        # 3 = v4__perc_of_total
+        mlr = MathListRecords(data_array)
+
+        output_items = [
+            'v1__value',
+            'v1__running_sum',
+            'v3__running_sum',
+            'v3__perc_ot_total',
+            'v1__perc_of_total',
+        ]
 
         exp_ret_rec_list = [
             (1, 1, 6, 0, 10),
@@ -1092,12 +1115,20 @@ class MathListRecordsTest(TestCase):
             (4, 10, 30, 0, 100),
         ]
 
+        with self.subTest('exp_ret_rec_list'):
+            tmp_act = mlr.get_record_list(output_items)
+            self.assertListEqual(exp_ret_rec_list, tmp_act)
+
         exp_ret_rec_dict = [
             {'v1__value': 1, 'v1__running_sum': 1, 'v2__running_sum': 6, 'v3__perc_of_total': 0, 'v1__perc_of_total': 10},
             {'v1__value': 2, 'v1__running_sum': 3, 'v2__running_sum': 13, 'v3__perc_of_total': 0, 'v1__perc_of_total': 30},
             {'v1__value': 3, 'v1__running_sum': 6, 'v2__running_sum': 21, 'v3__perc_of_total': 0, 'v1__perc_of_total': 60},
             {'v1__value': 4, 'v1__running_sum': 10, 'v2__running_sum': 30, 'v3__perc_of_total': 0, 'v1__perc_of_total': 100},
         ]
+
+        with self.subTest('exp_ret_rec_dict'):
+            tmp_act = mlr.get_record_list(output_items, ret_as='dict')
+            self.assertListEqual(exp_ret_rec_dict, tmp_act)
 
         exp_ret_list = {
             'v1__value': [1, 2, 3, 4],
@@ -1107,34 +1138,55 @@ class MathListRecordsTest(TestCase):
             'v1__perc_of_total': [10, 30, 60, 100],
         }
 
+        with self.subTest('exp_ret_list'):
+            tmp_act = mlr.get_calc_list(output_items)
+            self.assertListEqual(exp_ret_list, tmp_act)
 
 
     def test_records_no_groups_single_values(self):
-        data_array_2 = [
+        data_array = [
             {'v1': 1, 'v2': 6, 'v3': 4},
             {'v1': 2, 'v2': 7, 'v3': 5},
             {'v1': 3, 'v2': 8, 'v3': 6},
             {'v1': 4, 'v2': 9, 'v3': 7},
         ]
+        mlr = MathListRecords(data_array, value_fields=['v1', 'v2', 'v3'])
 
-    # 1 = v1__running_sum
+        output_items = 'v1__running_sum'
 
-    exp_ret_rec_list_flat = [1, 3, 6, 10]
-    exp_ret_rec_list = [[1], [3], [6], [10]]
+        exp_ret_rec_list_flat = [1, 3, 6, 10]
 
-    exp_ret_rec_dict = [
-        {'v1__running_sum': 1},
-        {'v1__running_sum': 3},
-        {'v1__running_sum': 6},
-        {'v1__running_sum': 10}
-    ]
+        with self.subTest('exp_ret_rec_list_flat'):
+            tmp_act = mlr.get_record_list(output_items, flat=True)
+            self.assertListEqual(exp_ret_rec_list_flat, tmp_act)
 
-    exp_ret_list = {
-        'v1__running_sum': [1, 2, 6, 10],
-    }
+        exp_ret_rec_list = [[1], [3], [6], [10]]
+
+        with self.subTest('exp_ret_rec_list'):
+            tmp_act = mlr.get_record_list(output_items)
+            self.assertListEqual(exp_ret_rec_list, tmp_act)
+
+        exp_ret_rec_dict = [
+            {'v1__running_sum': 1},
+            {'v1__running_sum': 3},
+            {'v1__running_sum': 6},
+            {'v1__running_sum': 10}
+        ]
+        
+        with self.subTest('exp_ret_rec_dict'):
+            tmp_act = mlr.get_record_list(output_items, ret_as='dict')
+            self.assertListEqual(exp_ret_rec_dict, tmp_act)
+
+        exp_ret_list = {
+            'v1__running_sum': [1, 2, 6, 10],
+        }
+
+        with self.subTest('exp_ret_list'):
+            tmp_act = mlr.get_calc_list(output_items)
+            self.assertListEqual(exp_ret_list, tmp_act)
 
     def test_records_one_group(self):
-        data_array_2 = [
+        data_array = [
             {'group_val_1': 'one', 'v1': 1, 'v2': 6, 'v3': 4},
             {'group_val_1': 'one', 'v1': 2, 'v2': 7, 'v3': 5},
             {'group_val_1': 'one', 'v1': 3, 'v2': 8, 'v3': 6},
@@ -1151,8 +1203,66 @@ class MathListRecordsTest(TestCase):
             {'group_val_1': 'three', 'v1': 4, 'v2': 9, 'v3': 7},
         ]
 
+        mlr = MathListRecords(data_array, value_fields=['v1', 'v2', 'v3'], group_fields='group_val_1')
+
+        output_items = [
+            'v1__value',
+            'v1__running_sum',
+            'v3__running_sum',
+            'v3__perc_ot_total',
+            'v1__perc_of_total',
+        ]
+
+        with self.assertRaises(AttributeError):        
+            tmp_act = mlr.get_record_list(output_items, ret_as='list')
+
+        exp_ret_rec_dict = [
+            {'group_val_1': 'one', 'v1__value': 1, 'v1__running_sum': 1, 'v2__running_sum': 6, 'v3__perc_of_total': 0, 'v1__perc_of_total': 10},
+            {'group_val_1': 'one', 'v1__value': 2, 'v1__running_sum': 3, 'v2__running_sum': 13, 'v3__perc_of_total': 0, 'v1__perc_of_total': 30},
+            {'group_val_1': 'one', 'v1__value': 3, 'v1__running_sum': 6, 'v2__running_sum': 21, 'v3__perc_of_total': 0, 'v1__perc_of_total': 60},
+            {'group_val_1': 'one', 'v1__value': 4, 'v1__running_sum': 10, 'v2__running_sum': 30, 'v3__perc_of_total': 0, 'v1__perc_of_total': 100},
+
+            {'group_val_1': 'two', 'v1__value': 1, 'v1__running_sum': 1, 'v2__running_sum': 6, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 10},
+            {'group_val_1': 'two', 'v1__value': 2, 'v1__running_sum': 3, 'v2__running_sum': 13, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 30},
+            {'group_val_1': 'two', 'v1__value': 3, 'v1__running_sum': 6, 'v2__running_sum': 21, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 60},
+            {'group_val_1': 'two', 'v1__value': 4, 'v1__running_sum': 10, 'v2__running_sum': 30, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 100},
+
+            {'group_val_1': 'three', 'v1__value': 1, 'v1__running_sum': 1, 'v2__running_sum': 6, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 10},
+            {'group_val_1': 'three', 'v1__value': 2, 'v1__running_sum': 3, 'v2__running_sum': 13, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 30},
+            {'group_val_1': 'three', 'v1__value': 3, 'v1__running_sum': 6, 'v2__running_sum': 21, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 60},
+            {'group_val_1': 'three', 'v1__value': 4, 'v1__running_sum': 10, 'v2__running_sum': 30, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 100},
+        ]
+
+        with self.subTest('exp_ret_rec_dict'):
+            tmp_act = mlr.get_record_list(output_items, ret_as='dict')
+            self.assertListEqual(exp_ret_rec_dict, tmp_act)
+
+        exp_ret_list = {
+            'v1__value': {'one': [1, 2, 3, 4], 'two': [1, 2, 3, 4], 'three': [1, 2, 3, 4]},
+            'v1__running_sum': {'one': [1, 3, 6, 10], 'two': [1, 3, 6, 10], 'three': [1, 3, 6, 10]},
+            'v2__running_sum': {'one': [6, 13, 21, 30], 'two': [6, 13, 21, 30], 'three': [6, 13, 21, 30]},
+            'v3__perc_of_total': {'one': [0, 0, 0, 0], 'two': [0, 0, 0, 0], 'three': [0, 0, 0, 0]},
+            'v1__perc_of_total': {'one': [10, 30, 60, 100], 'two': [10, 30, 60, 100], 'three': [10, 30, 60, 100]},
+        }
+
+        with self.subTest('exp_ret_list'):
+            tmp_act = mlr.get_calc_list(output_items)
+            self.assertListEqual(exp_ret_list, tmp_act)
+
+        with self.assertRaises(AssertionError):
+            tmp_act = mlr.get_calc_list(output_items, flat=True)
+
+
     def test_records_mult_gorups(self):
-        data_array_2 = [
+        data_array = [
             {'group_val_1': 'one', 'group_val_2': '1', 'v1': 1, 'v2': 6, 'v3': 4},
             {'group_val_1': 'one', 'group_val_2': '1', 'v1': 2, 'v2': 7, 'v3': 5},
             {'group_val_1': 'one', 'group_val_2': '1', 'v1': 3, 'v2': 8, 'v3': 6},
@@ -1186,6 +1296,98 @@ class MathListRecordsTest(TestCase):
 
         ]
 
+        mlr = MathListRecords(data_array, value_fields=['v1', 'v2', 'v3'], group_fields='group_val_1')
+
+        output_items = [
+            'v1__value',
+            'v1__running_sum',
+            'v3__running_sum',
+            'v3__perc_ot_total',
+            'v1__perc_of_total',
+        ]
+
+        with self.assertRaises(AttributeError):        
+            tmp_act = mlr.get_record_list(output_items, ret_as='list')
+
+        exp_ret_rec_dict = [
+            {'group_val_2': '1', 'group_val_1': 'one', 'v1__value': 1, 'v1__running_sum': 1, 'v2__running_sum': 6, 'v3__perc_of_total': 0, 'v1__perc_of_total': 10},
+            {'group_val_2': '1', 'group_val_1': 'one', 'v1__value': 2, 'v1__running_sum': 3, 'v2__running_sum': 13, 'v3__perc_of_total': 0, 'v1__perc_of_total': 30},
+            {'group_val_2': '1', 'group_val_1': 'one', 'v1__value': 3, 'v1__running_sum': 6, 'v2__running_sum': 21, 'v3__perc_of_total': 0, 'v1__perc_of_total': 60},
+            {'group_val_2': '1', 'group_val_1': 'one', 'v1__value': 4, 'v1__running_sum': 10, 'v2__running_sum': 30, 'v3__perc_of_total': 0, 'v1__perc_of_total': 100},
+
+            {'group_val_2': '1', 'group_val_1': 'two', 'v1__value': 1, 'v1__running_sum': 1, 'v2__running_sum': 6, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 10},
+            {'group_val_2': '1', 'group_val_1': 'two', 'v1__value': 2, 'v1__running_sum': 3, 'v2__running_sum': 13, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 30},
+            {'group_val_2': '1', 'group_val_1': 'two', 'v1__value': 3, 'v1__running_sum': 6, 'v2__running_sum': 21, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 60},
+            {'group_val_2': '1', 'group_val_1': 'two', 'v1__value': 4, 'v1__running_sum': 10, 'v2__running_sum': 30, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 100},
+
+            {'group_val_2': '1', 'group_val_1': 'three', 'v1__value': 1, 'v1__running_sum': 1, 'v2__running_sum': 6, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 10},
+            {'group_val_2': '1', 'group_val_1': 'three', 'v1__value': 2, 'v1__running_sum': 3, 'v2__running_sum': 13, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 30},
+            {'group_val_2': '1', 'group_val_1': 'three', 'v1__value': 3, 'v1__running_sum': 6, 'v2__running_sum': 21, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 60},
+            {'group_val_2': '1', 'group_val_1': 'three', 'v1__value': 4, 'v1__running_sum': 10, 'v2__running_sum': 30, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 100},
+
+            {'group_val_2': '2', 'group_val_1': 'one', 'v1__value': 1, 'v1__running_sum': 1, 'v2__running_sum': 6, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 10},
+            {'group_val_2': '2', 'group_val_1': 'one', 'v1__value': 2, 'v1__running_sum': 3, 'v2__running_sum': 13, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 30},
+            {'group_val_2': '2', 'group_val_1': 'one', 'v1__value': 3, 'v1__running_sum': 6, 'v2__running_sum': 21, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 60},
+            {'group_val_2': '2', 'group_val_1': 'one', 'v1__value': 4, 'v1__running_sum': 10, 'v2__running_sum': 30, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 100},
+
+            {'group_val_2': '2', 'group_val_1': 'two', 'v1__value': 1, 'v1__running_sum': 1, 'v2__running_sum': 6, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 10},
+            {'group_val_2': '2', 'group_val_1': 'two', 'v1__value': 2, 'v1__running_sum': 3, 'v2__running_sum': 13, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 30},
+            {'group_val_2': '2', 'group_val_1': 'two', 'v1__value': 3, 'v1__running_sum': 6, 'v2__running_sum': 21, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 60},
+            {'group_val_2': '2', 'group_val_1': 'two', 'v1__value': 4, 'v1__running_sum': 10, 'v2__running_sum': 30, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 100},
+
+            {'group_val_2': '2', 'group_val_1': 'three', 'v1__value': 1, 'v1__running_sum': 1, 'v2__running_sum': 6, 'v3__perc_of_total': 0,
+             'v1__perc_of_total': 10},
+            {'group_val_2': '2', 'group_val_1': 'three', 'v1__value': 2, 'v1__running_sum': 3, 'v2__running_sum': 13,
+             'v3__perc_of_total': 0,
+             'v1__perc_of_total': 30},
+            {'group_val_2': '2', 'group_val_1': 'three', 'v1__value': 3, 'v1__running_sum': 6, 'v2__running_sum': 21,
+             'v3__perc_of_total': 0,
+             'v1__perc_of_total': 60},
+            {'group_val_2': '2', 'group_val_1': 'three', 'v1__value': 4, 'v1__running_sum': 10, 'v2__running_sum': 30,
+             'v3__perc_of_total': 0,
+             'v1__perc_of_total': 100},
+
+        ]
+
+        with self.subTest('exp_ret_rec_dict'):
+            tmp_act = mlr.get_record_list(output_items, ret_as='dict')
+            self.assertListEqual(exp_ret_rec_dict, tmp_act)
+
+        exp_ret_list = {
+            'v1__value': {
+                'one': [1, 2, 3, 4], 'two': [1, 2, 3, 4], 'three': [1, 2, 3, 4]},
+            'v1__running_sum': {
+                'one': [1, 3, 6, 10], 'two': [1, 3, 6, 10], 'three': [1, 3, 6, 10]},
+            'v2__running_sum': {
+                'one': [6, 13, 21, 30], 'two': [6, 13, 21, 30], 'three': [6, 13, 21, 30]},
+            'v3__perc_of_total': {
+                'one': [0, 0, 0, 0], 'two': [0, 0, 0, 0], 'three': [0, 0, 0, 0]},
+            'v1__perc_of_total': {
+                'one': [10, 30, 60, 100], 'two': [10, 30, 60, 100], 'three': [10, 30, 60, 100]},
+        }
+
+        with self.subTest('exp_ret_list'):
+            tmp_act = mlr.get_calc_list(output_items)
+            self.assertListEqual(exp_ret_list, tmp_act)
+
+        with self.assertRaises(AssertionError):
+            tmp_act = mlr.get_calc_list(output_items, flat=True)
 
 
 class GeneratePercTests(TestCase):
