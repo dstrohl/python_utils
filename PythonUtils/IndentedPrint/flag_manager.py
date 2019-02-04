@@ -1,7 +1,7 @@
 __author__ = 'dstrohl'
 
 
-from PythonUtils.BaseUtils import list_in_list
+from PythonUtils.pyutils.base_utils import list_in_list
 
 # ===============================================================================
 # Flag Manager

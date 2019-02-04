@@ -14,8 +14,8 @@ import logging
 
 #from PythonUtils import colored
 #from PythonUtils.IndentedPrint.color_wrap import ColorWrap
-from PythonUtils.BaseUtils import get_before, get_after, get_between
-from PythonUtils.BaseUtils import swap, list_in_list, list_not_in_list, Clicker
+from PythonUtils.pyutils.base_utils import get_before, get_after, get_between
+from PythonUtils.pyutils.base_utils import swap, list_in_list, list_not_in_list, Clicker
 from PythonUtils.IndentedPrint.flag_manager import Flagger
 from os import path
 # import copy

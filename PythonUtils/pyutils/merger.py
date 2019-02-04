@@ -1,5 +1,28 @@
+#!/usr/bin/env python
+
+"""merger.py:
+
+This is a utility that allows complex merging of objects.
+
+By default it is set to merge lists and dicts, bit it can be modified to handle any object type you wish.
+
+To extend this to other objects, you must sub-class the BaseMergeHandler to handle the merge processing.
 
 
+
+
+"""
+
+__author__ = "Dan Strohl"
+__copyright__ = "Copyright 2019, Dan Strohl"
+__credits__ = ['Dan Strohl']
+__license__ = ""
+__version__ = "0.9.1"
+__maintainer__ = ""
+__email__ = ""
+__status__ = "Development"
+
+__all__ = ['merge_object', 'MergeManager', 'MERGE_ACTION', 'BaseMergeHandler', 'merge_handler']
 
 from enum import Enum
 from copy import deepcopy
@@ -20,6 +43,7 @@ class MERGE_ACTION(Enum):
 
 
 class BaseMergeHandler(object):
+    name = 'base'
     action = MERGE_ACTION.MERGE
     path = '*'
     match_class = None
@@ -27,25 +51,49 @@ class BaseMergeHandler(object):
     raise_at_max_depth = False
     classes_must_match = True
 
-    @classmethod
+    """
+    parameters:
+        - action = what action to perform.
+        - path = Allows you to have a different action for an object at a specific point in the structure.
+            this is a glob matched string.  Each time this class is called, it is passed a path string which is a dot 
+            seperated list of keys, indexes, or strings that tells the system it got here.
+            
+            for example, given this type of object:  {'lvl-1': [{lvl-2.1:2}, {lvl-2.2:3}]}
+            the path to the integer 3 would be: 'lvl-1.1.lvl-2.2'.  you could address this by using a "lvl-1.1.*' as a 
+            path parameter, which would take effect on any objects that match it's type from the dict key lvl-1 and the
+            second item in the list on downward.
+    """
+    def __str__(self):
+        return 'MergeHandler:%s' % self.name
+
+    __repr__ = __str__
+
     def copy(self, base_obj):
+        """
+        this can be overwritten if needed if deepcopy does not work on the object
+        :param base_obj:
+        :return:
+        """
         return deepcopy(base_obj)
 
-    @classmethod
     def detect(self, base_obj, merge_obj, path):
         tmp_base = self.detect_base_obj_type(base_obj)
         if tmp_base == 0:
+            # print('base_obj type mismatch: %s v %s' % (base_obj, self.name))
             return 0
         tmp_match = self.detect_merge_obj_type(merge_obj)
-        if tmp_match != 1000:
-            if self.classes_must_match or tmp_base == 0:
-                return 0
+        if tmp_match == 0:
+            # print('%s: merge_obj type mismatch: %r  v %r' % (self.name, merge_obj, self.match_class))
+            return 0
         tmp_path = self.detect_path(path)
         if tmp_path == 0:
+            # print('path mismatch: %r  v %r' % (path, self.path))
             return 0
+
+        # print('%s: Returning value of: %s + %s + %s' % (self.name, tmp_base, tmp_match, tmp_path))
+
         return tmp_base + tmp_match + tmp_path
 
-    @classmethod
     def detect_base_obj_type(self, obj):
         """
         returns:
@@ -60,7 +108,6 @@ class BaseMergeHandler(object):
         else:
             return 0
 
-    @classmethod
     def detect_merge_obj_type(self, obj):
         """
         returns:
@@ -75,17 +122,15 @@ class BaseMergeHandler(object):
         else:
             return 0
 
-    @classmethod
     def detect_path(self, path):
         """
         returns length of matching path
         """
         if fnmatch(path, self.path):
-            return len(path)
+            return len(self.path)
         else:
             return 0
 
-    @classmethod
     def process(self, base_obj, merge_obj, parent, depth, max_depth, path):
         if depth == max_depth:
             if self.raise_at_max_depth:
@@ -109,22 +154,43 @@ class BaseMergeHandler(object):
         else:
             return merge_obj
 
-    @classmethod
     def merge(self, base_obj, merge_obj, parent, depth, max_depth, path):
+        """
+        This is the primary method to modify on subclassing this class.
+
+        This method shoudl handle doing the merge, and returning an object that is a merged combination of the two.
+
+        If you need to handle sub-objects, you can call:
+
+            parent.merge_item(base_obj, merge_obj, parent, depth, max_depth, path)
+
+            you must also append to the path a new level preceedd by a ".".
+
+        :param base_obj:
+        :param merge_obj:
+        :param parent:
+        :param depth:
+        :param max_depth:
+        :param path:
+        :return:
+        """
         raise NotImplementedError('Must implement this method')
 
 
-class AnyAddHandler(object):
-    @classmethod
-    def merge(self, base_obj, merge_obj, parent, depth, max_depth):
+class AnyAddHandler(BaseMergeHandler):
+    name = 'AnyAdd'
+
+    def merge(self, base_obj, merge_obj, parent, depth, max_depth, path):
         return base_obj + merge_obj
 
 
-class AnyOverwriteHandler(object):
+class AnyOverwriteHandler(BaseMergeHandler):
+    name = 'AnyOverwrite'
     action = MERGE_ACTION.OVERWRITE
 
 
 class MergeDictHandler(BaseMergeHandler):
+    name = 'Dict'
     match_class = dict
     action_on_dupe_key = MERGE_ACTION.MERGE
 
@@ -149,9 +215,9 @@ class MergeDictHandler(BaseMergeHandler):
 
 
 class MergeListHandler(BaseMergeHandler):
+    name = 'List'
     match_class = (list, tuple)
 
-    @classmethod
     def merge(self, base_obj, merge_obj, parent, depth, max_depth, path):
         index = -1
         for base, merge in zip_longest(base_obj, merge_obj, fillvalue=_UNSET):
@@ -166,8 +232,8 @@ class MergeListHandler(BaseMergeHandler):
             elif merge is _UNSET:
                 break
             else:
-                parent.merge_item(base, merge, depth=depth, max_depth=max_depth)
-
+                base_obj[index] = parent.merge_item(base, merge, depth=depth, max_depth=max_depth, path=path)
+        return base_obj
 
 class MergeManager(object):
 
@@ -178,6 +244,7 @@ class MergeManager(object):
             self.add_handler(h)
 
     def add_handler(self, handler):
+        handler = handler()
         self.handlers.append(handler)
 
     def merge_item(self, base_obj, merge_obj, depth, max_depth, path):
@@ -185,14 +252,16 @@ class MergeManager(object):
         level = 0
         for h in self.handlers:
             h_level = h.detect(base_obj, merge_obj, path)
+            # print('%r responded with value: %r' % (h, h_level))
             if h_level > level:
                 level = h_level
                 merge_handler = h
 
         if level == 0 or merge_handler is None:
-            raise AttributeError('No handler found for items')
-
-        return merge_handler.process(base_obj, merge_handler, parent=self, depth=depth, max_depth=max_depth, path=path)
+            raise AttributeError('No handler found for items: %r <and> %r' % (base_obj, merge_obj))
+        indent = ''.rjust(depth * 3)
+        # print('%s %s is Merging path: %s, items: %r and %r' % (indent, merge_handler.name, path, base_obj, merge_obj))
+        return merge_handler.process(base_obj, merge_obj, parent=self, depth=depth, max_depth=max_depth, path=path)
 
     def merge(self, *items, max_depth=None):
         if not items:
@@ -212,8 +281,8 @@ class MergeManager(object):
         return base_obj
 
 
-mh = MergeManager(MergeDictHandler, MergeListHandler, AnyOverwriteHandler)
+merge_handler = MergeManager(MergeDictHandler, MergeListHandler, AnyOverwriteHandler)
 
 
 def merge_object(*items, max_depth=10):
-    return mh.merge(*items, max_depth=max_depth)
+    return merge_handler.merge(*items, max_depth=max_depth)
