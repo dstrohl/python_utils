@@ -2,18 +2,131 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eaea9648-e79a-44a8-9923-8b6f09ad016d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/PythonUtils/tests/test_merger.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/class_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/clicker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/date_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/dict_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/general_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/list_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/number_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/percentage_calcs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/string_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_class_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_date_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_dict_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_generic_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_list_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_number_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_path.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_quarter_calc.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_rolling_int.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/Old/IntelligentFormatter/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/Old/Interpolator/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/Old/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PythonUtils/snippits/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/python_utils.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/python_utils.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_clicker_counter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/IndentedPrint/flag_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/IndentedPrint/flag_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ChoicesHelper/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ChoicesHelper/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ChoicesHelper/choices_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ChoicesHelper/choices_helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ChoicesHelper/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/path.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ChoicesHelper/tests/test_choices.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ChoicesHelper/tests/test_choices.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ConverterHelper/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ConverterHelper/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ConverterHelper/converter_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ConverterHelper/converter_helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ConverterHelper/converter_helper_old.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ConverterHelper/converter_helper_old.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ConverterHelper/converters.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ConverterHelper/converters.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ConverterHelper/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ChoicesHelper/tests/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ConverterHelper/tests/old_test_converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ConverterHelper/tests/old_test_converter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ConverterHelper/tests/test_converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ConverterHelper/tests/test_converter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/CsvUtils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/CsvUtils/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/CsvUtils/csv_wrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/CsvUtils/csv_wrapper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/CsvUtils/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/CsvUtils/tests/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/CsvUtils/tests/csv_wrapper_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/CsvUtils/tests/csv_wrapper_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/CsvUtils/tests/csvtest.csv" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/CsvUtils/tests/csvtest.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/DbDict/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/DbDict/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/DbDict/db_dict.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/DbDict/db_dict.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/DbDict/db_dict_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/DbDict/db_dict_2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/DbDict/db_dict_comp.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/DbDict/db_dict_comp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/DbDict/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/DbDict/tests/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/DbDict/tests/test_db_dict.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/DbDict/tests/test_db_dict.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FieldObjects/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FieldObjects/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FieldObjects/field_bases.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FieldObjects/field_bases.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FieldObjects/field_exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FieldObjects/field_exceptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FieldObjects/field_messages.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FieldObjects/field_messages.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FieldObjects/field_operations.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FieldObjects/field_operations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FieldObjects/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ConverterHelper/tests/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FieldObjects/tests/test_base_field.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FieldObjects/tests/test_base_field.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FilterEngine/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FilterEngine/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FilterEngine/filter_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FilterEngine/filter_engine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FilterEngine/filter_engine2.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FilterEngine/filter_engine2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FilterEngine/test_filter_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FilterEngine/test_filter_engine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/FilterEngine/test_filter_engine2.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FilterEngine/test_filter_engine2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/HtmlUtils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/HtmlUtils/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/HtmlUtils/html_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/HtmlUtils/html_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/HtmlUtils/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/HtmlUtils/tests/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/HtmlUtils/tests/test_html_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/HtmlUtils/tests/test_html_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/IndentedPrint/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/IndentedPrint/color_wrap.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/color_wrap.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/IndentedPrint/flag_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/flag_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/indented_print.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print_old.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/indented_print_old.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/IntelligentFormatter/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/IntelligentFormatter/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/IntelligentFormatter/intel_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/IntelligentFormatter/intel_format.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/Interpolator/Interpolator.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/Interpolator/Interpolator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/Interpolator/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/Interpolator/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/RecordUtils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/RecordUtils/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/RecordUtils/records.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/RecordUtils/records.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/RecordUtils/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/RecordUtils/tests/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/RecordUtils/tests/records_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/RecordUtils/tests/records_tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/Signals/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/Signals/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/Signals/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/Signals/signals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/Signals/test/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/FieldObjects/tests/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/Signals/test/test_signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/Signals/test/test_signals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/TermColor/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/TermColor/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/TermColor/termcolor.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/TermColor/termcolor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ValidatorHelper/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ValidatorHelper/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ValidatorHelper/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/Signals/test/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ValidatorHelper/tests/test_validator_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ValidatorHelper/tests/test_validator_helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ValidatorHelper/validator_formatters.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ValidatorHelper/validator_formatters.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ValidatorHelper/validator_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ValidatorHelper/validator_helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/ValidatorHelper/validator_validators.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ValidatorHelper/validator_validators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonUtils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/pyutils/base_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/pyutils/base_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/pyutils/merger.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/pyutils/merger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/intro.rst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/pkg_list.rst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/baseutils/baseutils.back_rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/baseutils/baseutils.back_rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/baseutils/boolean_utils.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/baseutils/boolean_utils.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/baseutils/calculators.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/baseutils/calculators.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/baseutils/class_helpers.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/baseutils/class_helpers.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/baseutils/dict_utils.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/baseutils/dict_utils.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/baseutils/generic_helpers.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/baseutils/generic_helpers.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/baseutils/list_utils.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/baseutils/list_utils.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/baseutils/string_utils.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/baseutils/string_utils.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/clicker/clicker.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/clicker/clicker.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/csvutils/csvutils.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/csvutils/csvutils.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/dbdict/dbdict.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/dbdict/dbdict.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/filterengine/filterengine.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/filterengine/filterengine.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/htmlutils/htmlutils.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/htmlutils/htmlutils.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/indentedprint/indentedprint.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/indentedprint/indentedprint.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/intelligentformatter/intelligentformatter.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/intelligentformatter/intelligentformatter.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/interpolator/interpolator.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/interpolator/interpolator.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/docs/python_utils/recordutils/recordutils.rst" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/recordutils/recordutils.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/pyutils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/ValidatorHelper/tests/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/pyutils/base_utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/pyutils/merger.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/merger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/version/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/tests/test_base_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/tests/test_clicker_counter.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_clicker_counter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/tests/test_flag_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/tests/test_flag_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/tests/test_ind_print.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/tests/test_ind_print.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/tests/test_intel_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/IntelligentFormatter/tests/test_intel_format.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/tests/test_interpolation.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/Interpolator/tests/test_interpolation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/tests/test_merger.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_merger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/version/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/version/test_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/version/test_version.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/version/version.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/Old/version/version.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,6 +135,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_quarter_calc_TestQuarterCalculator.coverage" NAME="Unittests for test_quarter_calc.TestQuarterCalculator Coverage Results" MODIFIED="1549649726368" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils.coverage" NAME="Unittests for test_base_utils Coverage Results" MODIFIED="1548272562078" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_TestSpinner.coverage" NAME="Unittests for test_base_utils.TestSpinner Coverage Results" MODIFIED="1549049064955" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_TestMathList.coverage" NAME="Unittests for test_base_utils.TestMathList Coverage Results" MODIFIED="1548707549646" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
@@ -31,14 +145,20 @@
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_TestFlattenDict.coverage" NAME="Unittests for test_base_utils.TestFlattenDict Coverage Results" MODIFIED="1549132173939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_in_test_merger_py.coverage" NAME="Unittests in test_merger.py Coverage Results" MODIFIED="1549239283321" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_PathTests_test_compare.coverage" NAME="Unittests for test_base_utils.PathTests.test_compare Coverage Results" MODIFIED="1548272074691" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$conf.coverage" NAME="conf Coverage Results" MODIFIED="1549651920230" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/docs/source" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_PathTests.coverage" NAME="Unittests for test_base_utils.PathTests Coverage Results" MODIFIED="1548371747438" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_in_test_base_utils_py.coverage" NAME="Unittests in test_base_utils.py Coverage Results" MODIFIED="1549067778468" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_rolling_int_TestRollingInt.coverage" NAME="Unittests for test_rolling_int.TestRollingInt Coverage Results" MODIFIED="1549474665894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_PathTests_test_create_from_path.coverage" NAME="Unittests for test_base_utils.PathTests.test_create_from_path Coverage Results" MODIFIED="1548094288989" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_quarter_calc_TestMonthHelpers.coverage" NAME="Unittests for test_quarter_calc.TestMonthHelpers Coverage Results" MODIFIED="1549649690779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_in_tests.coverage" NAME="Unittests in tests Coverage Results" MODIFIED="1549735828374" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_PathTests_test_new_create.coverage" NAME="Unittests for test_base_utils.PathTests.test_new_create Coverage Results" MODIFIED="1548094432818" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_merger_TestMergerManager.coverage" NAME="Unittests for test_merger.TestMergerManager Coverage Results" MODIFIED="1549239095116" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_GeneratePercTests.coverage" NAME="Unittests for test_base_utils.GeneratePercTests Coverage Results" MODIFIED="1548451968492" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$merger.coverage" NAME="merger Coverage Results" MODIFIED="1549239274960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/pyutils" />
+    <SUITE FILE_PATH="coverage/python_utils$Compile_Syhinx.coverage" NAME="Compile Syhinx Coverage Results" MODIFIED="1549653119966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_base_utils_TestPercCalcs.coverage" NAME="Unittests for test_base_utils.TestPercCalcs Coverage Results" MODIFIED="1549053301212" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_quarter_calc_TestQuarterCalculator_test_quarter_calc.coverage" NAME="Unittests for test_quarter_calc.TestQuarterCalculator.test_quarter_calc Coverage Results" MODIFIED="1549649446319" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/tests" />
   </component>
   <component name="CoverageViewManager">
     <option name="myElementSize" value="268" />
@@ -48,44 +168,88 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/PythonUtils/pyutils/merger.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/number_utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1151">
-              <caret line="81" column="19" selection-start-line="81" selection-start-column="14" selection-end-line="81" selection-end-column="19" />
+            <state relative-caret-position="170">
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
               <folding>
-                <element signature="e#23#47#1" expanded="true" />
-                <element signature="e#414#435#0" expanded="true" />
-                <element signature="e#2134#2150#0" expanded="true" />
-                <element signature="e#1348#1373#0" expanded="true" />
-                <element signature="e#1309#1683#0" expanded="true" />
-                <element signature="e#1752#2126#0" expanded="true" />
-                <element signature="e#2186#2342#0" expanded="true" />
-                <element signature="e#2445#3451#0" expanded="true" />
-                <element signature="e#4159#4214#0" expanded="true" />
-                <element signature="e#3732#3759#0" expanded="true" />
-                <element signature="e#4027#4861#0" expanded="true" />
-                <element signature="e#7523#8016#0" expanded="true" />
-                <element signature="e#7905#7934#0" expanded="true" />
-                <element signature="e#5865#6324#0" expanded="true" />
-                <element signature="e#6379#6798#0" expanded="true" />
-                <element signature="e#6922#6966#0" expanded="true" />
+                <element signature="e#24876#25441#0" />
+                <element signature="e#25472#27180#1" expanded="true" />
+                <element signature="e#28137#28504#0" expanded="true" />
+                <element signature="e#36502#46834#0" expanded="true" />
+                <element signature="e#47912#52677#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonUtils/IndentedPrint/flag_manager.py">
+        <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/percentage_calcs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="35" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
+            <state relative-caret-position="2074">
+              <caret line="593" column="40" selection-start-line="593" selection-start-column="33" selection-end-line="593" selection-end-column="40" />
+              <folding>
+                <element signature="e#23#44#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonUtils/__init__.py">
+        <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/date_utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="193">
+              <caret line="13" column="21" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="21" />
+              <folding>
+                <element signature="e#180#232#0" expanded="true" />
+                <element signature="e#19678#21456#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/dict_utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="40" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/path.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="228">
+              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+              <folding>
+                <element signature="e#170#188#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/merger.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="211">
+              <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_clicker_counter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="34" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
               <caret line="4" selection-start-line="4" selection-end-line="4" />
@@ -94,34 +258,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonUtils/pyutils/base_utils.py">
+        <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_class_utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="10" column="67" selection-start-line="10" selection-start-column="67" selection-end-line="10" selection-end-column="67" />
+            <state relative-caret-position="51">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonUtils/tests/test_merger.py">
+        <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_date_utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-578">
-              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
-              <folding>
-                <element signature="e#23#31#1" expanded="true" />
-                <element signature="e#124#153#0" expanded="true" />
-                <element signature="e#307#535#0" expanded="true" />
-                <element signature="e#599#820#0" expanded="true" />
-                <element signature="e#845#1043#0" expanded="true" />
-                <element signature="e#1092#1290#0" expanded="true" />
-                <element signature="e#1408#1720#0" expanded="true" />
-                <element signature="e#1792#2100#0" expanded="true" />
-                <element signature="e#2088#2352#0" expanded="true" />
-                <element signature="e#2404#2665#0" expanded="true" />
-                <element signature="e#2741#2974#0" expanded="true" />
-                <element signature="e#3051#3351#0" expanded="true" />
-                <element signature="e#3491#3868#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="34">
+              <caret line="2" selection-start-line="2" selection-end-line="2" />
             </state>
           </provider>
         </entry>
@@ -131,6 +280,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Python Unit Test" />
         <option value="Python Script" />
       </list>
     </option>
@@ -149,19 +299,23 @@
       <find>generate_per</find>
       <find>force_to</find>
       <find>Math</find>
-      <find>'</find>
       <find>group_val_1</find>
       <find>perc_val</find>
       <find>'group_val_1</find>
       <find>test_format_perc</find>
       <find>merge_dict</find>
       <find>print</find>
+      <find>'</find>
+      <find>result(</find>
+      <find>get_now</find>
+      <find>RollingInt</find>
     </findStrings>
     <replaceStrings>
       <replace>def test_</replace>
       <replace>MathList</replace>
       <replace>group_val_</replace>
       <replace>v3</replace>
+      <replace>result(ri,</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -176,20 +330,55 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/PythonUtils/Clicker/clicker_counter.py" />
-        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py" />
-        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py" />
         <option value="$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print.py" />
         <option value="$PROJECT_DIR$/PythonUtils/tests/test_merger.py" />
         <option value="$PROJECT_DIR$/PythonUtils/pyutils/merger.py" />
         <option value="$PROJECT_DIR$/PythonUtils/IndentedPrint/flag_manager.py" />
-        <option value="$PROJECT_DIR$/PythonUtils/__init__.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/tests/test_base_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/tests/test_clicker_counter.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/tests/quarter_tests2.csv" />
+        <option value="$PROJECT_DIR$/PythonUtils/tests/test_rolling_int.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/tests/quarter_tests3.csv" />
         <option value="$PROJECT_DIR$/PythonUtils/pyutils/base_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/tests/test_quarter_calc.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/docs/intro.rst" />
+        <option value="$PROJECT_DIR$/PythonUtils/docs/pkg_list.rst" />
+        <option value="$PROJECT_DIR$/PythonUtils/docs/source/python_utils/clicker2.rst" />
+        <option value="$PROJECT_DIR$/PythonUtils/docs/source/index.rst" />
+        <option value="$PROJECT_DIR$/PythonUtils/Old/IntelligentFormatter/intel_format.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/Old/IntelligentFormatter/tests/test_intel_format.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/__init__.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/Old/__init__.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/clicker.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/class_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/general_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/list_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_list_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/__init__.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/string_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_path.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_number_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_dict_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_class_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_generic_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_date_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/__init__.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/number_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/percentage_calcs.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/date_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/dict_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/path.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/merger.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_clicker_counter.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="200" />
-    <option name="y" value="26" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="224" />
+    <option name="y" value="13" />
     <option name="width" value="1594" />
     <option name="height" value="1075" />
   </component>
@@ -199,7 +388,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -216,41 +404,114 @@
               <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
               <item name="python_utils" type="462c0819:PsiDirectoryNode" />
               <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
-              <item name="docs" type="462c0819:PsiDirectoryNode" />
+              <item name="BaseUtils" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
               <item name="python_utils" type="462c0819:PsiDirectoryNode" />
               <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
-              <item name="pyutils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
-              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
-              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="BaseUtils" type="462c0819:PsiDirectoryNode" />
               <item name="tests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Old" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Old" type="462c0819:PsiDirectoryNode" />
+              <item name="ConverterHelper" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Old" type="462c0819:PsiDirectoryNode" />
+              <item name="CsvUtils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Old" type="462c0819:PsiDirectoryNode" />
+              <item name="HtmlUtils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Old" type="462c0819:PsiDirectoryNode" />
+              <item name="IndentedPrint" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Old" type="462c0819:PsiDirectoryNode" />
+              <item name="IntelligentFormatter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Old" type="462c0819:PsiDirectoryNode" />
+              <item name="IntelligentFormatter" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Old" type="462c0819:PsiDirectoryNode" />
+              <item name="Interpolator" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Old" type="462c0819:PsiDirectoryNode" />
+              <item name="Signals" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="python_utils" type="b2602c69:ProjectViewProjectNode" />
+              <item name="python_utils" type="462c0819:PsiDirectoryNode" />
+              <item name="PythonUtils" type="462c0819:PsiDirectoryNode" />
+              <item name="Old" type="462c0819:PsiDirectoryNode" />
+              <item name="TermColor" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
-    <property name="settings.editor.selected.configurable" value="fileTemplates" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/PythonUtils/docs/html" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
   </component>
   <component name="PyCoverageOptionsProvider">
     <option name="myUseBundledCoveragePy" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\Old" />
+      <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils" />
+      <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\Old\Interpolator\tests" />
+      <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\Old\IntelligentFormatter\tests" />
+      <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\Old\IndentedPrint\tests" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\BaseUtils" />
+      <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\docs\source" />
+      <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\docs\source\python_utils" />
       <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\tests" />
       <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\pyutils" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\BaseUtils\tests" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -265,8 +526,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in test_merger.py">
-    <configuration name="merger" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python tests.Unittests in tests">
+    <configuration name="conf" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="python_utils" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -274,12 +535,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/pyutils" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/docs/source" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PythonUtils/pyutils/merger.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PythonUtils/docs/source/conf.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -288,52 +549,24 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for test_base_utils.TestFlattenDict" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Compile Syhinx" type="docs" factoryName="Sphinx task">
       <module name="python_utils" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="SDK_HOME" value="C:\Users\strohl\Documents\PyCharmProjects\venv\common_37\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_base_utils.TestFlattenDict&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="docutils_input_file" value="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\docs\source" />
+      <option name="docutils_output_file" value="C:\Users\strohl\Documents\PyCharmProjects\python_utils\PythonUtils\docs\html" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="html" />
+      <option name="docutils_open_in_browser" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for test_merger.TestMergerManager" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <module name="python_utils" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_merger.TestMergerManager&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Unittests in test_base_utils.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <module name="python_utils" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Unittests in test_merger.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for PythonUtils.BaseUtils.tests.test_quarter_calc.TestMonthHelpers" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="python_utils" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -344,17 +577,70 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/PythonUtils/tests/test_merger.py&quot;" />
+      <option name="_new_target" value="&quot;PythonUtils.BaseUtils.tests.test_quarter_calc.TestMonthHelpers&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for PythonUtils.BaseUtils.tests.test_quarter_calc.TestQuarterCalculator" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="python_utils" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;PythonUtils.BaseUtils.tests.test_quarter_calc.TestQuarterCalculator&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for PythonUtils.BaseUtils.tests.test_quarter_calc.TestQuarterCalculator.test_quarter_calc" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="python_utils" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;PythonUtils.BaseUtils.tests.test_quarter_calc.TestQuarterCalculator.test_quarter_calc&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests in tests" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="python_utils" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/PythonUtils/BaseUtils/tests&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.conf" />
+      <item itemvalue="Python docs.Compile Syhinx" />
+      <item itemvalue="Python tests.Unittests for PythonUtils.BaseUtils.tests.test_quarter_calc.TestMonthHelpers" />
+      <item itemvalue="Python tests.Unittests for PythonUtils.BaseUtils.tests.test_quarter_calc.TestQuarterCalculator" />
+      <item itemvalue="Python tests.Unittests for PythonUtils.BaseUtils.tests.test_quarter_calc.TestQuarterCalculator.test_quarter_calc" />
+      <item itemvalue="Python tests.Unittests in tests" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Unittests in test_merger.py" />
-        <item itemvalue="Python.merger" />
-        <item itemvalue="Python tests.Unittests for test_merger.TestMergerManager" />
-        <item itemvalue="Python tests.Unittests for test_base_utils.TestFlattenDict" />
-        <item itemvalue="Python tests.Unittests in test_base_utils.py" />
+        <item itemvalue="Python tests.Unittests in tests" />
+        <item itemvalue="Python.conf" />
+        <item itemvalue="Python tests.Unittests for PythonUtils.BaseUtils.tests.test_quarter_calc.TestQuarterCalculator" />
+        <item itemvalue="Python tests.Unittests for PythonUtils.BaseUtils.tests.test_quarter_calc.TestMonthHelpers" />
+        <item itemvalue="Python tests.Unittests for PythonUtils.BaseUtils.tests.test_quarter_calc.TestQuarterCalculator.test_quarter_calc" />
       </list>
     </recent_temporary>
   </component>
@@ -377,7 +663,14 @@
       <workItem from="1548861214851" duration="23503000" />
       <workItem from="1548979268202" duration="5671000" />
       <workItem from="1549036280292" duration="18662000" />
-      <workItem from="1549129888652" duration="25731000" />
+      <workItem from="1549129888652" duration="25898000" />
+      <workItem from="1549239669523" duration="434000" />
+      <workItem from="1549313922823" duration="5646000" />
+      <workItem from="1549325715198" duration="3129000" />
+      <workItem from="1549386561894" duration="18798000" />
+      <workItem from="1549466742257" duration="24017000" />
+      <workItem from="1549558854624" duration="17980000" />
+      <workItem from="1549648124546" duration="19373000" />
     </task>
     <task id="LOCAL-00001" summary="re-organized and cleaned up some items.&#10;Pushed more into the base module&#10;created MathList and tests">
       <created>1548719058449</created>
@@ -407,54 +700,62 @@
       <option name="project" value="LOCAL" />
       <updated>1549222384001</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="merge_object fixed.">
+      <created>1549239381096</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1549239381096</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_for_test_merger_TestMergerManager - 2019.02.03 at 16h 10m 14s.xml">
-      <configuration name="Unittests for test_merger.TestMergerManager" configurationId="tests" />
+    <history-entry file="Unittests_for_test_quarter_calc_TestQuarterCalculator - 2019.02.08 at 10h 15m 30s.xml">
+      <configuration name="Unittests for test_quarter_calc.TestQuarterCalculator" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_merger_TestMergerManager - 2019.02.03 at 16h 10m 58s.xml">
-      <configuration name="Unittests for test_merger.TestMergerManager" configurationId="tests" />
+    <history-entry file="Unittests_in_tests - 2019.02.09 at 09h 44m 50s.xml">
+      <configuration name="Unittests in tests" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_merger_TestMergerManager - 2019.02.03 at 16h 11m 35s.xml">
-      <configuration name="Unittests for test_merger.TestMergerManager" configurationId="tests" />
+    <history-entry file="Unittests_in_tests - 2019.02.09 at 09h 59m 03s.xml">
+      <configuration name="Unittests in tests" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test_merger_py - 2019.02.03 at 16h 11m 54s.xml">
-      <configuration name="Unittests in test_merger.py" configurationId="tests" />
+    <history-entry file="Unittests_in_tests - 2019.02.09 at 10h 08m 27s.xml">
+      <configuration name="Unittests in tests" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test_merger_py - 2019.02.03 at 16h 13m 10s.xml">
-      <configuration name="Unittests in test_merger.py" configurationId="tests" />
+    <history-entry file="Unittests_in_tests - 2019.02.09 at 10h 08m 59s.xml">
+      <configuration name="Unittests in tests" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test_merger_py - 2019.02.03 at 16h 13m 14s.xml">
-      <configuration name="Unittests in test_merger.py" configurationId="tests" />
+    <history-entry file="Unittests_in_tests - 2019.02.09 at 10h 09m 18s.xml">
+      <configuration name="Unittests in tests" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test_merger_py - 2019.02.03 at 16h 13m 29s.xml">
-      <configuration name="Unittests in test_merger.py" configurationId="tests" />
+    <history-entry file="Unittests_in_tests - 2019.02.09 at 10h 09m 56s.xml">
+      <configuration name="Unittests in tests" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test_merger_py - 2019.02.03 at 16h 13m 44s.xml">
-      <configuration name="Unittests in test_merger.py" configurationId="tests" />
+    <history-entry file="Unittests_in_tests - 2019.02.09 at 10h 10m 04s.xml">
+      <configuration name="Unittests in tests" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test_merger_py - 2019.02.03 at 16h 14m 25s.xml">
-      <configuration name="Unittests in test_merger.py" configurationId="tests" />
+    <history-entry file="Unittests_in_tests - 2019.02.09 at 10h 10m 17s.xml">
+      <configuration name="Unittests in tests" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test_merger_py - 2019.02.03 at 16h 14m 44s.xml">
-      <configuration name="Unittests in test_merger.py" configurationId="tests" />
+    <history-entry file="Unittests_in_tests - 2019.02.09 at 10h 10m 28s.xml">
+      <configuration name="Unittests in tests" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="194049000" />
+    <option name="totallyTimeSpent" value="283593000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="200" y="26" width="1594" height="1075" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6130501" visible="true" weight="0.18709257" />
-      <window_info id="Structure" order="1" sideWeight="0.38694993" side_tool="true" visible="true" weight="0.18709257" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.81155014" visible="true" weight="0.23294243" />
+      <window_info id="Structure" order="1" sideWeight="0.18844984" side_tool="true" weight="0.23294243" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32908705" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.30042464" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39808917" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.29721954" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3691275" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3978907" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -463,14 +764,38 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.28237793" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.2818792" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info anchor="right" id="Database" order="4" />
-      <window_info active="true" anchor="right" id="Coverage" order="5" side_tool="true" visible="true" weight="0.25032595" />
+      <window_info anchor="right" id="Coverage" order="5" side_tool="true" visible="true" weight="0.25032595" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.81155014" visible="true" weight="0.23294243" />
+      <window_info id="Structure" order="1" sideWeight="0.18844984" side_tool="true" visible="true" weight="0.23294243" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.29721954" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3691275" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3978907" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.2818792" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Coverage" order="5" side_tool="true" visible="true" weight="0.25032595" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -480,285 +805,484 @@
     <MESSAGE value="created tests for mathlistrecord" />
     <MESSAGE value="more work on tests for mathlistrecord" />
     <MESSAGE value="worked on merge_dict -&gt; merge_object" />
-    <option name="LAST_COMMIT_MESSAGE" value="worked on merge_dict -&gt; merge_object" />
+    <MESSAGE value="merge_object fixed." />
+    <option name="LAST_COMMIT_MESSAGE" value="merge_object fixed." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py</url>
-          <line>31</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py</url>
-          <line>17</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_quarter_calc.py</url>
+          <line>281</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
+    <entry file="file://$PROJECT_DIR$/PythonUtils/docs/source/intro.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/docs/source/pkg_list.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/docs/source/index.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/IndentedPrint/__init__.py">
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_quarter_calc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="134" column="18" selection-start-line="134" selection-start-column="18" selection-end-line="134" selection-end-column="18" />
+          <folding>
+            <element signature="e#23#65#1" expanded="true" />
+            <element signature="e#139#168#0" expanded="true" />
+            <element signature="e#2444#2882#0" expanded="true" />
+            <element signature="e#2958#3406#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/decorators.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/init_for_class.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/meta_tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/ConfigObject.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/tests/test_flag_handler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#24#53#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/CsvUtils/csv_wrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#173#1499#0" expanded="true" />
+            <element signature="e#1543#1666#0" expanded="true" />
+            <element signature="e#1702#2790#0" expanded="true" />
+            <element signature="e#2833#2925#0" expanded="true" />
+            <element signature="e#3099#3472#0" expanded="true" />
+            <element signature="e#3520#3605#0" expanded="true" />
+            <element signature="e#3639#3660#0" expanded="true" />
+            <element signature="e#3903#5569#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/ConverterHelper/converter_helper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1702">
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+            <element signature="e#142#249#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/Interpolator/Interpolator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#1206#2463#0" expanded="true" />
+            <element signature="e#2808#6813#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/TermColor/termcolor.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/version/version.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2229" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/Signals/signals.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="201" lean-forward="true" selection-start-line="201" selection-end-line="201" />
+          <folding>
+            <element signature="e#7336#7549#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/IntelligentFormatter/intel_format.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3315">
+          <caret line="531" selection-start-line="531" selection-end-line="531" />
+          <folding>
+            <element signature="e#103#177#1" expanded="true" />
+            <element signature="e#228#360#0" expanded="true" />
+            <element signature="e#583#1697#0" expanded="true" />
+            <element signature="e#15726#15812#0" expanded="true" />
+            <element signature="e#15857#15966#0" expanded="true" />
+            <element signature="e#16173#16218#0" expanded="true" />
+            <element signature="e#16259#16340#0" expanded="true" />
+            <element signature="e#16374#16654#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/IntelligentFormatter/tests/test_intel_format.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" selection-start-line="30" selection-end-line="30" />
+          <folding>
+            <element signature="e#24#53#0" expanded="true" />
+            <element signature="e#1373#1491#0" expanded="true" />
+            <element signature="e#1537#1636#0" expanded="true" />
+            <element signature="e#1681#1825#0" expanded="true" />
+            <element signature="e#1871#1967#0" expanded="true" />
+            <element signature="e#2012#2112#0" expanded="true" />
+            <element signature="e#2156#2251#0" expanded="true" />
+            <element signature="e#2306#2407#0" expanded="true" />
+            <element signature="e#2459#2556#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/color_wrap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-478" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/flag_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-204">
+          <caret line="3" column="35" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/indented_print.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4369">
+          <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/HtmlUtils/html_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4813">
+          <folding>
+            <element signature="e#0#48#1" expanded="true" />
+            <element signature="e#31536#31758#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils_old.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-561" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+          <folding>
+            <element signature="e#194#266#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/clicker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3570">
+          <caret line="343" selection-start-line="343" selection-end-line="343" />
+          <folding>
+            <element signature="e#23#31#1" expanded="true" />
+            <element signature="e#5242#7825#1" expanded="true" />
+            <element signature="e#8715#9774#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/class_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2363">
+          <caret line="152" column="13" selection-start-line="152" selection-start-column="13" selection-end-line="152" selection-end-column="13" />
+          <folding>
+            <element signature="e#23#31#1" expanded="true" />
+            <element signature="e#11077#11686#1" expanded="true" />
+            <element signature="e#11729#11762#0" expanded="true" />
+            <element signature="e#11867#12547#0" expanded="true" />
+            <element signature="e#12645#13402#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/general_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-648">
+          <caret line="6" column="54" selection-start-line="6" selection-start-column="54" selection-end-line="6" selection-end-column="54" />
+          <folding>
+            <element signature="e#101#119#0" expanded="true" />
+            <element signature="e#4560#6052#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/list_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1258">
+          <caret line="224" selection-start-line="224" selection-end-line="224" />
+          <folding>
+            <element signature="e#422#433#0" expanded="true" />
+            <element signature="e#3439#4767#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_list_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="e#171#211#0" expanded="true" />
+            <element signature="e#3194#5961#0" />
+            <element signature="e#6000#8583#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" lean-forward="true" selection-start-line="7" selection-end-line="30" />
+          <folding>
+            <element signature="e#68#126#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/string_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="14" column="73" selection-start-line="14" selection-start-column="73" selection-end-line="14" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/pathlib.py">
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_number_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1094">
-          <caret line="700" column="44" selection-start-line="700" selection-start-column="44" selection-end-line="700" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/RecordUtils/records.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3952" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/Signals/signals.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3153" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/version/version.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4717" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/Interpolator/Interpolator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-535" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/IntelligentFormatter/intel_format.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/Tree/tree.py" />
-    <entry file="file://$PROJECT_DIR$/PythonUtils/ChoicesHelper/choices_helper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        <state relative-caret-position="119">
+          <caret line="7" column="104" selection-start-line="7" selection-start-column="104" selection-end-line="7" selection-end-column="104" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#211#894#0" />
+            <element signature="e#243#449#0" expanded="true" />
+            <element signature="e#489#660#0" expanded="true" />
+            <element signature="e#700#894#0" expanded="true" />
+            <element signature="e#972#1184#0" expanded="true" />
+            <element signature="e#5685#6326#0" expanded="true" />
+            <element signature="e#9421#9437#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/Clicker/clicker_counter.py" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/typing.py">
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_generic_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1767">
-          <caret line="1220" selection-start-line="1220" selection-end-line="1220" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/meta_tests.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/init_for_class.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/decorators.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/snippits/ConfigObject.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1963" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/TermColor/termcolor.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/collections/__init__.pyi">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="632">
-          <caret line="109" selection-start-line="78" selection-end-line="109" />
+        <state relative-caret-position="102">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
           <folding>
-            <element signature="e#26#36#0" expanded="true" />
+            <element signature="e#25#54#0" expanded="true" />
+            <element signature="e#233#341#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/teamcity/diff_tools.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/unittest/loader.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        <state relative-caret-position="211">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/DbDict/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/DbDict/tests/test_db_dict.py">
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        <state relative-caret-position="2703">
+          <caret line="177" lean-forward="true" selection-start-line="177" selection-end-line="177" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#23#52#0" expanded="true" />
+            <element signature="e#245#256#0" expanded="true" />
+            <element signature="e#381#776#0" expanded="true" />
+            <element signature="e#823#896#0" expanded="true" />
+            <element signature="e#939#1046#0" expanded="true" />
+            <element signature="e#1085#1155#0" expanded="true" />
+            <element signature="e#1199#1302#0" expanded="true" />
+            <element signature="e#1341#1520#0" expanded="true" />
+            <element signature="e#1561#1745#0" expanded="true" />
+            <element signature="e#3105#3367#0" expanded="true" />
+            <element signature="e#3410#3719#0" expanded="true" />
+            <element signature="e#3761#4219#0" expanded="true" />
+            <element signature="e#4262#4452#0" expanded="true" />
+            <element signature="e#4502#4657#0" expanded="true" />
+            <element signature="e#4707#4892#0" expanded="true" />
+            <element signature="e#4942#5097#0" expanded="true" />
+            <element signature="e#5147#5302#0" expanded="true" />
+            <element signature="e#5352#5546#0" expanded="true" />
+            <element signature="e#5596#5836#0" expanded="true" />
+            <element signature="e#5886#6098#0" expanded="true" />
+            <element signature="e#6177#6281#0" expanded="true" />
+            <element signature="e#6340#6445#0" expanded="true" />
+            <element signature="e#6494#6601#0" expanded="true" />
+            <element signature="e#6653#6760#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/DbDict/db_dict_2.py">
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_path.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="51">
+          <caret line="3" column="26" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
           <folding>
-            <element signature="e#447#2588#0" />
-            <element signature="e#2624#3480#0" />
-            <element signature="e#3544#7103#0" />
-            <element signature="e#7141#11620#0" />
-            <element signature="e#11649#23934#0" />
+            <element signature="e#327#405#0" expanded="true" />
+            <element signature="e#5099#7111#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/DbDict/db_dict_comp.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/DbDict/db_dict.py">
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_dict_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="363" column="18" selection-start-line="363" selection-start-column="18" selection-end-line="363" selection-end-column="18" />
+        <state relative-caret-position="68">
+          <caret line="4" column="78" selection-start-line="4" selection-start-column="78" selection-end-line="4" selection-end-column="78" />
           <folding>
-            <element signature="e#23#34#0" expanded="true" />
-            <element signature="e#447#2588#0" />
-            <element signature="e#2623#3479#0" />
-            <element signature="e#3547#6696#0" />
-            <element signature="e#6734#11213#0" />
-            <element signature="e#11242#23366#0" />
-            <element signature="e#23417#30861#0" />
-            <element signature="e#32354#41475#1" />
+            <element signature="e#24#53#0" expanded="true" />
+            <element signature="e#264#427#0" expanded="true" />
+            <element signature="e#1401#4345#0" />
+            <element signature="e#7064#7452#0" expanded="true" />
+            <element signature="e#7831#8924#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_base_utils.py">
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_date_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="102" lean-forward="true" selection-start-line="102" selection-end-line="102" />
-          <folding>
-            <element signature="e#24#35#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/tests/test_base_utils.py">
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_class_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="135" lean-forward="true" selection-start-line="103" selection-end-line="135" />
+        <state relative-caret-position="51">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/base_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2872">
-          <caret line="2815" lean-forward="true" selection-start-line="2815" selection-end-line="2815" />
-          <folding>
-            <element signature="e#1234#1245#0" expanded="true" />
-            <element signature="e#92585#100820#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/IndentedPrint/indented_print.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/unittest/case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="614" selection-start-line="614" selection-end-line="614" />
-          <folding>
-            <element signature="e#3426#3535#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/IndentedPrint/flag_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="35" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/pyutils/base_utils.py">
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/percentage_calcs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="10" column="67" selection-start-line="10" selection-start-column="67" selection-end-line="10" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/tests/test_merger.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-578">
-          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="2074">
+          <caret line="593" column="40" selection-start-line="593" selection-start-column="33" selection-end-line="593" selection-end-column="40" />
           <folding>
-            <element signature="e#23#31#1" expanded="true" />
-            <element signature="e#124#153#0" expanded="true" />
-            <element signature="e#307#535#0" expanded="true" />
-            <element signature="e#599#820#0" expanded="true" />
-            <element signature="e#845#1043#0" expanded="true" />
-            <element signature="e#1092#1290#0" expanded="true" />
-            <element signature="e#1408#1720#0" expanded="true" />
-            <element signature="e#1792#2100#0" expanded="true" />
-            <element signature="e#2088#2352#0" expanded="true" />
-            <element signature="e#2404#2665#0" expanded="true" />
-            <element signature="e#2741#2974#0" expanded="true" />
-            <element signature="e#3051#3351#0" expanded="true" />
-            <element signature="e#3491#3868#0" expanded="true" />
+            <element signature="e#23#44#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/pyutils/merger.py">
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/number_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1151">
-          <caret line="81" column="19" selection-start-line="81" selection-start-column="14" selection-end-line="81" selection-end-column="19" />
+        <state relative-caret-position="170">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
           <folding>
-            <element signature="e#23#47#1" expanded="true" />
-            <element signature="e#414#435#0" expanded="true" />
-            <element signature="e#2134#2150#0" expanded="true" />
-            <element signature="e#1348#1373#0" expanded="true" />
-            <element signature="e#1309#1683#0" expanded="true" />
-            <element signature="e#1752#2126#0" expanded="true" />
-            <element signature="e#2186#2342#0" expanded="true" />
-            <element signature="e#2445#3451#0" expanded="true" />
-            <element signature="e#4159#4214#0" expanded="true" />
-            <element signature="e#3732#3759#0" expanded="true" />
-            <element signature="e#4027#4861#0" expanded="true" />
-            <element signature="e#7523#8016#0" expanded="true" />
-            <element signature="e#7905#7934#0" expanded="true" />
-            <element signature="e#5865#6324#0" expanded="true" />
-            <element signature="e#6379#6798#0" expanded="true" />
-            <element signature="e#6922#6966#0" expanded="true" />
+            <element signature="e#24876#25441#0" />
+            <element signature="e#25472#27180#1" expanded="true" />
+            <element signature="e#28137#28504#0" expanded="true" />
+            <element signature="e#36502#46834#0" expanded="true" />
+            <element signature="e#47912#52677#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/date_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="13" column="21" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="21" />
+          <folding>
+            <element signature="e#180#232#0" expanded="true" />
+            <element signature="e#19678#21456#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/dict_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="40" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/path.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="e#170#188#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/merger.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_clicker_counter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="34" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
         </state>
       </provider>
     </entry>
