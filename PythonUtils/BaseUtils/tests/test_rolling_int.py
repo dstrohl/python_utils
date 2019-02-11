@@ -1,5 +1,5 @@
 import unittest
-from PythonUtils.BaseUtils.base_utils import RollingInt, rollover_calc, looping_iterator
+from PythonUtils.BaseUtils import RollingInt, rollover_calc, looping_iterator
 
 
 class TestRollingInt(unittest.TestCase):
@@ -10,7 +10,6 @@ class TestRollingInt(unittest.TestCase):
         self.assertEqual(rollunder, ri.rollunder_counter)
         self.assertEqual(roll, ri.roll_counter)
 
-        
     def test_rolling_int(self):
         ri = RollingInt(10, value=5)
         self.verify_result(ri, 5, 0, 0, 0)
@@ -144,7 +143,6 @@ class TestRollingInt(unittest.TestCase):
         tmp_ret = list(looping_iterator(test_data, current_index=2, max_iteration=10))
 
         self.assertEqual([3, 1, 2, 3 ,1, 2, 3, 1, 2, 3], tmp_ret)
-
 
     def test_looping_iter_3(self):
         test_data = [1, 2, 3]

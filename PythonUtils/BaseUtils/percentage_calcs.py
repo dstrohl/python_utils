@@ -36,7 +36,7 @@ class PERC_RET(Enum):
     AS_STR_DOT_2 = 'str-float-2'
 
 
-def format_percentage(perc, perc_format=PERC_RET.AS_INT):
+def format_percentage(perc, perc_format=PERC_RET.AS_INT, **kwargs):
     """
     Handles converting and formatting of percentages.
 
@@ -67,8 +67,8 @@ def format_percentage(perc, perc_format=PERC_RET.AS_INT):
         perc *= 100
         return perc
 
-    elif isinstance(perc_format, str) and '{perc}' in perc_format:
-        return perc_format.format(perc=perc)
+    elif isinstance(perc_format, str) and '{' in perc_format:
+        return perc_format.format(perc)
 
     else:
         raise AttributeError('Unknown Percentage Format: %r' % perc_format)

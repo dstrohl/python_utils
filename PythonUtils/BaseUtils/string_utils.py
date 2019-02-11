@@ -12,7 +12,7 @@ __maintainer__ = ""
 __email__ = ""
 __status__ = ""
 
-__all__ = [ 'get_between', 'get_after', 'get_before',  'index_of_count', 'replace_between', 'spinner_char',
+__all__ = [ 'get_between', 'get_after', 'get_before',  'index_of_count', 'replace_between', 'spinner_char', 'pluralizer',
             'format_as_decimal_string', 'unslugify', 'ellipse_trim', 'concat', 'convert_to_boolean', 'slugify']
 
 from decimal import Decimal
@@ -80,7 +80,7 @@ def replace_between(instring, start_key, end_key, replace, keep_keys=False, offs
 
 def index_of_count(instring, find, offset_count=1, start=0):
     """
-    Returns the string index (offset) for the x iteration of a substring.
+    Returns the string index (offset) for the x th iteration of a substring.
 
     :param instring: the string to search
     :param find: the string to search for
@@ -90,7 +90,7 @@ def index_of_count(instring, find, offset_count=1, start=0):
     :rtype int:
 
     example:
-        >>> index_of_count('abcd abcd abcd abcd','abcd',2)
+        >>> index_of_count('abcd abcd abcd abcd', 'abcd', 2)
         6
 
     """
@@ -389,3 +389,14 @@ def spinner_char(state=0, spinner_chars='|/-\\', not_started_state=None, finishe
     return spinner_chars[state % len(spinner_chars)]
 
 
+# ===============================================================================
+# spinner (working) character generator
+# ===============================================================================
+
+def pluralizer(number_in, singular, plural=None):
+    if number_in == 1:
+        return singular
+    elif plural is None:
+        return singular + 's'
+    else:
+        return plural

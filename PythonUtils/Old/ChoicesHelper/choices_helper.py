@@ -1,4 +1,4 @@
-from PythonUtils import slugify
+from PythonUtils.BaseUtils import slugify
 from decimal import Decimal
 
 __author__ = 'Dan Strohl'
@@ -9,6 +9,10 @@ def make_slug(text_in):
     # tmp_str = tmp_str.replace('-', '_')
     return tmp_str
 
+
+# ===============================================================================
+# Exceptions
+# ===============================================================================
 
 class ChoiceBaseException(Exception):
     def __init__(self, message=''):
@@ -33,9 +37,15 @@ class ChoiceInvalidChoiceError(ChoiceBaseException):
         self.message = 'ChoiceHelper Error, choice %s not in %r' % (choice, choices)
 
 
+# ===============================================================================
+# Choice Helper
+# ===============================================================================
+
+
 class Choice(object):
     """
-    Choice object for each choice used in the ChoiceHelper
+    Choice object for each choice used in the ChoiceHelper.  These objects can be created on their own and passed to
+    ChoiceHelper for more flexibility or if sub-classing is desired.
     """
 
     def __init__(self,
@@ -48,17 +58,17 @@ class Choice(object):
                  **kwargs
                  ):
         """
-        :param str stored: The text to be stored in the database
-        :param str display_text: The text to be displayed to the user (can also be overdidden by subclassing and
-            changing the Choice.get_display() method.  If no display_text is passed, a capalized version of the stored
+        :param stored: The text to be stored in the database or variable.
+        :param display: The text to be displayed to the user (can also be over-ridden by subclassing and
+            changing the Choice.get_display() method.  If no display_text is passed, a capatilized version of the stored
             text will be used.
-        :param str property_name: The property name to be used in programatic access to this object.  if No property
+        :param prop: The property name to be used in programmatic access to this object.  if No property
             name is passed, a cleaned up version of the stored text will be used.
-        :param function call: A function or method that can be called if this choice is selected.  See documentation for
+        :param call: A function or method that can be called if this choice is selected.  See documentation for
             further description and examples.
-        :param list stored_synonyms: A list of synonyms of the stored text, this can be used when converting from one
+        :param stored_synonyms: A list of synonyms of the stored text, this can be used when converting from one
             lookup approach to another... See documentation for more information and examples.
-        :param bool parameter_validity_check: [True|False] Defaults to True, if True, the parameter name will be
+        :param parameter_validity_check: [True|False] Defaults to True, if True, the parameter name will be
             checked for validity using str.isidentifier() and an exception will be raised if it failes the check,
         :param kwargs: If additional keyword args are passed, these will be available like a dictionary from the choice
             object.  This can be used when additional information is needed based on a specific choice.
@@ -189,6 +199,7 @@ class ChoicesHelper(object):
         display_string: this is the string that is shown to the users
 
         :param choices: this can be a list or set of items in one of three formats:
+
             strings: ('stored1', 'stored2', 'stored3'): In this format this will take each item and that string will be
                 used for all three string types.
             two item tuples: ( ('stored1', 'display string 1'), ('stired2', 'display string 2') ):  In this format the
@@ -358,3 +369,85 @@ class ChoicesHelper(object):
 
     def __contains__(self, item):
         return item in self._stored_lookup
+
+
+
+
+'''
+# ===============================================================================
+# Lookup Manager
+# ===============================================================================
+
+LookupTuple = collections.namedtuple('LookupTuple', ['stored', 'display', 'reference'])
+
+
+class LookupItem(LookupTuple):
+
+    def __init__(self, *args):
+        self.stored = args[0]
+        self.display = args[1]
+        try:
+            self.reference = args[2]
+        except IndexError:
+            pass
+
+    def __str__(self):
+        return self.stored
+
+
+class LookupManager(object):
+    def __init__(self, lookup_list):
+        """
+        This handles a list of tuples where you want to have one string for a lookup, which returns a
+        different string, and is called by a third thing.
+
+        This takes a list of tuples and
+
+        :param lookup_list:
+                lookup list is a list of tuples (stored_value, display_value [, referenced_name] ):
+                    stored value = the value that would be stored in the db
+                    representative value = the value that is used for display
+                    referenced value is the name used in coding (if not present stored_value is used)
+        :param case_sensitive:
+                determines if lookups are case sensitive or not.
+
+        .. warning:: still needs work
+
+        """
+        #: TODO fix this, needs more thought in how it works
+        self.stored_dict = {}
+        self.display_dict = {}
+        self.reference_dict = {}
+        self.data_list = []
+        self.lookup_list = []
+        self.master_dict = {}
+
+        for l in lookup_list:
+            tmp_l = LookupItem(*l)
+
+            self.stored_dict[tmp_l.stored] = tmp_l
+            self.display_dict[tmp_l.display] = tmp_l
+            self.reference_dict[slugify(tmp_l.reference)] = tmp_l
+            self.data_list.append(tmp_l)
+            self.lookup_list.append((tmp_l.stored, tmp_l.display ))
+            self.master_dict[tmp_l.stored] = tmp_l
+            self.master_dict[tmp_l.display] = tmp_l
+            self.master_dict[slugify(tmp_l.reference)] = tmp_l
+
+    def __iter__(self):
+        for i in self.lookup_list:
+            yield i
+
+    def __getattr__(self, item):
+        return self.reference_dict[item]
+
+    def __getitem__(self, item):
+        return self.master_dict[item]
+
+    def get_by_stored(self, item):
+        return self.stored_dict[item]
+
+    def get_by_display(self, item):
+        return self.display_dict[item]
+
+'''

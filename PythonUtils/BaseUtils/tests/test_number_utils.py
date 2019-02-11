@@ -175,7 +175,7 @@ class TestPercCounter(TestCase):
         self.assertEqual('12.34%', format_percentage(0.1234, perc_format=PERC_RET.AS_STR_DOT_2))
         self.assertEqual('12.3%', format_percentage(0.1234, perc_format=PERC_RET.AS_STR_DOT_1))
         self.assertEqual(12.34, format_percentage(0.1234, perc_format=PERC_RET.AS_FLOAT_PERC))
-        self.assertEqual('perc=0.1234', format_percentage(0.1234, perc_format='perc={perc}'))
+        self.assertEqual('perc=0.1234', format_percentage(0.1234, perc_format='perc={}'))
 
     def test_make_perc(self):
         self.assertEqual(0.10, make_percentage(10, 100))
@@ -566,8 +566,8 @@ class TestMathList(TestCase):
 
     def test_calc_list_running_perc_value_done_format(self):
         ml = MathList([1, 2, 3, 4])
-        tmp_list = ml.calc_list(['running_perc_value_done'], perc_return={'running_perc_value_done':'perc: {0:.1f}'})
-        exp_list = ['perc: 0.1','perc: 0.3','perc: 0.6','perc: 1.0']
+        tmp_list = ml.calc_list(['running_perc_value_done'], perc_return={'running_perc_value_done': 'perc: {0:.1f}'})
+        exp_list = ['perc: 0.1', 'perc: 0.3', 'perc: 0.6', 'perc: 1.0']
         self.assertListEqual(exp_list, tmp_list)
 
     def test_running_perc_rows_done_headers(self):

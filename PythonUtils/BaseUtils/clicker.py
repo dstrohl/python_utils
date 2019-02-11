@@ -272,6 +272,7 @@ class Clicker(object):
         self.autoadd = kwargs.get('autoadd', True)
         # self.autoadd_name_prefix = kwargs.get('AutoCounter_', True)
 
+
         self.add_counter(self.default_name)
         self._default_counter = self._counters[self.default_name]
 

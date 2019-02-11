@@ -8,7 +8,7 @@ __author__ = "Dan Strohl"
 __copyright__ = "Copyright 2019, Dan Strohl"
 
 from unittest import TestCase
-from PythonUtils.BaseUtils.base_utils import add_month, date_add_month, FiscalDate, FiscalDateCalc, short_month_name, full_month_name
+from PythonUtils.BaseUtils import add_month, date_add_month, FiscalDate, FiscalDateCalc, short_month_name, full_month_name
 import csv
 from datetime import date, datetime
 

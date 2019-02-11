@@ -99,27 +99,3 @@ class ArgsHandlerTestCase(TestCase):
         self.assertEqual(self.tc.t5, 55)
         self.assertEqual(self.tc.t6, 6)
 
-
-class UnpackDemo(object):
-    t1 = '1'
-
-    def args_demo(self, num1, num2):
-        return num1+num2
-
-    def kwargs_demo(self, **kwargs):
-        n1 = kwargs['n1']
-        n2 = kwargs['n2']
-        return n1+n2
-
-
-class UnpackDemo2(object):
-    t1 = '2'
-
-    def args_demo(self, num1, num2):
-        return num1*num2
-
-    def kwargs_demo(self, **kwargs):
-        n1 = kwargs['n1']
-        n2 = kwargs['n2']
-        return n1*n2
-

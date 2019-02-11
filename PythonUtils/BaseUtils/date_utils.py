@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 
 __all__ = ['get_now', 'add_month', 'date_add_month', 'FiscalDateCalc', 'FiscalDate', 'last_day_of_month',
-           'full_month_name', 'short_month_name']
+           'full_month_name', 'short_month_name', 'timedelta_to_string', 'TIMEDELTA_PERIOD_ACTION']
 
 from datetime import datetime, timedelta, date, time
 import calendar
+from enum import Enum
+from PythonUtils.BaseUtils.string_utils import pluralizer
+from decimal import Decimal
 
 # Imported in function below to avoid recursive imports
 # from PythonUtils.BaseUtils.number_utils import RollingInt
@@ -13,9 +16,240 @@ def get_rolling_int(*args, **kwargs):
     from PythonUtils.BaseUtils.number_utils import RollingInt
     return RollingInt(*args, **kwargs)
 
+
+# ===============================================================================
+# time_Delta formatting
+# ===============================================================================
+
+DEFAULT_WORDS = {
+    'decade': ('decade',),
+    'year': ('year',),
+    'month': ('month',),
+    'day': ('day',),
+    'hour': ('hour',),
+    'minute': ('minute',),
+    'second': ('second',),
+    'millisecond': ('millisecond',),
+    'microsecond': ('microsecond', 'microseconds'),
+}
+
+
+class TIMEDELTA_PERIOD_ACTION(Enum):
+    ALWAYS = 'always'
+    NEVER = 'never'
+    DEFAULT = 'default'
+
+
+DEFAULT_ACTIONS = dict(
+    decade=TIMEDELTA_PERIOD_ACTION.DEFAULT,
+    year=TIMEDELTA_PERIOD_ACTION.DEFAULT,
+    month=TIMEDELTA_PERIOD_ACTION.DEFAULT,
+    week=TIMEDELTA_PERIOD_ACTION.DEFAULT,
+    day=TIMEDELTA_PERIOD_ACTION.DEFAULT,
+    hour=TIMEDELTA_PERIOD_ACTION.DEFAULT,
+    minute=TIMEDELTA_PERIOD_ACTION.DEFAULT,
+    second=TIMEDELTA_PERIOD_ACTION.DEFAULT,
+    millisecond=TIMEDELTA_PERIOD_ACTION.NEVER,
+    microsecond=TIMEDELTA_PERIOD_ACTION.NEVER,
+)
+
+PROCESS_ORDER = ['decade', 'year', 'month', 'day', 'hour', 'minute', 'second']
+
+MINUTE_SECS = 60
+HOUR_SECS = MINUTE_SECS * 60
+DAY_SECS = HOUR_SECS * 24
+WEEK_SECS = DAY_SECS * 7
+MONTH_SECS = DAY_SECS * 30
+YEAR_SECS = DAY_SECS * 365
+DECADE_SECS = YEAR_SECS * 10
+
+PERIOD_SECONDS = dict(
+    decade=DECADE_SECS,
+    year=YEAR_SECS,
+    month=MONTH_SECS,
+    week=WEEK_SECS,
+    day=DAY_SECS,
+    hour=HOUR_SECS,
+    minute=MINUTE_SECS,
+    second=1,
+)
+
+AGO_FORMAT = '{} Ago'
+IN_FORMAT = 'In {}'
+MORE_THAN_FORMAT = 'More Than {}'
+LESS_THAN_FORMAT = 'Less Than {}'
+
+
+def timedelta_to_string(td_in,
+                        words=None,
+                        case=str.title,
+                        ago_format=AGO_FORMAT,
+                        in_format=IN_FORMAT,
+                        less_than_at=None,
+                        more_than_at=None,
+                        less_than_format=LESS_THAN_FORMAT,
+                        more_than_format=MORE_THAN_FORMAT,
+                        **kwargs):
+    """
+
+    :param td_in: The time to convert to a string, this can be a timedelta object, or a numeric
+        (int, float, Decimal) number of seconds.
+    :param words: This is a dictionary of words to use for the various periods.  (for i18n purposes.)
+    :param case: this is a function that will reformat the words.  str.title is the default, but str.upper or
+        str.lower work as well.  If this is None, no reformatting will be done.
+    :param ago_format: This is a string format for negative timedeltas.  the default is "{} Ago".
+    :param in_format: This is a string format for positive timedeltas.  the default is "In {}".
+    :param less_than_at: This is another timedelta or numeric number of seconds that if it is less than this,
+        this number will be returned.
+    :param more_than_at: This is another timedelta or numeric number of seconds that if it is more than this,
+        this number will be returned.
+    :param less_than_format: This is the format used if less than.  the default is "Less Than {}".
+        this is processed before the in/ago formats.
+    :param more_than_format: This is the format used if more than.  the default is "More Than {}".
+        this is processed before the in/ago formats.
+    :param kwargs: This can be any of the period keywords with the TIMEDELTA_PERIOD_ACTION enum's.
+        ALWAYS: Always show this period, even if it's 0.
+        NEVER: Never show this period.  this will be combined with the next lower period.
+        DEFAULT: Show this period if there is a value.
+    :return: A string representation of this.
+
+    Examples:
+
+
+        >>> timedelta_to_string(169220)
+        'In 1 Day, 23 Hours, 20 Seconds'
+
+        >>> timedelta_to_string(169220.1234)
+        'In 1 Day, 23 Hours, 20 Seconds'
+
+        >>> timedelta_to_string(169220.1234, microsecond=TIMEDELTA_PERIOD_ACTION.DEFAULT)
+        'In 1 Day, 23 Hours, 20 Seconds, 1233 Microseconds'
+
+
+        >>> td = timedelta(days=1, hours=23, seconds=20)
+        >>> timedelta_to_string(td)
+        'In 1 Day, 23 Hours, 20 Seconds'
+
+        >>> timedelta_to_string(td, minute=TIMEDELTA_PERIOD_ACTION.ALWAYS)
+        'In 1 Day, 23 Hours, 0 Minutes, 20 Seconds'
+
+        >>> timedelta_to_string(td, hour=TIMEDELTA_PERIOD_ACTION.NEVER)
+        'In 1 Day, 1380 Minutes, 20 Seconds'
+
+        >>> timedelta_to_string(td, minute=TIMEDELTA_PERIOD_ACTION.ALWAYS, case=str.lower)
+        'in 1 day, 23 hours, 0 minutes, 20 seconds'
+
+        >>> timedelta_to_string(td, less_than_at=60, more_than_at=timedelta(days=1))
+        'In More Than 1 Day'
+
+        >>> timedelta_to_string(20, less_than_at=60, more_than_at=timedelta(days=1))
+        'In Less Than 1 Minute'
+
+        >>> td = timedelta(days=1, hours=23, seconds=20, microseconds=1234)
+        >>> timedelta_to_string(td, microsecond=TIMEDELTA_PERIOD_ACTION.DEFAULT)
+        'In 1 Day, 23 Hours, 20 Seconds, 1233 Microseconds'
+
+        >>> td = timedelta(days=1, hours=23, seconds=20, microseconds=1234, milliseconds=134)
+        >>> timedelta_to_string(td, microsecond=TIMEDELTA_PERIOD_ACTION.DEFAULT, millisecond=TIMEDELTA_PERIOD_ACTION.DEFAULT)
+        'In 1 Day, 23 Hours, 0 Minutes, 20 Seconds, 135 Milliseconds, 233 Microseconds'
+
+
+    """
+
+    words = words or DEFAULT_WORDS
+    actions = DEFAULT_ACTIONS.copy()
+    actions.update(kwargs)
+
+    def make_word(count, period):
+        tmp_word = words[period]
+        tmp_word = pluralizer(count, *tmp_word)
+        return tmp_word
+
+    def make_secs(item_in):
+        if isinstance(item_in, timedelta):
+            return item_in.total_seconds()
+        elif isinstance(item_in, dict):
+            return timedelta(**item_in).total_seconds()
+        else:
+            return item_in
+
+    if less_than_at is not None:
+        less_than_at = make_secs(less_than_at)
+
+    if more_than_at is not None:
+        more_than_at = make_secs(more_than_at)
+
+    tot_seconds = make_secs(td_in)
+
+    if tot_seconds < 0:
+        neg = True
+        tot_seconds = abs(tot_seconds)
+    else:
+        neg = False
+
+    if less_than_at is not None and tot_seconds < less_than_at:
+        tmp_ret = timedelta_to_string(less_than_at, words=words, case=case, ago_format='{}', in_format='{}', **actions)
+        tmp_ret = less_than_format.format(tmp_ret)
+
+    elif more_than_at is not None and tot_seconds > more_than_at:
+        tmp_ret = timedelta_to_string(more_than_at, words=words, case=case, ago_format='{}', in_format='{}', **actions)
+        tmp_ret = more_than_format.format(tmp_ret)
+
+    else:
+        tmp_ret = []
+        tmp_sec = int(tot_seconds)
+        total_ms = tot_seconds - tmp_sec
+        total_ms = int(total_ms * 1000000)
+        tot_seconds = tmp_sec
+
+        for period in PROCESS_ORDER:
+            if actions[period] == TIMEDELTA_PERIOD_ACTION.NEVER:
+                continue
+            elif tot_seconds >= PERIOD_SECONDS[period]:
+                period_count, tot_seconds = divmod(tot_seconds, PERIOD_SECONDS[period])
+                period_word = make_word(period_count, period)
+                tmp_ret.append('%s %s' % (int(period_count), period_word))
+
+            elif actions[period] == TIMEDELTA_PERIOD_ACTION.ALWAYS:
+                period_word = make_word(0, period)
+                tmp_ret.append('%s %s' % (0, period_word))
+
+        for period in ['millisecond', 'microsecond']:
+
+            if actions[period] == TIMEDELTA_PERIOD_ACTION.NEVER:
+                continue
+
+            if period == 'millisecond' and total_ms >= 1000:
+                period_count, total_ms = divmod(total_ms, 1000)
+                period_word = make_word(period_count, period)
+                tmp_ret.append('%s %s' % (int(period_count), period_word))
+
+            elif period == 'microsecond' and total_ms > 0:
+                period_word = make_word(total_ms, period)
+                tmp_ret.append('%s %s' % (int(total_ms), period_word))
+
+            elif actions[period] == TIMEDELTA_PERIOD_ACTION.ALWAYS:
+                period_word = make_word(0, period)
+                tmp_ret.append('%s %s' % (0, period_word))
+
+        tmp_ret = ', '.join(tmp_ret)
+
+    if neg:
+        if ago_format is not None:
+            tmp_ret = ago_format.format(tmp_ret)
+    else:
+        if in_format is not None:
+            tmp_ret = in_format.format(tmp_ret)
+
+    if case is not None:
+        tmp_ret = case(tmp_ret)
+
+    return tmp_ret
+
+
 # ===============================================================================
 # get_now
-#  ===============================================================================
+# ===============================================================================
 
 
 def get_now(time_now=None, tz=None):
@@ -590,3 +824,5 @@ class FiscalDate(object):
 
     def __repr__(self):
         return 'FiscalDate(%r) offset: %s FY:%s, FQ:%s' % (self.date_in, self.fiscal_offset, self.fy, self.fq)
+
+

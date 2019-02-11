@@ -1,7 +1,7 @@
 
 
 __all__ = ['DictKey2Method', 'AdvDict', 'TreeDict', 'TreeItem', 'MultiLevelDictManager', 'BasicTreeNode', 'DictOfDict',
-           'DictOfList', 'flatten_dict']
+           'DictOfList', 'flatten_dict', 'AdvancedDict']
 
 import collections
 from PythonUtils.BaseUtils.general_utils import _UNSET
@@ -71,6 +71,189 @@ def flatten_dict(dict_in, depth=0, max_depth=10, remove_empty=True, flatten_sing
         return None
 
     return tmp_ret
+
+
+# ===============================================================================
+# Dictionary Key to Method (Advanced Dict)
+# ===============================================================================
+
+class ReferenceHelper(object):
+    """
+    Helper utility to allow dict keys to be accessed by attrs.
+    """
+
+    def __init__(self, parent):
+        self.parent = parent
+
+    def __getattr__(self, item):
+        return self.parent[item]
+
+    def __setattr__(self, key, value):
+        if key not in self.parent and not self.parent._allow_new_attrs:
+            raise KeyError('%s is not a valid key and adding new keys via attributes is disallowed.' % key)
+        self.parent[key] = value
+
+
+class AdvancedDict(collections.UserDict):
+    """
+    Helper utility to allow dict keys to be accessed by attrs.
+
+    All normal dictionary methods are maintained.
+
+    Example:
+
+        >>> d = {'one': 1, 'two': 2}
+        >>> dk2m = DictKey2Method(d)
+        >>> dk2m.one
+        1
+        >>> dk2m.two
+        2
+
+    Can be subclassed to allow access via a single method name if needed to avoid conflicts, such as if a key would
+      match an existing method such as "item" or "update".
+      To do so, subclass and modify the parameter "_reference_attr_name" to a string method.
+
+    At that point, this will operate like a normal dictionary with an additional property matching the
+    reference_attr_name.
+
+    Calling that name allows access to setting and accessing key/values in the dict.
+
+    Example:
+        >>> class AD(AdvancedDict):
+        ...    _reference_key_name = 'key'
+        >>> d = AD()
+        >>> d['one'] = 1
+        >>> d['two'] = 2
+        >>> d['three'] = 3
+        >>> d.key.one
+        1
+
+    You can also also modify two additional attributes during subclassing;
+
+    _verify_keys: [True/False] This will verify the keys to amke sure they are valid attrs.
+        IF True: keys are validated using str.isitentifier() and an AttributeError is raised if they key fails.
+        If false, keys are validated, but if they do not pass, they can still be used for dict access, but will not work
+            for attribute access.
+    _ allow_new_attrs: [True/False]  This allows creating new key/values by setting new attributes
+        If True: unknown attributes that are set will create new key/values pairs in the dict
+        If False: Unknown attirbutes that are set will raise a KeyError.
+    _reference_helper: This is the object used when a reference_attr is used.  if you need to subclass it you can
+        change this to point to the new object.
+    """
+
+    _reference_attr_name = None
+    _verify_keys = True
+    _allow_new_attrs = True
+    _reference_helper = ReferenceHelper
+
+    def __init__(self, *args, **kwargs):
+        if self._reference_attr_name is not None:
+            setattr(self, self._reference_attr_name, self._reference_helper(self))
+        self.allowed_attrs = []
+        super(AdvancedDict, self).__init__(*args, **kwargs)
+        self.__initialised = True
+
+    def __setitem__(self, key, value):
+        if not key.isidentifier():
+            if self._verify_keys:
+                raise AttributeError('%r is not a valid attribute name' % key)
+        else:
+            if key not in self.allowed_attrs:
+                self.allowed_attrs.append(key)
+
+        if self._reference_attr_name is None and key in self.__dict__:
+            raise AttributeError('%r is already a known method or attribute of this object' % key)
+
+        super(AdvancedDict, self).__setitem__(key, value)
+
+    def __getattr__(self, item):
+        if self._reference_attr_name is None:
+            try:
+                return self.data[item]
+            except KeyError:
+                raise KeyError(item, ' is not a valid key for this dictionary')
+        else:
+            raise AttributeError('there is no attribute %r for this object' % item)
+
+    def __setattr__(self, key, value):
+
+        if not '_attrExample__initialised' in self.__dict__:
+            return dict.__setattr__(self, key, value)
+
+        elif key in self.__dict__:
+            super(AdvancedDict, self).__setattr__(key, value)
+        else:
+            if key not in self.data and not self._allow_new_attrs:
+                raise AttributeError('%r is not a valid existing key and new keys cannot be created using attributes' % key)
+            self[key] = value
+
+
+
+class DictKey2Method(object):
+    """
+    Helper utility to allow dict keys to be accessed by attrs.
+
+    Example:
+
+        >>> d = {'one': 1, 'two': 2}
+        >>> dk2m = DictKey2Method(d)
+        >>> dk2m.one
+        1
+        >>> dk2m.two
+        2
+    """
+
+    def __init__(self, mydict):
+        self.mydict = mydict
+
+    def __getattr__(self, item):
+        try:
+            return self.mydict[item]
+        except KeyError:
+            raise KeyError(item, ' is not a valid key for this dictionary')
+
+    def __setattr__(self, key, value):
+        if key in ('mydict',):
+            self.__dict__[key] = value
+        else:
+            self.mydict[key] = value
+
+
+class AdvDict(dict):
+    """
+    A dictionary that allows you to access contents as if they were methods.
+
+    This uses the :py:class:`DictKey2Method` class and wraps it in a :py:class:`dict`.  This also forces the method
+    lookups to use a special method name, thus minimizing conflicts with the existing dict methods.
+
+    :param property_name: The name of the property to use to access the fields. (Default = 'key')
+
+    Example:
+
+        >>> d = AdvDict()
+        >>> d['one'] = 1
+        >>> d['two'] = 2
+        >>> d['three'] = 3
+        >>> d.key.one
+        1
+
+        >>> d = AdvDict(property_name='number')
+        >>> d['one'] = 1
+        >>> d['two'] = 2
+        >>> d['three'] = 3
+        >>> d.number.two
+        2
+
+    """
+
+    def __init__(self, *args, **kwargs):
+        property_name = kwargs.pop('property_name', 'key')
+        super(AdvDict, self).__init__(*args, **kwargs)
+        setattr(self, property_name, DictKey2Method(self))
+
+
+
+
 
 
 # ===============================================================================
@@ -248,73 +431,6 @@ class MultiLevelDictManager(object):
 
     __call__ = get
 
-
-# ===============================================================================
-# Dictionary Helper Objects
-# ===============================================================================
-
-
-class DictKey2Method(object):
-    """
-    Helper utility to allow dict keys to be accessed by attrs.
-
-    Example:
-
-        >>> d = {'one': 1, 'two': 2}
-        >>> dk2m = DictKey2Method(d)
-        >>> dk2m.one
-        1
-        >>> dk2m.two
-        2
-    """
-
-    def __init__(self, mydict):
-        self.mydict = mydict
-
-    def __getattr__(self, item):
-        try:
-            return self.mydict[item]
-        except KeyError:
-            raise KeyError(item, ' is not a valid key for this dictionary')
-
-    def __setattr__(self, key, value):
-        if key in ('mydict',):
-            self.__dict__[key] = value
-        else:
-            self.mydict[key] = value
-
-
-class AdvDict(dict):
-    """
-    A dictionary that allows you to access contents as if they were methods.
-
-    This uses the :py:class:`DictKey2Method` class and wraps it in a :py:class:`dict`.  This also forces the method
-    lookups to use a special method name, thus minimizing conflicts with the existing dict methods.
-
-    :param property_name: The name of the property to use to access the fields. (Default = 'key')
-
-    Example:
-
-        >>> d = AdvDict()
-        >>> d['one'] = 1
-        >>> d['two'] = 2
-        >>> d['three'] = 3
-        >>> d.key.one
-        1
-
-        >>> d = AdvDict(property_name='number')
-        >>> d['one'] = 1
-        >>> d['two'] = 2
-        >>> d['three'] = 3
-        >>> d.number.two
-        2
-
-    """
-
-    def __init__(self, *args, **kwargs):
-        property_name = kwargs.pop('property_name', 'key')
-        super(AdvDict, self).__init__(*args, **kwargs)
-        setattr(self, property_name, DictKey2Method(self))
 
 
 # ===============================================================================

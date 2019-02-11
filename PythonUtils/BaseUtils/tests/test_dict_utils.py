@@ -2,10 +2,32 @@
 
 
 from unittest import TestCase
-from PythonUtils.BaseUtils import flatten_dict, MultiLevelDictManager, AdvDict
+from PythonUtils.BaseUtils import flatten_dict, MultiLevelDictManager, AdvDict, AdvancedDict
+# from PythonUtils.TestHelpers.test_mapping import BasicTestMappingProtocol, TestHashMappingProtocol, TestMappingProtocol
 
+
+'''
+class TestAdvancedDictMapping(TestHashMappingProtocol, TestCase):
+    type2test = AdvancedDict
+
+    def _reference(self):
+        """Return a dictionary of values which are invariant by storage
+        in the object under test."""
+        return {"key1":"value1", "key2":(1,2,3)}
+
+class TestAdvancedDictHash(TestMappingProtocol, TestCase):
+    type2test = AdvancedDict
+
+    def _reference(self):
+        """Return a dictionary of values which are invariant by storage
+        in the object under test."""
+        return {"key1":"value1", "key2":(1,2,3)}
+'''
 
 class TestFlattenDict(TestCase):
+    def setUp(self):
+        print(self.id())
+
     def test_flatten_dict_1(self):
         tmp_in = {'l1': [1, 2, 3, 4]}
         exp_out = [1, 2, 3, 4]

@@ -1,24 +1,9 @@
 #!/usr/bin/env python
 
-"""
-"""
-
-__author__ = ""
-__copyright__ = ""
-__credits__ = []
-__license__ = ""
-__version__ = ""
-__maintainer__ = ""
-__email__ = ""
-__status__ = ""
-
-
-from datetime import datetime, timedelta
 
 from unittest import TestCase
-from PythonUtils.BaseUtils.base_utils import *
-import statistics
-from decimal import Decimal
+from PythonUtils.BaseUtils import swap, max_len, NextItem, merge_list, make_list, get_not_in, count_unique,  \
+remove_dupes, get_same, ListPlus, flatten, unpack_class_method
 
 class SwapTest(TestCase):
     def test_swap(self):
@@ -117,6 +102,31 @@ class MakeListTests(TestCase):
 
     def test_others(self):
         self.assertEqual(make_list(1), [1, ])
+
+
+
+class UnpackDemo(object):
+    t1 = '1'
+
+    def args_demo(self, num1, num2):
+        return num1+num2
+
+    def kwargs_demo(self, **kwargs):
+        n1 = kwargs['n1']
+        n2 = kwargs['n2']
+        return n1+n2
+
+
+class UnpackDemo2(object):
+    t1 = '2'
+
+    def args_demo(self, num1, num2):
+        return num1*num2
+
+    def kwargs_demo(self, **kwargs):
+        n1 = kwargs['n1']
+        n2 = kwargs['n2']
+        return n1*n2
 
 
 
