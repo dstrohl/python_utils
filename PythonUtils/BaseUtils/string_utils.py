@@ -13,12 +13,15 @@ __email__ = ""
 __status__ = ""
 
 __all__ = [ 'get_between', 'get_after', 'get_before',  'index_of_count', 'replace_between', 'spinner_char', 'pluralizer',
-            'format_as_decimal_string', 'unslugify', 'ellipse_trim', 'concat', 'convert_to_boolean', 'slugify']
+            'format_as_decimal_string', 'unslugify', 'ellipse_trim', 'concat', 'convert_to_boolean', 'slugify',
+            'indent_str', 'format_key_value']
 
 from decimal import Decimal
 import re
 from unicodedata import normalize
 from PythonUtils.BaseUtils.list_utils import flatten
+from pprint import pformat
+from json import dumps
 
 # ===============================================================================
 # text utils
@@ -181,6 +184,203 @@ def get_between(instring, start_key, end_key):
 # Format string
 # ===============================================================================
 
+def format_as_decimal_string(num, max_decimal_points=6):
+    """
+    This will format a number as a string including decimals, but will correctly trim the decimal.
+    :param num: number to format
+    :param max_decimal_points: the max decimals to show
+    :return: a string of the number with decimals.
+
+    Examples:
+        >>> format_as_decimal_string(1.234)
+        '1.234'       # this would normally be '1.234000' when done by the normal format
+
+    """
+    if isinstance(num, str):
+        if num.isnumeric():
+            num = Decimal(num)
+        else:
+            return ''
+
+    if (num % 1 == 0) or (num > 100):
+        return '{:,.0f}'.format(num)
+    else:
+        tmp_dec_pl = '{}'.format(max_decimal_points)
+        tmp_format = '{0:.' + tmp_dec_pl + 'g}'
+        tmp_num_str = tmp_format.format(num)
+        tmp_num_str = tmp_num_str.rstrip('0').rstrip('.')
+        return tmp_num_str
+
+
+def indent_str(data, next_lines=4, first_line=None, indent_char=' ', trim_lines=True):
+    if first_line is None:
+        first_line = next_lines
+    data = data.splitlines()
+    for index in range(len(data)):
+        tmp_line = data[index]
+        if trim_lines:
+            tmp_line = tmp_line.strip()
+        if index == 0:
+            tmp_line = tmp_line.rjust(first_line, indent_char)
+        else:
+            tmp_line = tmp_line.rjust(next_lines, indent_char)
+        data[index] = tmp_line
+    return '\n'.join(data)
+
+
+class NumberFormatHelper(object):
+    def __init__(self, value, decimal_places):
+        self.value = value
+        self.decimal_places = decimal_places
+        self.has_neg = False
+        self.my_dec_len = 0
+        self.my_int_len = 0
+        self.int_value = ''
+        self.dec_value = ''
+
+        if value < 0:
+            self.has_neg = True
+
+        decimal_places = abs(decimal_places)
+        format_str = '%.' + str(decimal_places) + 'f'
+        tmp_str = format_str % decimal_places
+        tmp_str = tmp_str.split('.', maxsplit=1)
+        if len(tmp_str) == 1:
+            self.int_value = tmp_str[0]
+        else:
+            self.int_value = tmp_str[0]
+            self.dec_value = tmp_str[1]
+
+        if self.decimal_places < 0:
+            self.dec_value = self.dec_value.rstrip('0')
+
+        self.my_dec_len = len(self.dec_value)
+        self.my_int_len = len(self.int_value)
+
+    def get(self, max_dec, max_int, with_neg):
+        if with_neg and not self.has_neg:
+            tmp_ret = ' '
+        else:
+            tmp_ret = ''
+
+        tmp_ret += self.int_value.rjust(max_int)
+
+        if max_dec:
+            tmp_ret += '.'
+            tmp_ret += self.dec_value.ljust(max_dec, '0')
+        return tmp_ret
+
+
+def format_key_value(data, key_format='left', value_format='str', decimal_places=-2, sep=': ', indent=0, join_str='\n'):
+    """
+    Formats a key, value pair into a cleaner string
+    :param data: a dictionary or iterator of tuples
+    :param key_format:
+        any of:
+            'left': default, left justifies the key, but pads it to the length of the longest key
+            'left_trimmed': left justifies the key,
+            'right': right justifies the key, padding to fit all values starting at the same place
+    :param value_format:
+            'repr': returns a repr of the value
+            'pretty_print': runs pretty_print on the value
+            'json': runs json formatter on the value
+            'str': runs 'str' on the value
+            'number': returns numbers right justified by the longest number.
+            'auto' <default>:
+                strings are formatted with "str",
+                objects are formatted first trying json, then ppring, then repr
+                numbers are formatted using 'number'
+    :param indent: indents the key this many spaces
+    :param decimal_places: if positive, will force the number to that many places
+        if negative, will use the least number of decimal places possible, up to that number.
+        if zero, will always return integers.
+            so:
+                decimal_places=2 would return
+                    1      as 1.00
+                    1.12   as 1.12
+                    1.4567 as 1.45
+                decimal_places -3 would return
+                    for a list of [1, 1.12, 1.12345], [1.000, 1.120, 1.123]
+                    for a list of [1, 2, 3, 4] would return [1, 2, 3, 4]
+
+    :return:
+    """
+    if isinstance(data, dict):
+        data = list(data.items())
+
+    max_key = None
+    has_neg = False
+    max_dec = 0
+    max_int = 0
+
+    if key_format != 'left_trimmed':
+        max_key = 0
+        for index in range(len(data)):
+            key, value = data[index]
+            max_key = max(max_key, len(key))
+
+            if value_format == 'number' and not isinstance(value, (int, float, Decimal)):
+                value = float(value)
+
+            if value_format in ('number', 'auto') and isinstance(value, (int, float, Decimal)):
+                value = NumberFormatHelper(value, decimal_places=decimal_places)
+                has_neg = has_neg or value.has_neg
+                max_dec = max(max_dec, value.my_dec_len)
+                max_int = max(max_int, value.my_int_len)
+
+    tmp_ret = []
+    for key, value in data:
+        if key_format == 'left':
+            tmp_line = key.ljust(max_key) + sep
+        elif key_format == 'left_trimmed':
+            tmp_line = key + sep
+        elif key_format == 'right':
+            tmp_line = key.rjust(max_key) + sep
+        else:
+            raise AttributeError('Invalid key_format value of %s, should be one of ["left", "left_trimmed", "right"]' % key_format)
+
+        if value_format == 'repr':
+            value = repr(value)
+        elif value_format == 'pretty_print':
+            value = pformat(value, indent=4)
+        elif value_format == 'json':
+            value = dumps(value, indent=4)
+        elif value_format == 'str':
+            value = str(value)
+        elif value_format == 'number':
+            value = value.get(max_int=max_int, max_dec=max_dec, has_neg=has_neg)
+        elif value_format == 'auto':
+            if isinstance(value, NumberFormatHelper):
+                value = value.get(max_int=max_int, max_dec=max_dec, has_neg=has_neg)
+            elif isinstance(value, str):
+                value = str(value)
+            else:
+                try:
+                    value = dumps(value, indent=4)
+                except Exception:
+                    try:
+                        value = pformat(value, indent=4)
+                    except Exception:
+                        value = repr(value)
+
+        else:
+            raise AttributeError(
+                'Invalid key_format value of %s, should be one of ["left", "left_trimmed", "right"]' % key_format)
+
+        value = indent_str(value, next_lines=len(tmp_line), first_line=0, indent_char=' ')
+
+        tmp_line += value
+        if indent:
+            tmp_line.indent_str(tmp_line, next_lines=indent, indent_char=' ')
+        tmp_ret.append(tmp_line)
+    if join_str:
+        tmp_ret =  join_str.join(tmp_ret)
+    return tmp_ret
+
+# ===============================================================================
+# Slugify string
+# ===============================================================================
+
 
 def unslugify(text, case='caps', end=''):
     """
@@ -262,37 +462,6 @@ def slugify(text, delim='_', case='lower', allowed=None, punct_replace='', encod
     else:
         return text_out
 
-# ===============================================================================
-# Format number as clean string
-# ===============================================================================
-
-
-def format_as_decimal_string(num, max_decimal_points=6):
-    """
-    This will format a number as a string including decimals, but will correctly trim the decimal.
-    :param num: number to format
-    :param max_decimal_points: the max decimals to show
-    :return: a string of the number with decimals.
-
-    Examples:
-        >>> format_as_decimal_string(1.234)
-        '1.234'       # this would normally be '1.234000' when done by the normal format
-
-    """
-    if isinstance(num, str):
-        if num.isnumeric():
-            num = Decimal(num)
-        else:
-            return ''
-
-    if (num % 1 == 0) or (num > 100):
-        return '{:,.0f}'.format(num)
-    else:
-        tmp_dec_pl = '{}'.format(max_decimal_points)
-        tmp_format = '{0:.' + tmp_dec_pl + 'g}'
-        tmp_num_str = tmp_format.format(num)
-        tmp_num_str = tmp_num_str.rstrip('0').rstrip('.')
-        return tmp_num_str
 
 
 # ===============================================================================

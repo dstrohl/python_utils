@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
 from unittest import TestCase
+
 from PythonUtils.BaseUtils import convert_to_boolean, spinner_char, index_of_count, get_before, get_after, get_between, \
-    replace_between, ellipse_trim
+    replace_between, ellipse_trim, indent_str, format_key_value
+from PythonUtils.BaseUtils.string_utils import NumberFormatHelper
 
 
 class CFB_Test(object):
@@ -175,3 +177,13 @@ class TrimTests(TestCase):
         instr = '1234567890'
         outstr = ellipse_trim(instr, 20)
         self.assertEqual('1234567890', outstr)
+
+
+class TestIndentStr(TestCase):
+    def test_indent_str(self):
+        test_in = 'this is a test'
+        test_ret = indent_str(test_in)
+        exp_ret = '    this is a test'
+        self.assertEqual(exp_ret, test_ret)
+
+       

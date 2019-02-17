@@ -4,6 +4,8 @@
 from unittest import TestCase
 from PythonUtils.BaseUtils import flatten_dict, MultiLevelDictManager, AdvDict, AdvancedDict
 # from PythonUtils.TestHelpers.test_mapping import BasicTestMappingProtocol, TestHashMappingProtocol, TestMappingProtocol
+from PythonUtils.TestHelpers.test_mapping import TestDictLikeObject
+
 
 
 '''
