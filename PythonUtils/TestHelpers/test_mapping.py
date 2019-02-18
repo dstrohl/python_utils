@@ -9,7 +9,7 @@ import collections
 import sys
 from copy import deepcopy, copy
 from fnmatch import fnmatch
-from PythonUtils.BaseUtils import make_list
+from PythonUtils.BaseUtils import make_list, format_key_value, indent_str
 '''
 class NxtNum(object):
     _max_item = 26
@@ -637,6 +637,9 @@ class TestFlaggerBaseItemObj(object):
     def __str__(self):
         return self.name
 
+    def match(self, *filter_flags, **filter_kwrgs):
+        return True
+
 class TestFlaggerBaseItemList(object):
     item_class = TestFlaggerBaseItemObj
 
@@ -654,6 +657,15 @@ class TestFlaggerBaseItemList(object):
                 tmp_attr = value
             setattr(tmp_item, key, tmp_attr)
         self.data[tmp_item.name] = tmp_item
+
+    def iter(self, *names, filter_flags=None, **kwargs):
+        filter_flags = make_list(filter_flags)
+        for i in self:
+            if names and i.name not in names:
+                continue
+            if not i.match(*filter_flags, **kwargs):
+                continue
+            yield i
 
     def __getitem__(self, item):
         return self.data[item]
@@ -678,27 +690,92 @@ class TestFlaggerSkipIDObj(TestFlaggerBaseItemObj):
             return True
         return fnmatch(other, self.name)
 
+    @property
+    def matched_tests(self):
+        return len(self.tests)
+
     def clear(self):
         self.found = 0
         self.tests.clear()
 
-class TestFlaggerSkipIDList(TestFlaggerBaseItemList):
+    def match(self, *filter_flags, **match_kwrgs):
+        if 'inc_matched' in filter_flags and 'inc_unmatched' in filter_flags:
+            return True
 
-    def summary(self):
-        """
-        :param filters:
-        :param summary:
-        :param details:
-        :param dump:
-        :return:
+        if 'inc_matched' in filter_flags:
+            if self.tests:
+                return True
+            else:
+                return False
 
-        Total IDs: 10
-            Matched IDs   : 10
-            Matched Tests : 10
-            Not Found IDs : 10
-        """
+        if 'inc_unmatched' in filter_flags:
+            if not self.tests:
+                return True
+            else:
+                return False
+        return True
 
     def details(self):
+        if self.tests:
+            return 'Matched %s Tests' % self.matched_tests
+        else:
+            return 'Not Matched'
+
+    def dump(self, inc_test_status=True):
+        tmp_ret = [self.details()]
+        if self.tests:
+            for t in self.tests:
+                if inc_test_status:
+                    tmp_ret.append(t.status)
+                else:
+                    tmp_ret.append(t.name)
+
+
+class TestFlaggerSkipIDList(TestFlaggerBaseItemList):
+
+    def iter(self, *ids, inc_matched=None):
+        if inc_matched is None:
+            return super(TestFlaggerSkipIDList, self).iter(*ids)
+        else:
+            if inc_matched:
+                return super(TestFlaggerSkipIDList, self).iter(*ids, filter_flags=['inc_matched'])
+            else:
+                return super(TestFlaggerSkipIDList, self).iter(*ids, filter_flags=['inc_unmatched'])
+
+    def summary(self, *ids, inc_matched=None, indent=0, join_str='\n'):
+        """
+        :param filters:
+        :param summary:
+        :param details:
+        :param dump:
+        :return:
+
+        Total IDs     : 10
+        Matched IDs   : 10
+        Matched Tests : 10
+        Not Found IDs : 10
+        """
+        tmp_ret = {
+            'Total IDs': len(self),
+        }
+        matched = 0
+        matched_tests = 0
+        not_found = 0
+        for i in self.iter(*ids, inc_matched=inc_matched):
+            if i.matched_tests:
+                matched += 1
+                matched_tests += i.matched_tests
+            else:
+                not_found += 1
+        tmp_ret['Matched IDs'] = matched
+        tmp_ret['Matched Tests'] = matched_tests
+        tmp_ret['Not Found IDs'] = not_found
+
+        tmp_ret = format_key_value(tmp_ret, sep=' : ', indent=indent, join_str=join_str)
+        return tmp_ret
+
+    def details(self, *ids, indent=0, inc_counts=True, inc_summary=True,
+                inc_matched=None, join_str='\n', dump=False):
         """
         :param filters:
         :param summary:
@@ -709,26 +786,215 @@ class TestFlaggerSkipIDList(TestFlaggerBaseItemList):
         Skip_ID_1 (not found) / (Skipped: 10)
         Skip_ID_1 (not found) / (Skipped: 10)
         """
+        if inc_summary:
+            tmp_ret = [
+                'Summary:',
+                self.summary(*ids, inc_matched=inc_matched, indent=2, join_str=join_str),
+                'Details:',
+                self.details(*ids, inc_matched=inc_matched, inc_counts=inc_counts, indent=2, join_str=join_str),
+            ]
+            tmp_ret = join_str.join(tmp_ret)
+        else:
 
-    def dump(self):
+            tmp_ret = {}
+
+            for i in self.iter(*ids, inc_matched=inc_matched):
+                if dump:
+                    tmp_ret[i.name] = i.dump(inc_counts=inc_counts)
+                else:
+                    tmp_ret[i.name] = i.details(inc_counts=inc_counts)
+
+            if inc_counts:
+                val_format = 'str'
+            else:
+                val_format = 'skip'
+
+            tmp_ret = format_key_value(tmp_ret, join_str=join_str, value_format=val_format, join_str=join_str)
+
+        tmp_ret = indent_str(tmp_ret, indent)
+
+        return tmp_ret
+
+
+class TestFlaggerTestObj(TestFlaggerBaseItemObj):
+    def __init__(self, flagger, name, desc=None):
+        desc = desc or name.__doc__
+        name = name.id()
+        name = name.rsplit('.', maxsplit=1)[1]
+        if name.startswith('test_'):
+            name = name[:5]
+        elif name.startswith('test'):
+            name = name[:4]
+        super(TestFlaggerTestObj, self).__init__(flagger, name, desc)
+        self.flags = []
+        self.skip_id_obj = None
+        self.skip_reason = None
+        self.skipped = None
+        self.run = None
+        self.passed = None
+        self.failed = None
+        self.raised = None
+        self.fail_reason = None
+
+    def clear(self):
+        self.flags = []
+        self.skip_id_obj = None
+        self.skip_reason = None
+        self.skipped = None
+        self.run = None
+        self.passed = None
+        self.failed = None
+        self.raised = None
+        self.fail_reason = None
+
+    def match(self, *filter_flags, **filter_kwrgs):
         """
-        :param filters:
-        :param summary:
-        :param details:
-        :param dump:
+        flags:
+          inc_passed
+          inc_failed
+          inc_raised
+          inc_skipped
+          inc_run
+
+        kwargs:
+          inc_flags=[flag_list]
+          inc_skip_ids=[id_list]
+
+        :param match_kwargs:
         :return:
-
-        Skip_ID_1 (not found) / (Skipped: 10)
-            Tests Skipped:
-                test_1 [status] flags: a, b, c
-                test_2 [status]
-                Test_3 [status]
-        Skip_ID_1 (not found) / (Skipped: 10)
-            Tests Skipped:
-                test_1
-                test_2
-                Test_3
         """
+        if not filter_flags and not filter_kwrgs:
+            return True
+        if 'inc_passed' in filter_flags and self.passed is not None and not self.passed:
+            return False
+        if 'inc_failed' in filter_flags and self.failed is not None and not self.failed:
+            return False
+        if 'inc_raised' in filter_flags and self.raised is not None and not self.raised:
+            return False
+
+        if 'inc_run' in filter_flags and not self.run:
+            return False
+        if 'inc_skipped' in filter_flags and not self.skipped:
+            return False
+
+        inc_flags = make_list(filter_kwrgs.get('inc_flags', None))
+        inc_skip_ids = make_list(filter_kwrgs.get('inc_skip_ids', None))
+
+        for flag in inc_flags:
+            if flag not in self.flags:
+                return False
+
+        if inc_skip_ids:
+            if self.skip_id_obj is None:
+                return False
+            else:
+                if self.skip_id_obj.name not in inc_skip_ids:
+                    return False
+        return True
+
+class TestFlaggerTestList(TestFlaggerBaseItemList):
+
+    def summary(self, *tests, indent=0, join_str='\n', filter_flags=None, **filters_kwargs):
+        """
+        Total : 120
+        Ran: 100
+        Paassed: 80
+        Failed:  20
+        Exceptions: 20
+        Skipped: 20
+        """
+        ran_tests = 0
+        skipped_tests = 0
+        passed_tests = 0
+        failed_tests = 0
+        exception_tests = 0
+
+        has_pf = False
+
+        for i in self.iter(*tests, filter_flags=make_list(filter_flags), **filters_kwargs):
+            ran_tests += i.run
+            skipped_tests += i.skippped
+
+            if i.passed is not None:
+                has_pf = True
+                passed_tests += i.passed
+            if i.failed is not None:
+                has_pf = True
+                failed_tests += i.failed
+            if i.raised is not None:
+                has_pf = True
+                exception_tests += i.raised
+        if has_pf:
+            tmp_ret = {
+                'Total Tests': len(self),
+                'Ran Tests': ran_tests,
+                'Skipped Tests': skipped_tests,
+                'Passed Tests': passed_tests,
+                'Failed Tests': failed_tests,
+                'Exception Tests': exception_tests,
+            }
+        else:
+            tmp_ret = {
+                'Total Tests': len(self),
+                'Ran Tests': ran_tests,
+                'Skipped Tests': skipped_tests,
+            }
+
+        tmp_ret = format_key_value(tmp_ret, sep=' : ', indent=indent, join_str=join_str)
+        return tmp_ret
+
+    def details(self, *ids, indent=0, inc_status=True, inc_skip_id=True, inc_flags=True, inc_summary=True,
+                inc_matched=None, join_str='\n', dump=False, filter_flags=None, **filters_kwargs):
+        """
+        Tests:
+            Total : 120
+            Ran: 100
+            Paassed: 80
+            Failed:  20
+            Exceptions: 20
+            Skipped: 20
+
+        Detail:
+            [S] Test_a [Passed/Failed/Skipped/Run/Raised] Flags: x, y, z  Skip_ID_Matched: a
+            [F] Test_b [Passed/Failed/Skipped/Run]
+
+        Dump:
+            [S] Test_a [Passed/Failed/Skipped/Run]:
+                Flags: x, y, z
+                    <skip / fail reason>
+            [F] Test_b [Passed/Failed/Skipped/Run]:
+                Flags: x, y, z
+                    <skip / fail reason>
+        """
+        if inc_summary:
+            tmp_ret = [
+                'Summary:',
+                self.summary(*ids, inc_matched=inc_matched, indent=2, join_str=join_str),
+                'Details:',
+                self.details(*ids, inc_matched=inc_matched, inc_counts=inc_counts, indent=2, join_str=join_str),
+            ]
+            tmp_ret = join_str.join(tmp_ret)
+        else:
+
+            tmp_ret = {}
+
+            for i in self.iter(*ids, inc_matched=inc_matched):
+                if dump:
+                    tmp_ret[i.name] = i.dump(inc_counts=inc_counts)
+                else:
+                    tmp_ret[i.name] = i.details(inc_counts=inc_counts)
+
+            if inc_counts:
+                val_format = 'str'
+            else:
+                val_format = 'skip'
+
+            tmp_ret = format_key_value(tmp_ret, join_str=join_str, value_format=val_format, join_str=join_str)
+
+        tmp_ret = indent_str(tmp_ret, indent)
+
+        return tmp_ret
+
 
 
 
@@ -754,33 +1020,103 @@ class TestFlaggerFlagObj(TestFlaggerBaseItemObj):
         self.fail_reasons.clear()
         self.tests.clear()
 
-class TestFlaggerTestObj(TestFlaggerBaseItemObj):
-    def __init__(self, flagger, name, desc=None):
-        desc = desc or name.__doc__
-        name = name.id()
-        name = name.rsplit('.', maxsplit=1)[1]
-        if name.startswith('test_'):
-            name = name[:5]
-        elif name.startswith('test'):
-            name = name[:4]
-        super(TestFlaggerTestObj, self).__init__(flagger, name, desc)
-        self.flags = []
-        self.skip_id_obj = None
-        self.skip_reason = None
-        self.skipped = 0
-        self.run = 0
-        self.passed = None
-        self.failed = None
-        self.fail_reason = None
 
-    def clear(self):
-        self.flags.clear()
-        self.skip_id_obj = None
-        self.skipped = 0
-        self.run = 0
-        self.passed = None
-        self.failed = None
-        self.fail_reason = None
+class TestFlaggerFlagList(TestFlaggerBaseItemList):
+
+    def summary(self, *flags, inc_matched=None, indent=0, join_str='\n'):
+        """
+        Tests:
+            Total : 120
+            Ran: 100
+            Paassed: 80
+            Failed:  20
+            Exceptions: 20
+            Skipped: 20
+
+        Detail:
+            [S] Test_a [Passed/Failed/Skipped/Run/Raised] Flags: x, y, z  Skip_ID_Matched: a
+            [F] Test_b [Passed/Failed/Skipped/Run]
+
+        Dump:
+            [S] Test_a [Passed/Failed/Skipped/Run]:
+                Flags: x, y, z
+                    <skip / fail reason>
+            [F] Test_b [Passed/Failed/Skipped/Run]:
+                Flags: x, y, z
+                    <skip / fail reason>
+        """
+        tmp_ret = {
+            'Total IDs': len(self),
+        }
+        matched = 0
+        matched_tests = 0
+        not_found = 0
+        for i in self.iter(*ids, inc_matched=inc_matched):
+            if i.matched_tests:
+                matched += 1
+                matched_tests += i.matched_tests
+            else:
+                not_found += 1
+        tmp_ret['Matched IDs'] = matched
+        tmp_ret['Matched Tests'] = matched_tests
+        tmp_ret['Not Found IDs'] = not_found
+
+        tmp_ret = format_key_value(tmp_ret, sep=' : ', indent=indent, join_str=join_str)
+        return tmp_ret
+
+    def details(self, *ids, indent=0, inc_counts=True, inc_summary=True,
+                inc_matched=None, join_str='\n', dump=False):
+        """
+        Tests:
+            Total : 120
+            Ran: 100
+            Paassed: 80
+            Failed:  20
+            Exceptions: 20
+            Skipped: 20
+
+        Detail:
+            [S] Test_a [Passed/Failed/Skipped/Run/Raised] Flags: x, y, z  Skip_ID_Matched: a
+            [F] Test_b [Passed/Failed/Skipped/Run]
+
+        Dump:
+            [S] Test_a [Passed/Failed/Skipped/Run]:
+                Flags: x, y, z
+                    <skip / fail reason>
+            [F] Test_b [Passed/Failed/Skipped/Run]:
+                Flags: x, y, z
+                    <skip / fail reason>
+        """
+        if inc_summary:
+            tmp_ret = [
+                'Summary:',
+                self.summary(*ids, inc_matched=inc_matched, indent=2, join_str=join_str),
+                'Details:',
+                self.details(*ids, inc_matched=inc_matched, inc_counts=inc_counts, indent=2, join_str=join_str),
+            ]
+            tmp_ret = join_str.join(tmp_ret)
+        else:
+
+            tmp_ret = {}
+
+            for i in self.iter(*ids, inc_matched=inc_matched):
+                if dump:
+                    tmp_ret[i.name] = i.dump(inc_counts=inc_counts)
+                else:
+                    tmp_ret[i.name] = i.details(inc_counts=inc_counts)
+
+            if inc_counts:
+                val_format = 'str'
+            else:
+                val_format = 'skip'
+
+            tmp_ret = format_key_value(tmp_ret, join_str=join_str, value_format=val_format, join_str=join_str)
+
+        tmp_ret = indent_str(tmp_ret, indent)
+
+        return tmp_ret
+
+
 
 
 class TestFlagger(object):

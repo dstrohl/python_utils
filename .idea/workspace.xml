@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eaea9648-e79a-44a8-9923-8b6f09ad016d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/string_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/string_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_dict_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_dict_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/TestHelpers/tests/test_test_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/TestHelpers/tests/test_test_helper.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -68,45 +65,17 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.35397652">
+    <splitter split-orientation="horizontal" split-proportion="0.5201613">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="13">
-                  <caret line="2495" column="37" selection-start-line="2495" selection-start-column="37" selection-end-line="2495" selection-end-column="37" />
+                <state relative-caret-position="12155">
+                  <caret line="2831" column="37" selection-start-line="2831" selection-start-column="37" selection-end-line="2831" selection-end-column="37" />
                   <folding>
                     <element signature="e#251#266#0" expanded="true" />
-                    <element signature="e#13344#17734#1" expanded="true" />
-                    <element signature="e#17931#18040#0" expanded="true" />
-                    <element signature="e#18078#18099#0" expanded="true" />
-                    <element signature="e#18136#18152#0" expanded="true" />
-                    <element signature="e#18235#18280#0" expanded="true" />
-                    <element signature="e#18385#18722#0" expanded="true" />
-                    <element signature="e#18773#18791#0" expanded="true" />
-                    <element signature="e#18834#18888#0" expanded="true" />
-                    <element signature="e#18905#18926#0" expanded="true" />
-                    <element signature="e#18381#18523#0" expanded="true" />
-                    <element signature="e#18567#18654#0" expanded="true" />
-                    <element signature="e#18685#18753#0" expanded="true" />
-                    <element signature="e#19475#20206#0" expanded="true" />
-                    <element signature="e#20239#20970#0" expanded="true" />
-                    <element signature="e#21000#21731#0" expanded="true" />
-                    <element signature="e#18716#19017#0" expanded="true" />
-                    <element signature="e#19047#19115#0" expanded="true" />
-                    <element signature="e#19263#19772#0" expanded="true" />
-                    <element signature="e#19903#20095#0" expanded="true" />
-                    <element signature="e#20280#22801#0" expanded="true" />
-                    <element signature="e#22364#22675#0" expanded="true" />
-                    <element signature="e#23218#25002#0" expanded="true" />
-                    <element signature="e#24910#25148#0" expanded="true" />
-                    <element signature="e#25378#25686#0" expanded="true" />
-                    <element signature="e#25892#26596#0" expanded="true" />
-                    <element signature="e#26562#27115#0" expanded="true" />
-                    <element signature="e#27206#27759#0" expanded="true" />
-                    <element signature="e#28486#28492#0" expanded="true" />
-                    <element signature="e#24116#28803#0" expanded="true" />
+                    <element signature="e#19887#20296#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -115,11 +84,28 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="535">
-                  <caret line="188" column="4" selection-start-line="188" selection-start-column="4" selection-end-line="188" selection-end-column="4" />
+                <state relative-caret-position="484">
+                  <caret line="847" selection-start-line="847" selection-end-line="847" />
                   <folding>
                     <element signature="e#23#52#0" expanded="true" />
-                    <element signature="e#6951#7082#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/unittest/case.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="3060">
+                  <caret line="679" selection-start-line="679" selection-end-line="679" />
+                  <folding>
+                    <element signature="e#3426#3535#0" expanded="true" />
+                    <element signature="e#4025#5334#0" expanded="true" />
+                    <element signature="e#20589#23408#0" expanded="true" />
+                    <element signature="e#23936#23966#0" expanded="true" />
+                    <element signature="e#25911#27246#0" expanded="true" />
+                    <element signature="e#31092#31364#0" expanded="true" />
+                    <element signature="e#31703#32028#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -129,61 +115,33 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="136">
-                  <caret line="476" selection-start-line="476" selection-end-line="476" />
+                <state relative-caret-position="313">
+                  <caret line="946" selection-start-line="946" selection-end-line="946" />
                   <folding>
                     <element signature="e#251#266#0" expanded="true" />
-                    <element signature="e#17931#18040#0" expanded="true" />
-                    <element signature="e#18078#18099#0" expanded="true" />
-                    <element signature="e#18136#18152#0" expanded="true" />
-                    <element signature="e#18235#18280#0" expanded="true" />
-                    <element signature="e#18385#18722#0" expanded="true" />
-                    <element signature="e#18773#18791#0" expanded="true" />
-                    <element signature="e#18834#18888#0" expanded="true" />
-                    <element signature="e#18905#18926#0" expanded="true" />
-                    <element signature="e#18381#18523#0" expanded="true" />
-                    <element signature="e#18567#18654#0" expanded="true" />
-                    <element signature="e#18685#18753#0" expanded="true" />
-                    <element signature="e#19475#20206#0" expanded="true" />
-                    <element signature="e#20239#20970#0" expanded="true" />
-                    <element signature="e#21000#21731#0" expanded="true" />
-                    <element signature="e#18716#19017#0" expanded="true" />
-                    <element signature="e#19047#19115#0" expanded="true" />
-                    <element signature="e#19263#19772#0" expanded="true" />
-                    <element signature="e#19903#20095#0" expanded="true" />
-                    <element signature="e#20280#22801#0" expanded="true" />
-                    <element signature="e#22364#22675#0" expanded="true" />
-                    <element signature="e#23218#25002#0" expanded="true" />
-                    <element signature="e#24910#25148#0" expanded="true" />
-                    <element signature="e#25378#25686#0" expanded="true" />
-                    <element signature="e#25892#26596#0" expanded="true" />
-                    <element signature="e#26562#27115#0" expanded="true" />
-                    <element signature="e#27206#27759#0" expanded="true" />
-                    <element signature="e#28486#28492#0" expanded="true" />
-                    <element signature="e#24116#28803#0" expanded="true" />
-                    <element signature="e#24533#29336#1" />
-                    <element signature="e#38504#38904#0" expanded="true" />
-                    <element signature="e#40223#40803#0" expanded="true" />
-                    <element signature="e#40837#41051#0" expanded="true" />
+                    <element signature="e#18861#19091#0" expanded="true" />
+                    <element signature="e#19887#20296#0" expanded="true" />
+                    <element signature="e#20843#21124#0" expanded="true" />
+                    <element signature="e#23131#23651#0" expanded="true" />
+                    <element signature="e#23682#23864#0" expanded="true" />
+                    <element signature="e#24439#25784#0" expanded="true" />
+                    <element signature="e#25896#27383#0" expanded="true" />
+                    <element signature="e#27539#29093#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/string_utils.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-442">
-                  <caret line="16" column="26" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
+                <state relative-caret-position="1309">
+                  <caret line="294" selection-start-line="294" selection-end-line="294" />
                   <folding>
-                    <element signature="e#453#480#0" expanded="true" />
-                    <element signature="e#6502#6841#0" expanded="true" />
-                    <element signature="e#7031#7857#0" expanded="true" />
-                    <element signature="e#7912#8197#0" expanded="true" />
-                    <element signature="e#8301#12555#0" expanded="true" />
+                    <element signature="e#451#478#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -192,7 +150,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/list_utils.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-1811">
+                <state relative-caret-position="1496">
                   <caret line="224" selection-start-line="224" selection-end-line="224" />
                 </state>
               </provider>
@@ -201,7 +159,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/PythonUtils/Old/IntelligentFormatter/intel_format.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="345">
+                <state relative-caret-position="2839">
                   <caret line="531" selection-start-line="531" selection-end-line="531" />
                   <folding>
                     <element signature="e#103#177#1" expanded="true" />
@@ -350,15 +308,15 @@
         <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_dict_utils.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/PythonUtils/TestHelpers/tests/test_test_helper.py" />
-        <option value="$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py" />
         <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/string_utils.py" />
         <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="232" />
-    <option name="y" value="1" />
+    <option name="x" value="174" />
+    <option name="y" value="11" />
     <option name="width" value="1594" />
     <option name="height" value="1075" />
   </component>
@@ -368,6 +326,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -438,7 +397,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -481,7 +439,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests for test_mapping">
+  <component name="RunManager" selected="Python tests.Unittests for test_string.TestFormatKeyValue">
     <configuration name="Compile Syhinx" type="docs" factoryName="Sphinx task">
       <module name="python_utils" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -499,21 +457,6 @@
       <option name="docutils_open_in_browser" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for test_dict_utils.TestFlattenDict" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <module name="python_utils" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_dict_utils.TestFlattenDict&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration name="Unittests for test_mapping" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="python_utils" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -529,66 +472,81 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for test_mapping.TestDictLikeObject" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for test_string" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="python_utils" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/TestHelpers" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_mapping.TestDictLikeObject&quot;" />
+      <option name="_new_target" value="&quot;test_string&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for test_test_helper.TestNextItems" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for test_string.TestFormatKeyValue" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="python_utils" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_test_helper.TestNextItems&quot;" />
+      <option name="_new_target" value="&quot;test_string.TestFormatKeyValue&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests in test_test_helper.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests for test_string.TestIndentStr" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="python_utils" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/PythonUtils/TestHelpers/tests/test_test_helper.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <option name="_new_target" value="&quot;test_string.TestIndentStr&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for test_string.TestNumberFormatHelper" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="python_utils" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_string.TestNumberFormatHelper&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Python docs.Compile Syhinx" />
-      <item itemvalue="Python tests.Unittests in test_test_helper.py" />
-      <item itemvalue="Python tests.Unittests for test_test_helper.TestNextItems" />
-      <item itemvalue="Python tests.Unittests for test_mapping.TestDictLikeObject" />
-      <item itemvalue="Python tests.Unittests for test_dict_utils.TestFlattenDict" />
       <item itemvalue="Python tests.Unittests for test_mapping" />
+      <item itemvalue="Python tests.Unittests for test_string.TestIndentStr" />
+      <item itemvalue="Python tests.Unittests for test_string.TestNumberFormatHelper" />
+      <item itemvalue="Python tests.Unittests for test_string.TestFormatKeyValue" />
+      <item itemvalue="Python tests.Unittests for test_string" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.Unittests for test_string.TestFormatKeyValue" />
+        <item itemvalue="Python tests.Unittests for test_string" />
+        <item itemvalue="Python tests.Unittests for test_string.TestNumberFormatHelper" />
+        <item itemvalue="Python tests.Unittests for test_string.TestIndentStr" />
         <item itemvalue="Python tests.Unittests for test_mapping" />
-        <item itemvalue="Python tests.Unittests for test_mapping.TestDictLikeObject" />
-        <item itemvalue="Python tests.Unittests for test_dict_utils.TestFlattenDict" />
-        <item itemvalue="Python tests.Unittests in test_test_helper.py" />
-        <item itemvalue="Python tests.Unittests for test_test_helper.TestNextItems" />
       </list>
     </recent_temporary>
   </component>
@@ -626,7 +584,9 @@
       <workItem from="1549905761293" duration="25880000" />
       <workItem from="1549987709955" duration="22714000" />
       <workItem from="1550098833928" duration="1063000" />
-      <workItem from="1550158533883" duration="25548000" />
+      <workItem from="1550158533883" duration="25597000" />
+      <workItem from="1550417867996" duration="24519000" />
+      <workItem from="1550446500478" duration="2564000" />
     </task>
     <task id="LOCAL-00001" summary="re-organized and cleaned up some items.&#10;Pushed more into the base module&#10;created MathList and tests">
       <created>1548719058449</created>
@@ -677,49 +637,56 @@
       <option name="project" value="LOCAL" />
       <updated>1549844292557</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="added some string formatting stuff.">
+      <created>1550364933012</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1550364933012</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_for_test_mapping_TestDictLikeObject - 2019.02.12 at 14h 43m 32s.xml">
-      <configuration name="Unittests for test_mapping.TestDictLikeObject" configurationId="tests" />
+    <history-entry file="Unittests_for_test_string_TestFormatKeyValue - 2019.02.17 at 12h 24m 30s.xml">
+      <configuration name="Unittests for test_string.TestFormatKeyValue" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_mapping_TestDictLikeObject - 2019.02.12 at 14h 44m 51s.xml">
-      <configuration name="Unittests for test_mapping.TestDictLikeObject" configurationId="tests" />
+    <history-entry file="Unittests_for_test_string_TestFormatKeyValue - 2019.02.17 at 12h 26m 15s.xml">
+      <configuration name="Unittests for test_string.TestFormatKeyValue" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_mapping_TestDictLikeObject - 2019.02.12 at 14h 45m 48s.xml">
-      <configuration name="Unittests for test_mapping.TestDictLikeObject" configurationId="tests" />
+    <history-entry file="Unittests_for_test_string_TestFormatKeyValue - 2019.02.17 at 12h 27m 08s.xml">
+      <configuration name="Unittests for test_string.TestFormatKeyValue" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_mapping_TestDictLikeObject - 2019.02.12 at 14h 51m 34s.xml">
-      <configuration name="Unittests for test_mapping.TestDictLikeObject" configurationId="tests" />
+    <history-entry file="Unittests_for_test_string_TestFormatKeyValue - 2019.02.17 at 12h 28m 37s.xml">
+      <configuration name="Unittests for test_string.TestFormatKeyValue" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_mapping - 2019.02.13 at 15h 04m 44s.xml">
-      <configuration name="Unittests for test_mapping" configurationId="tests" />
+    <history-entry file="Unittests_for_test_string_TestFormatKeyValue - 2019.02.17 at 12h 31m 12s.xml">
+      <configuration name="Unittests for test_string.TestFormatKeyValue" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_mapping - 2019.02.13 at 15h 10m 12s.xml">
-      <configuration name="Unittests for test_mapping" configurationId="tests" />
+    <history-entry file="Unittests_for_test_string_TestFormatKeyValue - 2019.02.17 at 12h 31m 34s.xml">
+      <configuration name="Unittests for test_string.TestFormatKeyValue" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_mapping - 2019.02.13 at 15h 11m 48s.xml">
-      <configuration name="Unittests for test_mapping" configurationId="tests" />
+    <history-entry file="Unittests_for_test_string_TestFormatKeyValue - 2019.02.17 at 12h 32m 01s.xml">
+      <configuration name="Unittests for test_string.TestFormatKeyValue" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_mapping - 2019.02.13 at 15h 16m 35s.xml">
-      <configuration name="Unittests for test_mapping" configurationId="tests" />
+    <history-entry file="Unittests_for_test_string_TestFormatKeyValue - 2019.02.17 at 12h 32m 40s.xml">
+      <configuration name="Unittests for test_string.TestFormatKeyValue" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_mapping - 2019.02.14 at 07h 35m 42s.xml">
-      <configuration name="Unittests for test_mapping" configurationId="tests" />
+    <history-entry file="Unittests_for_test_string_TestFormatKeyValue - 2019.02.17 at 12h 33m 11s.xml">
+      <configuration name="Unittests for test_string.TestFormatKeyValue" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_for_test_mapping - 2019.02.14 at 07h 45m 27s.xml">
-      <configuration name="Unittests for test_mapping" configurationId="tests" />
+    <history-entry file="Unittests_for_test_string_TestFormatKeyValue - 2019.02.17 at 12h 35m 02s.xml">
+      <configuration name="Unittests for test_string.TestFormatKeyValue" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="399876000" />
+    <option name="totallyTimeSpent" value="427008000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="232" y="1" width="1594" height="1075" extended-state="0" />
+    <frame x="174" y="11" width="1594" height="1075" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.81155014" visible="true" weight="0.18904825" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.81155014" weight="0.1916558" />
       <window_info id="Structure" order="1" sideWeight="0.18844984" side_tool="true" weight="0.23294243" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -734,7 +701,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="bottom" id="Python Console" order="12" visible="true" weight="0.3121019" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" visible="true" weight="0.3121019" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -778,7 +745,8 @@
     <MESSAGE value="merge_object fixed." />
     <MESSAGE value="refactored base_utils." />
     <MESSAGE value="added dict tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="added dict tests" />
+    <MESSAGE value="added some string formatting stuff." />
+    <option name="LAST_COMMIT_MESSAGE" value="added some string formatting stuff." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -793,18 +761,27 @@
           <line>94</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py</url>
+          <line>311</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_dict_utils_TestAdvancedDictBasic.coverage" NAME="Unittests for test_dict_utils.TestAdvancedDictBasic Coverage Results" MODIFIED="1549822958892" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
-    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_mapping.coverage" NAME="Unittests for test_mapping Coverage Results" MODIFIED="1550159126970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers" />
-    <SUITE FILE_PATH="coverage/python_utils$Unittests_in_test_dict_utils_py.coverage" NAME="Unittests in test_dict_utils.py Coverage Results" MODIFIED="1549823769835" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_dict_utils_TestFlattenDict.coverage" NAME="Unittests for test_dict_utils.TestFlattenDict Coverage Results" MODIFIED="1549843258880" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
-    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_mapping_TestDictLikeObject.coverage" NAME="Unittests for test_mapping.TestDictLikeObject Coverage Results" MODIFIED="1550011894716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_test_helper_TestNextItems.coverage" NAME="Unittests for test_test_helper.TestNextItems Coverage Results" MODIFIED="1549835137995" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_string_TestFormatKeyValue.coverage" NAME="Unittests for test_string.TestFormatKeyValue Coverage Results" MODIFIED="1550435702588" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_string.coverage" NAME="Unittests for test_string Coverage Results" MODIFIED="1550423789603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_in_test_test_helper_py.coverage" NAME="Unittests in test_test_helper.py Coverage Results" MODIFIED="1549835256317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_test_helper_TestDataGenerator.coverage" NAME="Unittests for test_test_helper.TestDataGenerator Coverage Results" MODIFIED="1549830686741" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_mapping.coverage" NAME="Unittests for test_mapping Coverage Results" MODIFIED="1550159126970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_in_test_dict_utils_py.coverage" NAME="Unittests in test_dict_utils.py Coverage Results" MODIFIED="1549823769835" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_mapping_TestDictLikeObject.coverage" NAME="Unittests for test_mapping.TestDictLikeObject Coverage Results" MODIFIED="1550011894716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_string_TestNumberFormatHelper.coverage" NAME="Unittests for test_string.TestNumberFormatHelper Coverage Results" MODIFIED="1550421564522" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_string_TestIndentStr.coverage" NAME="Unittests for test_string.TestIndentStr Coverage Results" MODIFIED="1550418269656" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_test_helper_TestDataGenerator_test_get_aa_data_list.coverage" NAME="Unittests for test_test_helper.TestDataGenerator.test_get_aa_data_list Coverage Results" MODIFIED="1549828936230" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
   </component>
   <component name="editorHistoryManager">
@@ -1171,22 +1148,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/unittest/case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="831" selection-start-line="831" selection-end-line="831" />
-          <folding>
-            <element signature="e#3426#3535#0" expanded="true" />
-            <element signature="e#4025#5334#0" expanded="true" />
-            <element signature="e#20589#23408#0" expanded="true" />
-            <element signature="e#23936#23966#0" expanded="true" />
-            <element signature="e#24410#24498#0" expanded="true" />
-            <element signature="e#25911#27246#0" expanded="true" />
-            <element signature="e#31703#32028#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/-1501986454/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1788">
@@ -1200,6 +1161,81 @@
             <element signature="e#100802#100842#0" expanded="true" />
             <element signature="e#100916#100955#0" expanded="true" />
             <element signature="e#101047#101552#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/unittest/case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3060">
+          <caret line="679" selection-start-line="679" selection-end-line="679" />
+          <folding>
+            <element signature="e#3426#3535#0" expanded="true" />
+            <element signature="e#4025#5334#0" expanded="true" />
+            <element signature="e#20589#23408#0" expanded="true" />
+            <element signature="e#23936#23966#0" expanded="true" />
+            <element signature="e#25911#27246#0" expanded="true" />
+            <element signature="e#31092#31364#0" expanded="true" />
+            <element signature="e#31703#32028#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="847" selection-start-line="847" selection-end-line="847" />
+          <folding>
+            <element signature="e#23#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="946" selection-start-line="946" selection-end-line="946" />
+          <folding>
+            <element signature="e#251#266#0" expanded="true" />
+            <element signature="e#18861#19091#0" expanded="true" />
+            <element signature="e#19887#20296#0" expanded="true" />
+            <element signature="e#20843#21124#0" expanded="true" />
+            <element signature="e#23131#23651#0" expanded="true" />
+            <element signature="e#23682#23864#0" expanded="true" />
+            <element signature="e#24439#25784#0" expanded="true" />
+            <element signature="e#25896#27383#0" expanded="true" />
+            <element signature="e#27539#29093#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/string_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1309">
+          <caret line="294" selection-start-line="294" selection-end-line="294" />
+          <folding>
+            <element signature="e#451#478#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/list_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1496">
+          <caret line="224" selection-start-line="224" selection-end-line="224" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/IntelligentFormatter/intel_format.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2839">
+          <caret line="531" selection-start-line="531" selection-end-line="531" />
+          <folding>
+            <element signature="e#103#177#1" expanded="true" />
+            <element signature="e#228#360#0" expanded="true" />
+            <element signature="e#583#1697#0" expanded="true" />
+            <element signature="e#15726#15812#0" expanded="true" />
+            <element signature="e#15857#15966#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1218,91 +1254,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="36" selection-start-line="34" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/list_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1811">
-          <caret line="224" selection-start-line="224" selection-end-line="224" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/IntelligentFormatter/intel_format.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="531" selection-start-line="531" selection-end-line="531" />
-          <folding>
-            <element signature="e#103#177#1" expanded="true" />
-            <element signature="e#228#360#0" expanded="true" />
-            <element signature="e#583#1697#0" expanded="true" />
-            <element signature="e#15726#15812#0" expanded="true" />
-            <element signature="e#15857#15966#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13">
-          <caret line="2495" column="37" selection-start-line="2495" selection-start-column="37" selection-end-line="2495" selection-end-column="37" />
-          <folding>
-            <element signature="e#251#266#0" expanded="true" />
-            <element signature="e#13344#17734#1" expanded="true" />
-            <element signature="e#17931#18040#0" expanded="true" />
-            <element signature="e#18078#18099#0" expanded="true" />
-            <element signature="e#18136#18152#0" expanded="true" />
-            <element signature="e#18235#18280#0" expanded="true" />
-            <element signature="e#18385#18722#0" expanded="true" />
-            <element signature="e#18773#18791#0" expanded="true" />
-            <element signature="e#18834#18888#0" expanded="true" />
-            <element signature="e#18905#18926#0" expanded="true" />
-            <element signature="e#18381#18523#0" expanded="true" />
-            <element signature="e#18567#18654#0" expanded="true" />
-            <element signature="e#18685#18753#0" expanded="true" />
-            <element signature="e#19475#20206#0" expanded="true" />
-            <element signature="e#20239#20970#0" expanded="true" />
-            <element signature="e#21000#21731#0" expanded="true" />
-            <element signature="e#18716#19017#0" expanded="true" />
-            <element signature="e#19047#19115#0" expanded="true" />
-            <element signature="e#19263#19772#0" expanded="true" />
-            <element signature="e#19903#20095#0" expanded="true" />
-            <element signature="e#20280#22801#0" expanded="true" />
-            <element signature="e#22364#22675#0" expanded="true" />
-            <element signature="e#23218#25002#0" expanded="true" />
-            <element signature="e#24910#25148#0" expanded="true" />
-            <element signature="e#25378#25686#0" expanded="true" />
-            <element signature="e#25892#26596#0" expanded="true" />
-            <element signature="e#26562#27115#0" expanded="true" />
-            <element signature="e#27206#27759#0" expanded="true" />
-            <element signature="e#28486#28492#0" expanded="true" />
-            <element signature="e#24116#28803#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/string_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-442">
-          <caret line="16" column="26" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
-          <folding>
-            <element signature="e#453#480#0" expanded="true" />
-            <element signature="e#6502#6841#0" expanded="true" />
-            <element signature="e#7031#7857#0" expanded="true" />
-            <element signature="e#7912#8197#0" expanded="true" />
-            <element signature="e#8301#12555#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="535">
-          <caret line="188" column="4" selection-start-line="188" selection-start-column="4" selection-end-line="188" selection-end-column="4" />
-          <folding>
-            <element signature="e#23#52#0" expanded="true" />
-            <element signature="e#6951#7082#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>

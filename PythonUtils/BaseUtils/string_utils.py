@@ -22,6 +22,7 @@ from unicodedata import normalize
 from PythonUtils.BaseUtils.list_utils import flatten
 from pprint import pformat
 from json import dumps
+from enum import Enum
 
 # ===============================================================================
 # text utils
@@ -212,19 +213,20 @@ def format_as_decimal_string(num, max_decimal_points=6):
         return tmp_num_str
 
 
-def indent_str(data, next_lines=4, first_line=None, indent_char=' ', trim_lines=True):
+def indent_str(data, next_lines=4, first_line=None, indent_char=' ', trim_lines=False):
     if first_line is None:
         first_line = next_lines
     data = data.splitlines()
+    first_line_str = indent_char * first_line
+    next_lines_str = indent_char * next_lines
     for index in range(len(data)):
         tmp_line = data[index]
         if trim_lines:
             tmp_line = tmp_line.strip()
         if index == 0:
-            tmp_line = tmp_line.rjust(first_line, indent_char)
+            data[index] = first_line_str + tmp_line
         else:
-            tmp_line = tmp_line.rjust(next_lines, indent_char)
-        data[index] = tmp_line
+            data[index] = next_lines_str + tmp_line
     return '\n'.join(data)
 
 
@@ -241,9 +243,7 @@ class NumberFormatHelper(object):
         if value < 0:
             self.has_neg = True
 
-        decimal_places = abs(decimal_places)
-        format_str = '%.' + str(decimal_places) + 'f'
-        tmp_str = format_str % decimal_places
+        tmp_str = '{value:,.{decimal_places}f}'.format(value=value, decimal_places=abs(decimal_places))
         tmp_str = tmp_str.split('.', maxsplit=1)
         if len(tmp_str) == 1:
             self.int_value = tmp_str[0]
@@ -257,13 +257,13 @@ class NumberFormatHelper(object):
         self.my_dec_len = len(self.dec_value)
         self.my_int_len = len(self.int_value)
 
-    def get(self, max_dec, max_int, with_neg):
-        if with_neg and not self.has_neg:
-            tmp_ret = ' '
-        else:
-            tmp_ret = ''
+    def get(self, max_dec, max_int):
+        # if with_neg and not self.has_neg:
+        #     tmp_ret = ' '
+        # else:
+        #     tmp_ret = ''
 
-        tmp_ret += self.int_value.rjust(max_int)
+        tmp_ret = self.int_value.rjust(max_int)
 
         if max_dec:
             tmp_ret += '.'
@@ -271,25 +271,59 @@ class NumberFormatHelper(object):
         return tmp_ret
 
 
-def format_key_value(data, key_format='left', value_format='str', decimal_places=-2, sep=': ', indent=0, join_str='\n'):
+class FORMAT_RETURN_STYLE(Enum):
+    STRING = 'string'
+    LIST = 'list'
+    DICT = 'dict'
+    TUPLES = 'tuples'
+
+
+def format_key_value(data,
+                     key_format='left',
+                     value_format='auto',
+                     decimal_places=-2,
+                     sep=' : ',
+                     indent=0,
+                     value_indent=0,
+                     indent_wrapped=True,
+                     return_style=FORMAT_RETURN_STYLE.STRING,
+                     join_str='\n'
+                     ):
+
     """
-    Formats a key, value pair into a cleaner string
+    Formats a key, value pair into a cleaner string or other returned object.
+
     :param data: a dictionary or iterator of tuples
+    :param sep: the string used to separate key and value for LIST and STRING returns
+    :param value_indent: if you wish values to be indented an additional amount.
+    :param indent_wrapped: set to False to disable auto indenting to the depth of the keys for wrapped values.
+    :param return_style: can be any of:
+        FORMAT_RETURN_STYLE.LIST: returns a list of strings
+        FORMAT_RETURN_STYLE.TUPLES: returns a list of tuples (key, value)
+        FORMAT_RETURN_STYLE.DICT: returns a dict with the keys and values formatted
+        FORMAT_RETURN_STYLE.STRING: returns a string combined with join_str
+    :param join_str: if returning a string, this is the string used to join lines.
     :param key_format:
         any of:
             'left': default, left justifies the key, but pads it to the length of the longest key
             'left_trimmed': left justifies the key,
             'right': right justifies the key, padding to fit all values starting at the same place
+            'skip': does not return any key values.  (does not work for DICT return types)
     :param value_format:
             'repr': returns a repr of the value
-            'pretty_print': runs pretty_print on the value
+            'pprint': runs pretty_print on the value
             'json': runs json formatter on the value
             'str': runs 'str' on the value
             'number': returns numbers right justified by the longest number.
             'auto' <default>:
                 strings are formatted with "str",
-                objects are formatted first trying json, then ppring, then repr
+                objects are formatted using repr
                 numbers are formatted using 'number'
+            'skip':  does not return any values, just returns the keys list (with no sep)
+                (does not work for DICT return types.)
+            'none': does not format values, will return them as passed.
+                (may not work for STRING / LIST return types)
+                value indents will be ignored with this option.
     :param indent: indents the key this many spaces
     :param decimal_places: if positive, will force the number to that many places
         if negative, will use the least number of decimal places possible, up to that number.
@@ -302,56 +336,82 @@ def format_key_value(data, key_format='left', value_format='str', decimal_places
                 decimal_places -3 would return
                     for a list of [1, 1.12, 1.12345], [1.000, 1.120, 1.123]
                     for a list of [1, 2, 3, 4] would return [1, 2, 3, 4]
-
     :return:
     """
     if isinstance(data, dict):
         data = list(data.items())
 
-    max_key = None
-    has_neg = False
+    max_key = 0
+    # has_neg = False
     max_dec = 0
     max_int = 0
 
-    if key_format != 'left_trimmed':
-        max_key = 0
-        for index in range(len(data)):
-            key, value = data[index]
+    if return_style == FORMAT_RETURN_STYLE.DICT and (value_format == 'skip' or key_format == 'skip'):
+        raise AttributeError('DICT return types cannot be used when skipping keys or values')
+
+    for index in range(len(data)):
+        key, value = data[index]
+
+        if key_format != 'left_trimmed':
             max_key = max(max_key, len(key))
 
-            if value_format == 'number' and not isinstance(value, (int, float, Decimal)):
+        if value_format == 'number' and not isinstance(value, (int, float, Decimal)):
+            try:
                 value = float(value)
+            except TypeError:
+                try:
+                    value = int(value)
+                except TypeError:
+                    value = str(value)
+                    value = float(value)
 
-            if value_format in ('number', 'auto') and isinstance(value, (int, float, Decimal)):
-                value = NumberFormatHelper(value, decimal_places=decimal_places)
-                has_neg = has_neg or value.has_neg
-                max_dec = max(max_dec, value.my_dec_len)
+        if value_format in ('number', 'auto') and isinstance(value, (int, float, Decimal)):
+            value = NumberFormatHelper(value, decimal_places=decimal_places)
+            # has_neg = has_neg or value.has_neg
+            max_dec = max(max_dec, value.my_dec_len)
+            if key_format != 'left_trimmed':
                 max_int = max(max_int, value.my_int_len)
+        data[index] = key, value
 
-    tmp_ret = []
+    if return_style == FORMAT_RETURN_STYLE.DICT:
+        tmp_ret = {}
+    else:
+        tmp_ret = []
+
     for key, value in data:
-        if key_format == 'left':
-            tmp_line = key.ljust(max_key) + sep
-        elif key_format == 'left_trimmed':
-            tmp_line = key + sep
-        elif key_format == 'right':
-            tmp_line = key.rjust(max_key) + sep
-        else:
-            raise AttributeError('Invalid key_format value of %s, should be one of ["left", "left_trimmed", "right"]' % key_format)
+        tmp_line = ''
+        if key_format != 'skip':
+            if key_format == 'left':
+                tmp_line = key.ljust(max_key)
+            elif key_format == 'left_trimmed':
+                tmp_line = key
+            elif key_format == 'right':
+                tmp_line = key.rjust(max_key)
+            else:
+                raise AttributeError('Invalid key_format value of %s, should be one of ["left", "left_trimmed", "right"]' % key_format)
 
-        if value_format == 'repr':
+            if indent:
+                tmp_indent = ' ' * indent
+                tmp_line = tmp_indent + tmp_line
+            if return_style in (FORMAT_RETURN_STYLE.LIST, FORMAT_RETURN_STYLE.STRING):
+                if value_format not in ('skip', 'none'):
+                    tmp_line += sep
+
+        if value_format == 'skip':
+            value = ''
+        elif value_format == 'repr':
             value = repr(value)
-        elif value_format == 'pretty_print':
+        elif value_format == 'pprint':
             value = pformat(value, indent=4)
         elif value_format == 'json':
             value = dumps(value, indent=4)
         elif value_format == 'str':
             value = str(value)
         elif value_format == 'number':
-            value = value.get(max_int=max_int, max_dec=max_dec, has_neg=has_neg)
+            value = value.get(max_int=max_int, max_dec=max_dec)  # , has_neg=has_neg)
         elif value_format == 'auto':
             if isinstance(value, NumberFormatHelper):
-                value = value.get(max_int=max_int, max_dec=max_dec, has_neg=has_neg)
+                value = value.get(max_int=max_int, max_dec=max_dec) # , has_neg=has_neg)
             elif isinstance(value, str):
                 value = str(value)
             else:
@@ -362,19 +422,29 @@ def format_key_value(data, key_format='left', value_format='str', decimal_places
                         value = pformat(value, indent=4)
                     except Exception:
                         value = repr(value)
-
-        else:
+        elif value_format != 'none':
             raise AttributeError(
                 'Invalid key_format value of %s, should be one of ["left", "left_trimmed", "right"]' % key_format)
+        if value_format not in ('none', 'skip'):
+            if indent_wrapped:
+                value = indent_str(value, next_lines=len(tmp_line), first_line=0, indent_char=' ', trim_lines=False)
+            if value_indent:
+                value = indent_str(value, value_indent)
 
-        value = indent_str(value, next_lines=len(tmp_line), first_line=0, indent_char=' ')
+        if return_style == FORMAT_RETURN_STYLE.DICT:
+            tmp_ret[tmp_line] = value
+        elif return_style == FORMAT_RETURN_STYLE.TUPLES:
+            if value_format == 'skip':
+                tmp_ret.append((tmp_line, ))
+            elif key_format == 'skip':
+                tmp_ret.append((value, ))
+            else:
+                tmp_ret.append((tmp_line, value))
+        else:
+            tmp_ret.append(tmp_line + value)
 
-        tmp_line += value
-        if indent:
-            tmp_line.indent_str(tmp_line, next_lines=indent, indent_char=' ')
-        tmp_ret.append(tmp_line)
-    if join_str:
-        tmp_ret =  join_str.join(tmp_ret)
+    if return_style == FORMAT_RETURN_STYLE.STRING:
+        return join_str.join(tmp_ret)
     return tmp_ret
 
 # ===============================================================================
