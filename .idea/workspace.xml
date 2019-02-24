@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eaea9648-e79a-44a8-9923-8b6f09ad016d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/PythonUtils/TestHelpers/test_flagger.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PythonUtils/TestHelpers/tests/test_test_flagger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/list_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/list_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonUtils/snippits/setattr_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/snippits/setattr_example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/BaseUtils/general_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/BaseUtils/general_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/TestHelpers/test_flagger.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/TestHelpers/test_flagger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonUtils/TestHelpers/tests/test_test_flagger.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonUtils/TestHelpers/tests/test_test_flagger.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -68,145 +65,176 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9928">
-              <caret line="1413" column="37" selection-start-line="1413" selection-start-column="37" selection-end-line="1413" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="760">
-              <caret line="839" selection-start-line="839" selection-end-line="839" />
-              <folding>
-                <element signature="e#23#52#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/unittest/case.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="614" selection-start-line="614" selection-end-line="614" />
-              <folding>
-                <element signature="e#3426#3535#0" expanded="true" />
-                <element signature="e#4025#5334#0" expanded="true" />
-                <element signature="e#23936#23966#0" expanded="true" />
-                <element signature="e#24410#24498#0" expanded="true" />
-                <element signature="e#25911#27246#0" expanded="true" />
-                <element signature="e#31092#31364#0" expanded="true" />
-                <element signature="e#31703#32028#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/tests/test_test_flagger.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
-              <caret line="380" selection-start-line="380" selection-end-line="380" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/test_flagger.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="992" selection-start-line="992" selection-end-line="992" />
-              <folding>
-                <element signature="e#23#1928#1" expanded="true" />
-                <element signature="e#2085#2100#0" expanded="true" />
-                <element signature="e#2289#2551#0" expanded="true" />
-                <element signature="e#2780#9632#0" />
-                <element signature="e#2934#3298#0" expanded="true" />
-                <element signature="e#3401#3428#0" expanded="true" />
-                <element signature="e#3379#4992#0" expanded="true" />
-                <element signature="e#5359#5839#0" expanded="true" />
-                <element signature="e#5477#5486#0" expanded="true" />
-                <element signature="e#5566#5811#0" expanded="true" />
-                <element signature="e#5881#6068#0" expanded="true" />
-                <element signature="e#6194#6440#0" expanded="true" />
-                <element signature="e#6481#6946#0" expanded="true" />
-                <element signature="e#6991#7163#0" expanded="true" />
-                <element signature="e#7970#9632#0" expanded="true" />
-                <element signature="e#9744#14669#0" />
-                <element signature="e#9697#10132#0" expanded="true" />
-                <element signature="e#9018#9194#0" expanded="true" />
-                <element signature="e#9917#10121#0" expanded="true" />
-                <element signature="e#9659#9889#0" expanded="true" />
-                <element signature="e#9988#10042#0" expanded="true" />
-                <element signature="e#10718#10776#0" expanded="true" />
-                <element signature="e#11726#12201#0" expanded="true" />
-                <element signature="e#12532#12593#0" expanded="true" />
-                <element signature="e#12636#12880#0" expanded="true" />
-                <element signature="e#10916#11249#0" expanded="true" />
-                <element signature="e#13582#13971#0" expanded="true" />
-                <element signature="e#13504#14337#0" expanded="true" />
-                <element signature="e#12985#14066#0" />
-                <element signature="e#12555#12642#0" expanded="true" />
-                <element signature="e#15144#15168#0" expanded="true" />
-                <element signature="e#13743#13895#0" expanded="true" />
-                <element signature="e#14023#14066#0" expanded="true" />
-                <element signature="e#16057#16446#0" />
-                <element signature="e#13241#13344#0" expanded="true" />
-                <element signature="e#16395#16446#0" expanded="true" />
-                <element signature="e#13994#18579#0" />
-                <element signature="e#13886#14512#0" expanded="true" />
-                <element signature="e#16358#16626#0" expanded="true" />
-                <element signature="e#14550#16181#0" expanded="true" />
-                <element signature="e#19537#20156#0" />
-                <element signature="e#23297#23313#1" expanded="true" />
-                <element signature="e#23679#24065#0" expanded="true" />
-                <element signature="e#21266#21290#0" expanded="true" />
-                <element signature="e#25755#26428#1" expanded="true" />
-                <element signature="e#26512#27080#0" expanded="true" />
-                <element signature="e#27449#27485#0" expanded="true" />
-                <element signature="e#27496#27542#0" expanded="true" />
-                <element signature="e#27998#28342#0" expanded="true" />
-                <element signature="e#28399#28771#0" expanded="true" />
-                <element signature="e#29012#29191#0" expanded="true" />
-                <element signature="e#29451#29455#0" expanded="true" />
-                <element signature="e#29736#29915#0" expanded="true" />
-                <element signature="e#29777#29826#0" expanded="true" />
-                <element signature="e#30168#30347#0" expanded="true" />
-                <element signature="e#29581#29586#0" expanded="true" />
-                <element signature="e#30855#31034#0" expanded="true" />
-                <element signature="e#31542#31928#0" expanded="true" />
-                <element signature="e#31354#31462#0" expanded="true" />
-                <element signature="e#31335#31355#0" expanded="true" />
-                <element signature="e#31615#31749#0" expanded="true" />
-                <element signature="e#22657#23110#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonUtils/Old/version/version.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1819">
-              <caret line="173" column="7" lean-forward="true" selection-start-line="173" selection-start-column="7" selection-end-line="173" selection-end-column="7" />
-              <folding>
-                <element signature="e#139#1109#1" expanded="true" />
-                <element signature="e#4188#5281#1" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5416667">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="9928">
+                  <caret line="1413" column="37" selection-start-line="1413" selection-start-column="37" selection-end-line="1413" selection-end-column="37" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="2550">
+                  <caret line="839" selection-start-line="839" selection-end-line="839" />
+                  <folding>
+                    <element signature="e#23#52#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/test_flagger.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="431">
+                  <caret line="959" column="4" selection-start-line="959" selection-start-column="4" selection-end-line="959" selection-end-column="4" />
+                  <folding>
+                    <element signature="e#23#1943#1" expanded="true" />
+                    <element signature="e#2080#2095#0" expanded="true" />
+                    <element signature="e#3019#3427#0" expanded="true" />
+                    <element signature="e#3660#5322#0" expanded="true" />
+                    <element signature="e#7382#7572#0" expanded="true" />
+                    <element signature="e#9714#14589#0" />
+                    <element signature="e#14829#16387#0" />
+                    <element signature="e#16448#17339#0" />
+                    <element signature="e#17891#18529#0" expanded="true" />
+                    <element signature="e#20481#21241#0" expanded="true" />
+                    <element signature="e#22006#22400#0" expanded="true" />
+                    <element signature="e#22544#23163#0" />
+                    <element signature="e#24273#26720#0" />
+                    <element signature="e#25407#25897#0" expanded="true" />
+                    <element signature="e#26424#26460#0" expanded="true" />
+                    <element signature="e#26241#26416#0" expanded="true" />
+                    <element signature="e#26511#26720#0" expanded="true" />
+                    <element signature="e#27226#28133#0" expanded="true" />
+                    <element signature="e#28599#29437#0" expanded="true" />
+                    <element signature="e#29476#29480#0" expanded="true" />
+                    <element signature="e#29526#29572#0" expanded="true" />
+                    <element signature="e#29619#29749#0" expanded="true" />
+                    <element signature="e#30035#30286#0" expanded="true" />
+                    <element signature="e#30332#30753#0" expanded="true" />
+                    <element signature="e#29683#30270#0" />
+                    <element signature="e#31114#31243#0" expanded="true" />
+                    <element signature="e#31306#31639#0" />
+                    <element signature="e#31590#31639#0" expanded="true" />
+                    <element signature="e#30761#31459#0" />
+                    <element signature="e#32061#32180#0" expanded="true" />
+                    <element signature="e#32245#34403#0" />
+                    <element signature="e#32245#32978#1" expanded="true" />
+                    <element signature="e#33993#34403#0" expanded="true" />
+                    <element signature="e#34787#34870#0" expanded="true" />
+                    <element signature="e#34929#35382#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/general_utils.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="238">
+                  <caret line="15" selection-start-line="15" selection-end-line="15" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/PythonUtils/Old/version/version.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="969">
+                  <caret line="173" column="7" selection-start-line="173" selection-start-column="7" selection-end-line="173" selection-end-column="7" />
+                  <folding>
+                    <element signature="e#139#1109#1" expanded="true" />
+                    <element signature="e#4188#5281#1" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/tests/test_test_flagger.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="204">
+                  <caret line="12" column="50" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
+                  <folding>
+                    <element signature="e#0#15#0" expanded="true" />
+                    <element signature="e#9190#15464#0" />
+                    <element signature="e#15559#15568#0" expanded="true" />
+                    <element signature="e#15590#15816#0" expanded="true" />
+                    <element signature="e#15999#16227#0" expanded="true" />
+                    <element signature="e#16262#16490#0" expanded="true" />
+                    <element signature="e#16525#16753#0" expanded="true" />
+                    <element signature="e#16851#17088#0" expanded="true" />
+                    <element signature="e#17122#17251#0" expanded="true" />
+                    <element signature="e#17301#18131#0" expanded="true" />
+                    <element signature="e#18199#18782#0" expanded="true" />
+                    <element signature="e#18831#19197#0" expanded="true" />
+                    <element signature="e#19245#19896#0" expanded="true" />
+                    <element signature="e#19944#20571#0" expanded="true" />
+                    <element signature="e#20619#21270#0" expanded="true" />
+                    <element signature="e#21313#21539#0" expanded="true" />
+                    <element signature="e#21587#21725#0" expanded="true" />
+                    <element signature="e#21776#21936#0" expanded="true" />
+                    <element signature="e#21976#22344#0" expanded="true" />
+                    <element signature="e#22389#22916#0" expanded="true" />
+                    <element signature="e#22967#23115#0" expanded="true" />
+                    <element signature="e#23161#23651#0" expanded="true" />
+                    <element signature="e#23703#23892#0" expanded="true" />
+                    <element signature="e#23931#24777#0" expanded="true" />
+                    <element signature="e#24815#25258#0" expanded="true" />
+                    <element signature="e#25303#26067#0" expanded="true" />
+                    <element signature="e#26115#26556#0" expanded="true" />
+                    <element signature="e#26605#27211#0" expanded="true" />
+                    <element signature="e#27257#27802#0" expanded="true" />
+                    <element signature="e#27847#28471#0" expanded="true" />
+                    <element signature="e#27478#27655#0" expanded="true" />
+                    <element signature="e#27688#27919#0" expanded="true" />
+                    <element signature="e#27953#28076#0" expanded="true" />
+                    <element signature="e#28123#28381#0" expanded="true" />
+                    <element signature="e#28436#28700#0" expanded="true" />
+                    <element signature="e#28754#29019#0" expanded="true" />
+                    <element signature="e#29073#29335#0" expanded="true" />
+                    <element signature="e#29388#29651#0" expanded="true" />
+                    <element signature="e#29706#29969#0" expanded="true" />
+                    <element signature="e#30020#30386#0" expanded="true" />
+                    <element signature="e#30435#30798#0" expanded="true" />
+                    <element signature="e#30839#31359#0" expanded="true" />
+                    <element signature="e#31400#32203#0" expanded="true" />
+                    <element signature="e#32246#32469#0" expanded="true" />
+                    <element signature="e#32517#32652#0" expanded="true" />
+                    <element signature="e#32703#32857#0" expanded="true" />
+                    <element signature="e#32897#33262#0" expanded="true" />
+                    <element signature="e#33307#33868#0" expanded="true" />
+                    <element signature="e#33919#34064#0" expanded="true" />
+                    <element signature="e#34110#34597#0" expanded="true" />
+                    <element signature="e#34649#34835#0" expanded="true" />
+                    <element signature="e#34874#37884#0" expanded="true" />
+                    <element signature="e#37922#38362#0" expanded="true" />
+                    <element signature="e#38407#39168#0" expanded="true" />
+                    <element signature="e#39216#39654#0" expanded="true" />
+                    <element signature="e#39703#40306#0" expanded="true" />
+                    <element signature="e#40352#40894#0" expanded="true" />
+                    <element signature="e#40939#41560#0" expanded="true" />
+                    <element signature="e#42937#49843#0" expanded="true" />
+                    <element signature="e#32966#33520#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -218,9 +246,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>MultiLevelDictManager</find>
-      <find>swap</find>
-      <find>max_len</find>
       <find>Unset</find>
       <find>_UNSET</find>
       <find>generate_per</find>
@@ -248,6 +273,9 @@
       <find>self._test_count</find>
       <find>metrics</find>
       <find>print</find>
+      <find>TestFlaggerSkipIDObj</find>
+      <find>':</find>
+      <find>TestFlaggerFlagObj</find>
     </findStrings>
     <replaceStrings>
       <replace>def test_</replace>
@@ -258,6 +286,9 @@
       <replace>items</replace>
       <replace />
       <replace>self.</replace>
+      <replace>=</replace>
+      <replace>TestFlaggerTestObj</replace>
+      <replace>TestFlaggerFlagObj</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -305,7 +336,6 @@
         <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_rolling_int.py" />
         <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/percentage_calcs.py" />
         <option value="$PROJECT_DIR$/PythonUtils/Old/ChoicesHelper/choices_helper.py" />
-        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/general_utils.py" />
         <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/clicker.py" />
         <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_number_utils.py" />
         <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_date_utils.py" />
@@ -320,15 +350,16 @@
         <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py" />
         <option value="$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py" />
         <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/list_utils.py" />
+        <option value="$PROJECT_DIR$/PythonUtils/BaseUtils/general_utils.py" />
         <option value="$PROJECT_DIR$/PythonUtils/TestHelpers/tests/test_test_flagger.py" />
         <option value="$PROJECT_DIR$/PythonUtils/TestHelpers/test_flagger.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="37" />
-    <option name="y" value="21" />
-    <option name="width" value="885" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1126" />
     <option name="height" value="1057" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -397,6 +428,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
+    <property name="last.edited.regexp" value="skip_if_is_os_nt" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/PythonUtils/docs/html" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -434,7 +466,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests for test_test_flagger">
+  <component name="RunManager" selected="Python tests.Unittests in test_test_flagger.py">
     <configuration name="Compile Syhinx" type="docs" factoryName="Sphinx task">
       <module name="python_utils" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -467,21 +499,6 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests for test_string.TestFormatKeyValue" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <module name="python_utils" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_string.TestFormatKeyValue&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration name="Unittests for test_test_flagger" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <module name="python_utils" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -494,6 +511,21 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;test_test_flagger&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unittests for test_test_flagger.TestRegex" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="python_utils" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_test_flagger.TestRegex&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -529,19 +561,19 @@
     </configuration>
     <list>
       <item itemvalue="Python docs.Compile Syhinx" />
-      <item itemvalue="Python tests.Unittests for test_string.TestFormatKeyValue" />
       <item itemvalue="Python tests.Unittests for test_string.TestEnumFlag" />
       <item itemvalue="Python tests.Unittests for test_test_flagger.TestTestFlaggerIDItem" />
       <item itemvalue="Python tests.Unittests in test_test_flagger.py" />
       <item itemvalue="Python tests.Unittests for test_test_flagger" />
+      <item itemvalue="Python tests.Unittests for test_test_flagger.TestRegex" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python tests.Unittests in test_test_flagger.py" />
+        <item itemvalue="Python tests.Unittests for test_test_flagger.TestRegex" />
         <item itemvalue="Python tests.Unittests for test_test_flagger" />
         <item itemvalue="Python tests.Unittests for test_test_flagger.TestTestFlaggerIDItem" />
         <item itemvalue="Python tests.Unittests for test_string.TestEnumFlag" />
-        <item itemvalue="Python tests.Unittests for test_string.TestFormatKeyValue" />
       </list>
     </recent_temporary>
   </component>
@@ -585,7 +617,8 @@
       <workItem from="1550522614203" duration="5316000" />
       <workItem from="1550680160711" duration="18731000" />
       <workItem from="1550868799802" duration="11388000" />
-      <workItem from="1550934803074" duration="24129000" />
+      <workItem from="1550934803074" duration="24172000" />
+      <workItem from="1551021065111" duration="26008000" />
     </task>
     <task id="LOCAL-00001" summary="re-organized and cleaned up some items.&#10;Pushed more into the base module&#10;created MathList and tests">
       <created>1548719058449</created>
@@ -650,54 +683,61 @@
       <option name="project" value="LOCAL" />
       <updated>1550449083044</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="worked on test flagging">
+      <created>1550973551045</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1550973551046</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.23 at 11h 39m 59s.xml">
+    <history-entry file="Unittests_for_test_test_flagger_TestRegex - 2019.02.24 at 15h 40m 00s.xml">
+      <configuration name="Unittests for test_test_flagger.TestRegex" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_test_flagger_TestRegex - 2019.02.24 at 15h 40m 12s.xml">
+      <configuration name="Unittests for test_test_flagger.TestRegex" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_test_flagger_TestRegex - 2019.02.24 at 15h 40m 21s.xml">
+      <configuration name="Unittests for test_test_flagger.TestRegex" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_test_flagger_TestRegex - 2019.02.24 at 15h 40m 37s.xml">
+      <configuration name="Unittests for test_test_flagger.TestRegex" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_test_flagger_TestRegex - 2019.02.24 at 15h 41m 02s.xml">
+      <configuration name="Unittests for test_test_flagger.TestRegex" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_test_flagger_TestRegex - 2019.02.24 at 15h 41m 09s.xml">
+      <configuration name="Unittests for test_test_flagger.TestRegex" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_test_flagger_TestRegex - 2019.02.24 at 15h 41m 57s.xml">
+      <configuration name="Unittests for test_test_flagger.TestRegex" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_test_test_flagger_TestRegex - 2019.02.24 at 15h 42m 18s.xml">
+      <configuration name="Unittests for test_test_flagger.TestRegex" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.24 at 15h 44m 55s.xml">
       <configuration name="Unittests in test_test_flagger.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.23 at 11h 44m 29s.xml">
-      <configuration name="Unittests in test_test_flagger.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.23 at 11h 45m 23s.xml">
-      <configuration name="Unittests in test_test_flagger.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.23 at 11h 46m 24s.xml">
-      <configuration name="Unittests in test_test_flagger.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.23 at 11h 47m 28s.xml">
-      <configuration name="Unittests in test_test_flagger.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.23 at 11h 49m 02s.xml">
-      <configuration name="Unittests in test_test_flagger.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.23 at 11h 49m 34s.xml">
-      <configuration name="Unittests in test_test_flagger.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.23 at 14h 35m 06s.xml">
-      <configuration name="Unittests in test_test_flagger.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.23 at 14h 37m 52s.xml">
-      <configuration name="Unittests in test_test_flagger.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.23 at 14h 40m 51s.xml">
+    <history-entry file="Unittests_in_test_test_flagger_py - 2019.02.24 at 15h 45m 32s.xml">
       <configuration name="Unittests in test_test_flagger.py" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="486620000" />
+    <option name="totallyTimeSpent" value="512671000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="37" y="21" width="885" height="1057" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.81155014" weight="0.19402985" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.81155014" visible="true" weight="0.19402985" />
       <window_info id="Structure" order="1" sideWeight="0.18844984" side_tool="true" weight="0.23294243" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.29721954" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.33333334" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3451582" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3961039" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -706,8 +746,8 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" visible="true" weight="0.3116883" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.11217641" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.27612656" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -753,7 +793,8 @@
     <MESSAGE value="added dict tests" />
     <MESSAGE value="added some string formatting stuff." />
     <MESSAGE value="added some string formatting stuff - updating" />
-    <option name="LAST_COMMIT_MESSAGE" value="added some string formatting stuff - updating" />
+    <MESSAGE value="worked on test flagging" />
+    <option name="LAST_COMMIT_MESSAGE" value="worked on test flagging" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -791,18 +832,12 @@
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_string_TestNumberFormatHelper.coverage" NAME="Unittests for test_string.TestNumberFormatHelper Coverage Results" MODIFIED="1550421564522" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_test_flagger_TestTestFlaggerIDItem.coverage" NAME="Unittests for test_test_flagger.TestTestFlaggerIDItem Coverage Results" MODIFIED="1550939413291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_test_flagger.coverage" NAME="Unittests for test_test_flagger Coverage Results" MODIFIED="1550943583494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
-    <SUITE FILE_PATH="coverage/python_utils$Unittests_in_test_test_flagger_py.coverage" NAME="Unittests in test_test_flagger.py Coverage Results" MODIFIED="1550961651151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_test_flagger_TestRegex.coverage" NAME="Unittests for test_test_flagger.TestRegex Coverage Results" MODIFIED="1551051737972" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
+    <SUITE FILE_PATH="coverage/python_utils$Unittests_in_test_test_flagger_py.coverage" NAME="Unittests in test_test_flagger.py Coverage Results" MODIFIED="1551051932259" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_string_TestIndentStr.coverage" NAME="Unittests for test_string.TestIndentStr Coverage Results" MODIFIED="1550418269656" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/BaseUtils/tests" />
     <SUITE FILE_PATH="coverage/python_utils$Unittests_for_test_test_helper_TestDataGenerator_test_get_aa_data_list.coverage" NAME="Unittests for test_test_helper.TestDataGenerator.test_get_aa_data_list Coverage Results" MODIFIED="1549828936230" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PythonUtils/TestHelpers/tests" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/IndentedPrint/indented_print.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4369">
-          <caret line="17" column="36" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonUtils/Old/HtmlUtils/html_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4813">
@@ -1007,16 +1042,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/general_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="28" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
-          <folding>
-            <element signature="e#101#119#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonUtils/Old/ChoicesHelper/choices_helper.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -1143,32 +1168,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="839" selection-start-line="839" selection-end-line="839" />
-          <folding>
-            <element signature="e#23#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/unittest/case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="614" selection-start-line="614" selection-end-line="614" />
-          <folding>
-            <element signature="e#3426#3535#0" expanded="true" />
-            <element signature="e#4025#5334#0" expanded="true" />
-            <element signature="e#23936#23966#0" expanded="true" />
-            <element signature="e#24410#24498#0" expanded="true" />
-            <element signature="e#25911#27246#0" expanded="true" />
-            <element signature="e#31092#31364#0" expanded="true" />
-            <element signature="e#31703#32028#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/string_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1613">
@@ -1193,24 +1192,6 @@
             <element signature="e#331#380#0" expanded="true" />
             <element signature="e#686#851#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/version/version.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1819">
-          <caret line="173" column="7" lean-forward="true" selection-start-line="173" selection-start-column="7" selection-end-line="173" selection-end-column="7" />
-          <folding>
-            <element signature="e#139#1109#1" expanded="true" />
-            <element signature="e#4188#5281#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9928">
-          <caret line="1413" column="37" selection-start-line="1413" selection-start-column="37" selection-end-line="1413" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -1249,83 +1230,173 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/test_mapping.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9928">
+          <caret line="1413" column="37" selection-start-line="1413" selection-start-column="37" selection-end-line="1413" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/tests/test_string.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2550">
+          <caret line="839" selection-start-line="839" selection-end-line="839" />
+          <folding>
+            <element signature="e#23#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/Old/version/version.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="173" column="7" selection-start-line="173" selection-start-column="7" selection-end-line="173" selection-end-column="7" />
+          <folding>
+            <element signature="e#139#1109#1" expanded="true" />
+            <element signature="e#4188#5281#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/unittest/case.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="614" selection-start-line="614" selection-end-line="614" />
+          <folding>
+            <element signature="e#3426#3535#0" expanded="true" />
+            <element signature="e#4025#5334#0" expanded="true" />
+            <element signature="e#23936#23966#0" expanded="true" />
+            <element signature="e#24410#24498#0" expanded="true" />
+            <element signature="e#25911#27246#0" expanded="true" />
+            <element signature="e#31092#31364#0" expanded="true" />
+            <element signature="e#31703#32028#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonUtils/BaseUtils/general_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pycharm/teamcity/diff_tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/tests/test_test_flagger.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
-          <caret line="380" selection-start-line="380" selection-end-line="380" />
+        <state relative-caret-position="204">
+          <caret line="12" column="50" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#9190#15464#0" />
+            <element signature="e#15559#15568#0" expanded="true" />
+            <element signature="e#15590#15816#0" expanded="true" />
+            <element signature="e#15999#16227#0" expanded="true" />
+            <element signature="e#16262#16490#0" expanded="true" />
+            <element signature="e#16525#16753#0" expanded="true" />
+            <element signature="e#16851#17088#0" expanded="true" />
+            <element signature="e#17122#17251#0" expanded="true" />
+            <element signature="e#17301#18131#0" expanded="true" />
+            <element signature="e#18199#18782#0" expanded="true" />
+            <element signature="e#18831#19197#0" expanded="true" />
+            <element signature="e#19245#19896#0" expanded="true" />
+            <element signature="e#19944#20571#0" expanded="true" />
+            <element signature="e#20619#21270#0" expanded="true" />
+            <element signature="e#21313#21539#0" expanded="true" />
+            <element signature="e#21587#21725#0" expanded="true" />
+            <element signature="e#21776#21936#0" expanded="true" />
+            <element signature="e#21976#22344#0" expanded="true" />
+            <element signature="e#22389#22916#0" expanded="true" />
+            <element signature="e#22967#23115#0" expanded="true" />
+            <element signature="e#23161#23651#0" expanded="true" />
+            <element signature="e#23703#23892#0" expanded="true" />
+            <element signature="e#23931#24777#0" expanded="true" />
+            <element signature="e#24815#25258#0" expanded="true" />
+            <element signature="e#25303#26067#0" expanded="true" />
+            <element signature="e#26115#26556#0" expanded="true" />
+            <element signature="e#26605#27211#0" expanded="true" />
+            <element signature="e#27257#27802#0" expanded="true" />
+            <element signature="e#27847#28471#0" expanded="true" />
+            <element signature="e#27478#27655#0" expanded="true" />
+            <element signature="e#27688#27919#0" expanded="true" />
+            <element signature="e#27953#28076#0" expanded="true" />
+            <element signature="e#28123#28381#0" expanded="true" />
+            <element signature="e#28436#28700#0" expanded="true" />
+            <element signature="e#28754#29019#0" expanded="true" />
+            <element signature="e#29073#29335#0" expanded="true" />
+            <element signature="e#29388#29651#0" expanded="true" />
+            <element signature="e#29706#29969#0" expanded="true" />
+            <element signature="e#30020#30386#0" expanded="true" />
+            <element signature="e#30435#30798#0" expanded="true" />
+            <element signature="e#30839#31359#0" expanded="true" />
+            <element signature="e#31400#32203#0" expanded="true" />
+            <element signature="e#32246#32469#0" expanded="true" />
+            <element signature="e#32517#32652#0" expanded="true" />
+            <element signature="e#32703#32857#0" expanded="true" />
+            <element signature="e#32897#33262#0" expanded="true" />
+            <element signature="e#33307#33868#0" expanded="true" />
+            <element signature="e#33919#34064#0" expanded="true" />
+            <element signature="e#34110#34597#0" expanded="true" />
+            <element signature="e#34649#34835#0" expanded="true" />
+            <element signature="e#34874#37884#0" expanded="true" />
+            <element signature="e#37922#38362#0" expanded="true" />
+            <element signature="e#38407#39168#0" expanded="true" />
+            <element signature="e#39216#39654#0" expanded="true" />
+            <element signature="e#39703#40306#0" expanded="true" />
+            <element signature="e#40352#40894#0" expanded="true" />
+            <element signature="e#40939#41560#0" expanded="true" />
+            <element signature="e#42937#49843#0" expanded="true" />
+            <element signature="e#32966#33520#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PythonUtils/TestHelpers/test_flagger.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="992" selection-start-line="992" selection-end-line="992" />
+        <state relative-caret-position="431">
+          <caret line="959" column="4" selection-start-line="959" selection-start-column="4" selection-end-line="959" selection-end-column="4" />
           <folding>
-            <element signature="e#23#1928#1" expanded="true" />
-            <element signature="e#2085#2100#0" expanded="true" />
-            <element signature="e#2289#2551#0" expanded="true" />
-            <element signature="e#2780#9632#0" />
-            <element signature="e#2934#3298#0" expanded="true" />
-            <element signature="e#3401#3428#0" expanded="true" />
-            <element signature="e#3379#4992#0" expanded="true" />
-            <element signature="e#5359#5839#0" expanded="true" />
-            <element signature="e#5477#5486#0" expanded="true" />
-            <element signature="e#5566#5811#0" expanded="true" />
-            <element signature="e#5881#6068#0" expanded="true" />
-            <element signature="e#6194#6440#0" expanded="true" />
-            <element signature="e#6481#6946#0" expanded="true" />
-            <element signature="e#6991#7163#0" expanded="true" />
-            <element signature="e#7970#9632#0" expanded="true" />
-            <element signature="e#9744#14669#0" />
-            <element signature="e#9697#10132#0" expanded="true" />
-            <element signature="e#9018#9194#0" expanded="true" />
-            <element signature="e#9917#10121#0" expanded="true" />
-            <element signature="e#9659#9889#0" expanded="true" />
-            <element signature="e#9988#10042#0" expanded="true" />
-            <element signature="e#10718#10776#0" expanded="true" />
-            <element signature="e#11726#12201#0" expanded="true" />
-            <element signature="e#12532#12593#0" expanded="true" />
-            <element signature="e#12636#12880#0" expanded="true" />
-            <element signature="e#10916#11249#0" expanded="true" />
-            <element signature="e#13582#13971#0" expanded="true" />
-            <element signature="e#13504#14337#0" expanded="true" />
-            <element signature="e#12985#14066#0" />
-            <element signature="e#12555#12642#0" expanded="true" />
-            <element signature="e#15144#15168#0" expanded="true" />
-            <element signature="e#13743#13895#0" expanded="true" />
-            <element signature="e#14023#14066#0" expanded="true" />
-            <element signature="e#16057#16446#0" />
-            <element signature="e#13241#13344#0" expanded="true" />
-            <element signature="e#16395#16446#0" expanded="true" />
-            <element signature="e#13994#18579#0" />
-            <element signature="e#13886#14512#0" expanded="true" />
-            <element signature="e#16358#16626#0" expanded="true" />
-            <element signature="e#14550#16181#0" expanded="true" />
-            <element signature="e#19537#20156#0" />
-            <element signature="e#23297#23313#1" expanded="true" />
-            <element signature="e#23679#24065#0" expanded="true" />
-            <element signature="e#21266#21290#0" expanded="true" />
-            <element signature="e#25755#26428#1" expanded="true" />
-            <element signature="e#26512#27080#0" expanded="true" />
-            <element signature="e#27449#27485#0" expanded="true" />
-            <element signature="e#27496#27542#0" expanded="true" />
-            <element signature="e#27998#28342#0" expanded="true" />
-            <element signature="e#28399#28771#0" expanded="true" />
-            <element signature="e#29012#29191#0" expanded="true" />
-            <element signature="e#29451#29455#0" expanded="true" />
-            <element signature="e#29736#29915#0" expanded="true" />
-            <element signature="e#29777#29826#0" expanded="true" />
-            <element signature="e#30168#30347#0" expanded="true" />
-            <element signature="e#29581#29586#0" expanded="true" />
-            <element signature="e#30855#31034#0" expanded="true" />
-            <element signature="e#31542#31928#0" expanded="true" />
-            <element signature="e#31354#31462#0" expanded="true" />
-            <element signature="e#31335#31355#0" expanded="true" />
-            <element signature="e#31615#31749#0" expanded="true" />
-            <element signature="e#22657#23110#0" />
+            <element signature="e#23#1943#1" expanded="true" />
+            <element signature="e#2080#2095#0" expanded="true" />
+            <element signature="e#3019#3427#0" expanded="true" />
+            <element signature="e#3660#5322#0" expanded="true" />
+            <element signature="e#7382#7572#0" expanded="true" />
+            <element signature="e#9714#14589#0" />
+            <element signature="e#14829#16387#0" />
+            <element signature="e#16448#17339#0" />
+            <element signature="e#17891#18529#0" expanded="true" />
+            <element signature="e#20481#21241#0" expanded="true" />
+            <element signature="e#22006#22400#0" expanded="true" />
+            <element signature="e#22544#23163#0" />
+            <element signature="e#24273#26720#0" />
+            <element signature="e#25407#25897#0" expanded="true" />
+            <element signature="e#26424#26460#0" expanded="true" />
+            <element signature="e#26241#26416#0" expanded="true" />
+            <element signature="e#26511#26720#0" expanded="true" />
+            <element signature="e#27226#28133#0" expanded="true" />
+            <element signature="e#28599#29437#0" expanded="true" />
+            <element signature="e#29476#29480#0" expanded="true" />
+            <element signature="e#29526#29572#0" expanded="true" />
+            <element signature="e#29619#29749#0" expanded="true" />
+            <element signature="e#30035#30286#0" expanded="true" />
+            <element signature="e#30332#30753#0" expanded="true" />
+            <element signature="e#29683#30270#0" />
+            <element signature="e#31114#31243#0" expanded="true" />
+            <element signature="e#31306#31639#0" />
+            <element signature="e#31590#31639#0" expanded="true" />
+            <element signature="e#30761#31459#0" />
+            <element signature="e#32061#32180#0" expanded="true" />
+            <element signature="e#32245#34403#0" />
+            <element signature="e#32245#32978#1" expanded="true" />
+            <element signature="e#33993#34403#0" expanded="true" />
+            <element signature="e#34787#34870#0" expanded="true" />
+            <element signature="e#34929#35382#0" />
           </folding>
         </state>
       </provider>

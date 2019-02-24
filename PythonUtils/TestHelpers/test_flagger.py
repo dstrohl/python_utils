@@ -72,10 +72,6 @@ class TestAnotherThing(FlaggerTestCase)
         with self.check_flags('test_flag1, 'flag2'):
             pass
 
-
-
-
-
 """
 
 __author__ = ""
@@ -88,7 +84,6 @@ __email__ = ""
 __status__ = ""
 
 
-
 import unittest
 import sys
 import platform
@@ -96,14 +91,7 @@ import os
 from fnmatch import fnmatch
 from PythonUtils.BaseUtils import make_list, format_key_value, indent_str
 from distutils.version import StrictVersion
-
-def SkipIfPyLower(major, minor):
-    if sys.version_info[0] < major or (sys.version_info[0] == major and sys.version_info[1] < minor):
-        return unittest.skip("Python version %s.%s required, running %s.%s" % (major, minor, sys.version_info[0], sys.version_info[0]))
-    return lambda func: func
-
-
-
+import re
 
 # ******************************************************************************
 # Base Flagger Item
@@ -112,6 +100,7 @@ def SkipIfPyLower(major, minor):
 
 class TestFlaggerBaseItemObj(object):
     metric_info = {}
+    all_groups = []
     dump_header = 'Dump'
     dump_inc_summary = True
     stats_in_status = False
@@ -164,6 +153,11 @@ class TestFlaggerBaseItemObj(object):
                 raise AttributeError('filter flag %r does not reference a valid metric: %r' % (flag, list(self.metric_info.keys())))
 
             if scope_flag == 'all':
+                for g in self.all_groups:
+                    g = make_list(g)
+                    if metric_flag in g:
+                        metrics = g
+                        break
                 metrics.remove(metric_flag)
                 if not getattr(self, metric_flag):
                     return False
@@ -254,7 +248,7 @@ class TestFlaggerBaseItemObj(object):
             if self.match('all_' + metric):
                 tmp_analysis = 'All %s' % name
                 return tmp_analysis
-        return None
+        return ''
 
     def details(self, indent=0, dump=False, inc_name=True, inc_stats=True, inc_analysis=True, inc_status=True, **kwargs):
         """
@@ -564,7 +558,7 @@ class TestFlaggerSkipIDList(TestFlaggerBaseItemList):
 
 class TestFlaggerTestObj(TestFlaggerBaseItemObj):
     metric_info = {
-        'ran': 'Ran',
+        'run': 'Run',
         'passed': 'Passed',
         'failed': 'Failed',
         'raised': 'Raised',
@@ -578,9 +572,9 @@ class TestFlaggerTestObj(TestFlaggerBaseItemObj):
             name = name.id()
             name = name.rsplit('.', maxsplit=1)[1]
         if name.startswith('test_'):
-            name = name[:5]
+            name = name[5:]
         elif name.startswith('test'):
-            name = name[:4]
+            name = name[4:]
         self.skip_id_obj = None
         self.skip_reason = None
         self.skipped = None
@@ -591,8 +585,8 @@ class TestFlaggerTestObj(TestFlaggerBaseItemObj):
         self.fail_reason = fail_reason
 
         super(TestFlaggerTestObj, self).__init__(flagger, name, desc, is_default, **kwargs)
-
-        self.check(flags)
+        if flags:
+            self.check(flags)
 
     def clear(self):
         super(TestFlaggerTestObj, self).clear()
@@ -653,10 +647,35 @@ class TestFlaggerTestObj(TestFlaggerBaseItemObj):
             for f in self.flags:
                 f.run += 1
 
-    def set_result(self, exc=None):
-        self.passed = False
-        self.failed = False
-        self.raised = False
+    def set_result(self, exc=None, state=None):
+        if state is not None:
+            if state in ('passed', 'failed', 'raised'):
+                self.passed = False
+                self.failed = False
+                self.raised = False
+                self.run = True
+                self.skipped = False
+                if state == 'passed':
+                    self.passed = True
+                elif state == 'failed':
+                    self.failed = True
+                else:
+                    self.raised = True
+            else:
+                self.passed = None
+                self.failed = None
+                self.raised = None
+                self.run = False
+                self.skipped = False
+                if state == 'skipped':
+                    self.skipped = True
+                elif state == 'run':
+                    self.run = True
+        else:
+            self.passed = False
+            self.failed = False
+            self.raised = False
+
         if exc is None:
             self.passed = True
         else:
@@ -678,18 +697,27 @@ class TestFlaggerTestObj(TestFlaggerBaseItemObj):
         return [self.skip_id_obj]
 
     def status(self, as_prefix=False):
-        tmp_ret = 'Run'
-        if self.skipped:
-            tmp_ret = 'Skipped'
-        elif self.passed is not None:
-            if self.passed:
-                tmp_ret = 'Passed'
-            elif self.failed:
-                tmp_ret = 'Failed'
-            elif self.raised:
-                tmp_ret = 'Exc Raised'
+        if not self.run and not self.skipped:
+            tmp_ret = 'Not Tried'
+        else:
+            tmp_ret = 'Run'
+            if self.skipped:
+                tmp_ret = 'Skipped'
+            elif self.passed is not None:
+                if self.passed:
+                    tmp_ret = 'Passed'
+                elif self.failed:
+                    tmp_ret = 'Failed'
+                elif self.raised:
+                    tmp_ret = 'Raised'
+
         if as_prefix:
-            tmp_ret = '[%s]' % tmp_ret[0]
+            if tmp_ret == 'Raised':
+                tmp_ret = '[E]'
+            elif tmp_ret == 'Not Tried':
+                tmp_ret = '[?]'
+            else:
+                tmp_ret = '[%s]' % tmp_ret[0]
         return tmp_ret
 
     def flag_list(self):
@@ -748,6 +776,37 @@ class TestFlaggerTestList(TestFlaggerBaseItemList):
 # Flag Flagger Item
 # ******************************************************************************
 
+def pass_fail_run_skip_analysis(passed=0, failed=0, raised=0, skipped=0, run=0, **kwargs):
+    if sum((passed, failed, raised, skipped, run)) == 0:
+        return 'Not Found'
+    if sum((passed, failed, raised)) == 0:
+        tmp_pf = 'No PF Info'
+    elif sum((failed, raised)) == 0:
+        tmp_pf = 'All Passed'
+    elif sum((passed, raised)) == 0:
+        tmp_pf = 'All Failed'
+    elif sum((passed, failed)) == 0:
+        tmp_pf = 'All Raised'
+    elif passed == 0:
+        tmp_pf = 'All Failed or Raised'
+    elif failed == 0:
+        tmp_pf = 'All Passed or Raised'
+    elif raised == 0:
+        tmp_pf = 'All Passed or Failed'
+    else:
+        tmp_pf = 'All Passed, Failed, or Raised'
+
+    if sum((skipped, run)) == 0:
+        raise AttributeError('skipped and run are 0, should not get here')
+    elif skipped == 0:
+        tmp_sr = 'All Run'
+    elif run == 0:
+        tmp_sr = 'All Skipped'
+    else:
+        tmp_sr = 'Some Skipped'
+
+    return tmp_sr + ', ' + tmp_pf
+
 
 class TestFlaggerFlagObj(TestFlaggerBaseItemObj):
     """
@@ -772,14 +831,15 @@ class TestFlaggerFlagObj(TestFlaggerBaseItemObj):
 
     """
     metric_info = {
-        'ran': 'Ran',
+        'run': 'Run',
         'passed': 'Passed',
         'failed': 'Failed',
         'raised': 'Raised',
         'skipped': 'Skipped',
         'self_skipped': 'Skipped(self)',
-        'other_skipped': 'Skipped(Other)',
+        'other_skipped': 'Skipped(other)',
     }
+    all_groups = [('run', 'skipped'), ('passed', 'failed', 'raised')]
     dump_header = 'Tests'
     dump_inc_summary = True
 
@@ -813,11 +873,14 @@ class TestFlaggerFlagObj(TestFlaggerBaseItemObj):
         super(TestFlaggerFlagObj, self).clear()
         self.fail_reasons.clear()
 
+    def _analysis(self, **kwargs):
+        return pass_fail_run_skip_analysis(**self.stats_dict(full_field_names=False))
+
     def status(self, as_prefix=False):
         if self.should_skip:
-            tmp_ret = 'skip'
+            tmp_ret = 'Skipped'
         else:
-            tmp_ret = 'include'
+            tmp_ret = 'Included'
 
         if as_prefix:
             return tmp_ret[0]
@@ -850,25 +913,71 @@ skip_if_is_environ_
 
 """
 
+
+def skip_if_re_helper(name, match_str='{%s_name}', **kwargs):
+    """
+    :param name:
+        "skip_if_(is|not)_<NAME>_"  <- the name == NAME
+    :param match_str:
+        match_str = any of:
+            '{%s_name}_{pfr}'  == {name_name}_pfr
+            '{any}_{pfr}_{action}
+    :param kwargs:
+        pfr = ['list', 'of', 'options']
+        is_not = 'is'
+    :return:
+        returns regex to match
+    """
+    match_str = 'skip_if_(?P<is_not>is|not)_{name}_' + match_str
+    if '%s_name' in match_str:
+        match_str = match_str % name
+    name_name = name+'_name'
+    tmp_kwargs = {'name': name, name_name: '(?P<%s>.+)' % name_name}
+
+    for key, value in kwargs.items():
+        if isinstance(value, str):
+            tmp_kwargs[key] = value
+        elif isinstance(value, (list, tuple)):
+            tmp_kwargs[key] = '(?P<%s>%s)' % (key, '|'.join(value))
+    match_str = match_str.format(**tmp_kwargs)
+    print(match_str)
+    return re.compile(match_str)
+
+
 class TestFlaggerTestSkipOS(TestFlaggerFlagObj):
-    flag_prefix = ('skip_if_is_os_', 'skip_if_not_os_')
+    """
+    os.name
+    'nt'
+    """
+    skip_name = 'os'
+    skip_pattern = '{%s_name}'
+    skip_kwargs = {}
+    re_match = skip_if_re_helper(skip_name, skip_pattern, **skip_kwargs)
     desc = 'Skip this test if {is_not}the OS is {os_name}'
     active = True
     check_params = None
 
-    def __init__(self, flagger, name, desc=None, is_default=True, flags=None, failed=None, fail_reason=None, **kwargs):
-        for flag_prefix in make_list(self.flag_prefix):
-            if name.startswith(flag_prefix):
-                rem_name = name[:len(flag_prefix)]
-                if flag_prefix.startswith('skip_if_not'):
-                    self.check_for_not = True
-                self.check_params = self.parse_params(rem_name)
-        if self.check_for_not:
-            is_not = "not "
-        else:
-            is_not = ''
+    
 
-        desc = self.desc.format(is_not=is_not, **self.check_params)
+    # TODO:  I think this needs a __new__
+
+
+
+
+
+
+
+
+
+
+    def __init__(self, flagger, name, desc=None, is_default=True, flags=None, failed=None, fail_reason=None, **kwargs):
+        tmp_match = self.re_match.fullmatch(name)
+        if not tmp_match:
+            raise AttributeError('invalid name: %r for %r' % (name, self.re_match))
+        self.check_for_not = tmp_match['is_not'] == 'not'
+        self.check_params = tmp_match.groupdict()
+        self.update_params()
+        desc = self.desc.format(**self.check_params)
 
         super(TestFlaggerTestSkipOS, self).__init__(flagger=flagger,
                                                  name=name,
@@ -879,11 +988,11 @@ class TestFlaggerTestSkipOS(TestFlaggerFlagObj):
                                                  fail_reason=fail_reason,
                                                  **kwargs)
 
-    def parse_params(self, check_name_in):
-        return {'os_name': check_name_in}
+    def update_params(self):
+        pass
 
     def check_skip(self, **kwargs):
-        return self.check_params['os_name'] != os.name
+        return self.check_params['os_name'] == os.name
 
     def should_skip(self, **kwargs):
         if self.check_for_not:
@@ -893,52 +1002,46 @@ class TestFlaggerTestSkipOS(TestFlaggerFlagObj):
 
 
 class TestFlaggerTestSkipPyVer(TestFlaggerTestSkipOS):
-    flag_prefix = ('skip_if_is_pyv_', 'skip_if_not_pyv_')
-    desc = 'Skip this test is {is_not}the Python Version {modifier} {version}'
+    """skip_if_is_pyv_x.x.x[+|-]"""
+    skip_name = 'pyv'
+    skip_pattern = r'{%s_name}(?P<modifier>[\+-]{0,1})'
+    desc = 'Skip this test is {is_not}the Python Version {modifier} {pyv_name}'
 
-    def parse_params(self, check_name_in):
-        if check_name_in[-1] == '+':
-            modifier = '<='
-            check_name_in = check_name_in[:-1]
-        elif check_name_in[-1] == '-':
-            modifier = '>='
-            check_name_in = check_name_in[:-1]
+    def update_params(self):
+        if 'modifier' not in self.check_params:
+            self.check_params['modifier'] = '=='
+        elif self.check_params['modifier'] == '+':
+            self.check_params['modifier'] = '<='
         else:
-            modifier = '=='
-
-        return {'version': StrictVersion(check_name_in),
-                'modifier': modifier}
+            self.check_params['modifier'] = '>='
 
     def check_skip(self, **kwargs):
+        check_version = StrictVersion(self.check_params['pyv_name'])
+        plat_version = StrictVersion(platform.python_version())
         if self.check_params['modifier'] == '<=':
-            return self.check_params['version'] <= platform.python_version()
+            return check_version <= plat_version
         if self.check_params['modifier'] == '>=':
-            return self.check_params['version'] >= platform.python_version()
+            return check_version >= plat_version
         if self.check_params['modifier'] == '==':
-            return self.check_params['version'] == platform.python_version()
+            return check_version == plat_version
 
 
 class TestFlaggerTestSkipTestRun(TestFlaggerTestSkipOS):
     """skip_if_is_test_xxx_[passed/failed/raised/run"""
-    flag_prefix = ('skip_if_is_test_', 'skip_if_not_test_')
-    desc = 'Skip this test if test {name} was {is_not}{action}'
-
-    def parse_params(self, check_name_in):
-        broken_out = check_name_in.rsplit('_', maxsplit=1)
-        tmp_ret = {
-            'test_name': broken_out[0],
-            'action': broken_out[1]
-        }
-        return tmp_ret
+    skip_name = 'test'
+    skip_pattern = '{%s_name}_{action}'
+    skip_kwargs = {'action': ['passed', 'failed', 'raised', 'run']}
+    desc = 'Skip this test if test {test_name} was {is_not}{action}'
 
     def check_skip(self, **kwargs):
-        pass
+        tmp_test = self.flagger.tests[self.check_params['test_name']]
+        return bool(getattr(tmp_test, self.check_params['action']))
 
 
 class TestFlaggerTestSkipModule(TestFlaggerTestSkipOS):
     """skip_if_is_module_xxx"""
-    flag_prefix = ('skip_if_is_module_', 'skip_if_not_module_')
-    desc = 'Skip this test if the module {module} was {is_not}loaded'
+    skip_name = 'module'
+    desc = 'Skip this test if the module {module_name} was {is_not}loaded'
 
     def parse_params(self, check_name_in):
         tmp_ret = {'module': check_name_in}
@@ -949,20 +1052,16 @@ class TestFlaggerTestSkipModule(TestFlaggerTestSkipOS):
 
 
 class TestFlaggerTestSkipFlag(TestFlaggerTestSkipOS):
-    """skip_if_is_flag_xxx_[all/any/none]_[passed/failed/raised/run"""
-    flag_prefix = ('skip_if_is_flag_', 'skip_if_not_flag_')
-    desc = 'Skip this test if the flag {flag_name} was {is_not}{action}'
-
-    def parse_params(self, check_name_in):
-        broken_out = check_name_in.rsplit('_', maxsplit=1)
-        tmp_ret = {
-            'flag_name': broken_out[0],
-            'action': broken_out[1]
-        }
-        return tmp_ret
+    """skip_if_is_flag_xxx_[all/any/no]_[passed/failed/raised/run"""
+    skip_name = 'flag'
+    skip_pattern = '{%s_name}_{scope}_{action}'
+    skip_kwargs = {'action': ['passed', 'failed', 'raised', 'run'], 'scope': ['all', 'any', 'no']}
+    desc = 'Skip this test if the flag {flag_name} was {is_not}{scope} {action}'
 
     def check_skip(self, **kwargs):
-        pass
+        tmp_flag = self.flagger.flags[self.check_params['flag_name']]
+        return tmp_flag.match(self.check_params['match'])
+
 
 class TestFlaggerTestSkipPlatform(TestFlaggerTestSkipOS):
     """skip_if_is_platform_[xxx]_xxx
@@ -992,8 +1091,21 @@ class TestFlaggerTestSkipPlatform(TestFlaggerTestSkipOS):
     '10.0.17763'
 
     """
-    flag_prefix = ('skip_if_is_module_xxx[_loaded_', '')
-    desc = 'Skip this test if the Python Version is'
+    skip_name = 'platform'
+    skip_pattern = '{%s_name}_{expect}'
+    skip_kwargs = {'expect': [
+        'machine','node',
+        'platform-aliased',
+        'platform_terse',
+        'processor',
+        'python-compiler',
+        'python-implementation',
+        'python-branch',
+        'release',
+        'system',
+        'version',
+    ]}
+    desc = 'Skip this test if the platform.{platform_name} is {is_not}{expect}'
     check_funcs = {
         'machine': platform.machine,
         'node': platform.node,
@@ -1009,44 +1121,29 @@ class TestFlaggerTestSkipPlatform(TestFlaggerTestSkipOS):
         'version': platform.version,
     }
 
-    def parse_params(self, check_name_in):
-        broken_out = check_name_in.rsplit('_', maxsplit=1)
-        tmp_ret = {
-            'platform_func': broken_out[0],
-            'expect': broken_out[1]
-        }
-        return tmp_ret
-
     def check_skip(self, **kwargs):
-        if self.check_params['platform_func'] == 'platform-aliased':
+        if self.check_params['platform_name'] == 'platform-aliased':
             return self.check_params['expect'] == platform.platform(aliased=True)
-        elif self.check_params['platform_func'] == 'platform-terse':
+        elif self.check_params['platform_name'] == 'platform-terse':
             return self.check_params['expect'] == platform.platform(terse=True)
         else:
-            return self.check_params['expect'] == self.check_funcs[self.check_params['platform_func']]()
+            return self.check_params['expect'] == self.check_funcs[self.check_params['platform_name']]()
 
 
-class TestFlaggerTestSkipEnviron(TestFlaggerTestSkipOS):
+class TestFlaggerTestSkipEnvironBase(TestFlaggerTestSkipOS):
     """skip_if_is_environ_
 
     This is an example of how to build a custom skip check
 
     """
-    flag_prefix = ('skip_if_is_module_xxx[_loaded_', '')
-    desc = 'Skip this test if the Python Version is'
-
-    def __init__(self, *args, env_check_args=None, **kwargs):
-        super(TestFlaggerTestSkipEnviron, self).__init__(*args, **kwargs)
-        self.check_params = env_check_args
-
-    def parse_params(self, check_name_in):
-        return check_name_in
+    skip_name = 'env_var'
+    skip_pattern = '{%s_name}_{expect}'
+    skip_kwargs = {'expect': '.+'}
+    desc = 'Skip this test if the environment var {env_var_name} is {expect}'
 
     def check_skip(self, **kwargs):
-        for key, value in self.check_params.items():
-            if os.environ[key] != value:
-                return False
-        return True
+        return os.environ[self.check_params['env_var_name']] != self.check_params['expect']
+
 
 class TestFlaggerFlagList(TestFlaggerBaseItemList):
     item_class = TestFlaggerFlagObj

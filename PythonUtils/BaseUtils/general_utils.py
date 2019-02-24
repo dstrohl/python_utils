@@ -1,10 +1,29 @@
 #!/usr/bin/env python
 
 
-__all__ = ['UnSet', '_UNSET', 'Error', 'swap', 'NextItem']
+__all__ = ['UnSet', '_UNSET', 'Error', 'swap', 'NextItem', 'iif']
 
 import collections
 from PythonUtils.BaseUtils.string_utils import slugify
+
+
+# ===============================================================================
+# Immediate If
+# ===============================================================================
+
+def iif(true_false, if_true, if_false):
+    """
+    when you just want a quick if this then that replacement.
+    :param true_false:
+    :param if_true:
+    :param if_false:
+    :return:
+    """
+    if true_false:
+        return if_true
+    else:
+        return if_false
+
 
 # ===============================================================================
 # Error Class
