@@ -32,8 +32,8 @@ class attrExample(dict):
         """Maps attributes to values.
         Only if we are initialised
         """
-        if not self.__dict__.has_key('_attrExample__initialised'):  # this test allows attributes to be set in the __init__ method
-            return dict.__setattr__(self, item, value)
+
+
         elif self.__dict__.has_key(item):       # any normal attributes are handled normally
             dict.__setattr__(self, item, value)
         else:

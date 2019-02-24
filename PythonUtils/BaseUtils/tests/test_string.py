@@ -837,11 +837,3 @@ class TestFormatKeyValue(TestCase):
         self.assertEqual(exp_ret, act_ret, repr(act_ret))
 
 
-class TestEnumFlag(TestCase):
-    def test_flag_operation(self):
-
-        class TestFlag(Flag):
-            RED = auto()
-            GREEN = auto()
-            BLUE = auto()
-

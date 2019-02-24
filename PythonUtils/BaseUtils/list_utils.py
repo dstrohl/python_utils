@@ -196,10 +196,18 @@ def make_list(in_obj):
     :param in_obj: list, string, or other iterable.
     :return: a list object.
     """
+    if in_obj is None:
+        return []
 
-    if is_iterable(in_obj):
+    if isinstance(in_obj, str):
+        return [in_obj]
+
+    if isinstance(in_obj, list):
         return in_obj
-    else:
+
+    try:
+        return list(in_obj)
+    except TypeError:
         return [in_obj]
 
 
