@@ -3,7 +3,7 @@
 from unittest import TestCase
 
 from PythonUtils.BaseUtils import convert_to_boolean, spinner_char, index_of_count, get_before, get_after, get_between, \
-    replace_between, ellipse_trim, indent_str, format_key_value
+    replace_between, ellipse_trim, indent_str, format_key_value, StringList
 from PythonUtils.BaseUtils.string_utils import NumberFormatHelper, FORMAT_RETURN_STYLE
 from decimal import Decimal
 from textwrap import dedent, indent
@@ -836,4 +836,53 @@ class TestFormatKeyValue(TestCase):
         act_ret = '\n' + act_ret + '\n'
         self.assertEqual(exp_ret, act_ret, repr(act_ret))
 
+
+class TestStringList(TestCase):
+
+    def test_init(self):
+        sl = StringList()
+        sl.extend(['test', 'foobar'])
+        self.assertEqual('test|foobar', str(sl))
+
+    def test_get_item(self):
+        s1 = StringList(['1', '2', '3'])
+        s1.extend(['4', '5'])
+        self.assertEqual('1|2|3|4|5', s1)
+        self.assertEqual('1|2|3', s1[:3])
+
+    def test_add(self):
+        s1 = StringList(['1', '2', '3'])
+        s2 = s1 + ['4', '4']
+        self.assertEqual('1|2|3|4|4', s2)
+
+    def test_radd(self):
+        s1 = StringList(['1', '2', '3'])
+        s1 += '4'
+        self.assertEqual('1|2|3|4', s1)
+
+    def test_mul(self):
+        s1 = StringList(['1', '2', '3'])
+        s1 *= 2
+        self.assertEqual('1|2|3|1|2|3', s1)
+
+    def test_sub(self):
+        s1 = StringList(['1', '2', '3'])
+        s2 = s1 - '4'
+        self.assertEqual('1|2|4', s2)
+
+    def test_rsub(self):
+        s1 = StringList(['1', '2', '3'])
+        s1 -= '4'
+        self.assertEqual('1|2|4', s1)
+
+    def test_ne(self):
+        s1 = StringList(['1', '2', '3'])
+        self.assertNotEqual(['1', '2', '2'], s1)
+
+    def test_eq(self):
+        s1 = StringList(['1', '2', '3'])
+        s2 = StringList(['1', '2', '3'])
+        self.assertEqual(s2, s1)
+        self.assertEqual(['1', '2', '3'], s1)
+        self.assertEqual('1|2|3', s1)
 

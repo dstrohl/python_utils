@@ -89,9 +89,12 @@ import sys
 import platform
 import os
 from fnmatch import fnmatch
-from PythonUtils.BaseUtils import make_list, format_key_value, indent_str
+from PythonUtils.BaseUtils import make_list, format_key_value, indent_str, FORMAT_RETURN_STYLE
 from distutils.version import StrictVersion
 import re
+from collections import OrderedDict
+
+
 
 # ******************************************************************************
 # Base Flagger Item
@@ -105,6 +108,7 @@ class TestFlaggerBaseItemObj(object):
     dump_inc_summary = True
     stats_in_status = False
     obj_name = 'Objs'
+    sub_references = 'Objs'
 
     def __init__(self, flagger, name, desc='', is_default=True, **kwargs):
         self.flagger = flagger
@@ -129,72 +133,16 @@ class TestFlaggerBaseItemObj(object):
     def __str__(self):
         return self.name
 
-    def match(self, *filter_flags, **filter_kwrgs):
-        """
-        flags:
-
-            all_<metric_name>
-            any_<metric_name> or inc_<metric_name>
-            no_<metric_name>
-
-        kwargs:
-          inc_<reference_obj>=[test_list]
-
-        :param match_kwargs:
-        :return:
-        """
-
-        for flag in filter_flags:
-            metrics = list(self.metric_info.keys())
-            parsed_flag = flag.split('_', maxsplit=1)
-            scope_flag = parsed_flag[0]
-            metric_flag = parsed_flag[-1]
-            if metric_flag not in metrics:
-                raise AttributeError('filter flag %r does not reference a valid metric: %r' % (flag, list(self.metric_info.keys())))
-
-            if scope_flag == 'all':
-                for g in self.all_groups:
-                    g = make_list(g)
-                    if metric_flag in g:
-                        metrics = g
-                        break
-                metrics.remove(metric_flag)
-                if not getattr(self, metric_flag):
-                    return False
-                for other_flag in metrics:
-                    if getattr(self, other_flag):
-                        return False
-            elif scope_flag in ('any', 'inc'):
-                if not getattr(self, metric_flag):
-                    return False
-            elif scope_flag == 'no':
-                if getattr(self, metric_flag):
-                    return False
-            else:
-                raise AttributeError('filter flag %s does not reference a valid scope' % flag)
-
-        for key, value in filter_kwrgs.items():
-            if key.startswith('inc_'):
-                look_in = key[4:]
-                look_for = make_list(value)
-
-                look_in_list = getattr(self, look_in)
-
-                for l in look_for:
-                    if l not in look_in_list:
-                        return False
-        return True
-
-    def stats_dict(self, inc_stats=None, exc_stat=None, inc_empty=True, full_field_names=True):
+    def stats_dict(self, inc_stat=None, exc_stat=None, inc_empty=True, full_field_names=True):
         exc_stat = make_list(exc_stat)
-        inc_stats = make_list(inc_stats)
+        inc_stat = make_list(inc_stat)
         tmp_ret = {}
-        if exc_stat and inc_stats:
+        if exc_stat and inc_stat:
             raise AttributeError('Cannot use both inc_stats and exc_stats')
         for metric_attr, metric_name in self.metric_info.items():
             if metric_attr in exc_stat:
                 continue
-            if inc_stats and metric_attr not in inc_stats:
+            if inc_stat and metric_attr not in inc_stat:
                 continue
             tmp_value = getattr(self, metric_attr)
             if not inc_empty and not tmp_value:
@@ -205,114 +153,85 @@ class TestFlaggerBaseItemObj(object):
                 tmp_ret[metric_attr] = tmp_value
         return tmp_ret
 
-    def status(self, as_prefix=False):
+    @property
+    def status(self):
         return ''
 
-    def summary_data(self, inc_desc=True, inc_status=True, **kwargs):
-        tmp_ret = []
-        if inc_status and self.status():
-            tmp_ret.append('[%s]' % self.status())
-        if inc_desc and self.desc:
-            tmp_ret.append('(%s)' % self.desc)
-        tmp_ret = ' '.join(tmp_ret)
-        return tmp_ret
+    @property
+    def status_prefix(self):
+        if self.status:
+            return self.status[0]
+        else:
+            return ''
 
-    def short_name(self, inc_status_prefix=True, **kwargs):
+    @property
+    def summary_data(self):
+        return ''
+
+    @property
+    def short_name(self):
         tmp_ret = ''
-        if inc_status_prefix and self.status(as_prefix=True):
-            tmp_ret += '[%s] ' % self.status(as_prefix=True)
+        if self.status_prefix:
+            tmp_ret += '[%s] ' % self.status_prefix
         tmp_ret += self.name
         return tmp_ret
 
-    def long_name(self, inc_desc=True, inc_status=True, inc_status_prefix=False, **kwargs):
-        tmp_ret = self.short_name(inc_status_prefix=inc_status_prefix, **kwargs)
-        tmp_ret_2 = self.summary_data(inc_desc=inc_desc, inc_status=inc_status, **kwargs)
+    @property
+    def long_name(self):
+        tmp_ret = self.short_name
+        tmp_ret_2 = self.summary_data
         if tmp_ret_2:
-            tmp_ret += ' ' + tmp_ret_2
+            tmp_ret += ' | ' + tmp_ret_2
         return tmp_ret
 
-    def _dump(self, **kwargs):
-        if self.dump_inc_summary:
-            tmp_ret = {}
-            for item in self.referenced_obj:
-                tmp_ret[item.short_name(inc_status_prefix=True, **kwargs)] = item.summary_data(inc_desc=False, **kwargs)
-            return format_key_value(tmp_ret)
-        else:
-            tmp_ret = []
-            for item in self.referenced_obj:
-                tmp_ret.append(item.short_name(inc_status_prefix=True, **kwargs))
-            return '\n'.join(tmp_ret)
-
-    def _analysis(self, **kwargs):
-        for metric, name in self.metric_info.items():
-            if self.match('all_' + metric):
-                tmp_analysis = 'All %s' % name
-                return tmp_analysis
-        return ''
-
-    def details(self, indent=0, dump=False, inc_name=True, inc_stats=True, inc_analysis=True, inc_status=True, **kwargs):
-        """
-        :param indent:
-        :param dump:
-        :param inc_stats:
-        :param inc_analysis:
-        :param kwargs:
-        :return:
-
-        [S] name (description)
-          status
-          analysis
-          <stats>: xx
-          <stats>: xx
-          <stats>: xx
-          dump:
-            dump data
-        """
-        if dump:
-            inc_stats = True
-            inc_analysis = True
-            inc_status = True
-
-        if inc_status and inc_name and not (inc_analysis or inc_stats):
-            high_status = True
-        else:
-            high_status = False
-
-        tmp_dict = {}
-        if inc_analysis:
-            tmp_analy = self._analysis(**kwargs)
-            if tmp_analy:
-                tmp_dict['Analysis'] = tmp_analy
-        if inc_stats:
-            tmp_stats = self.stats_dict(**kwargs)
-            if tmp_stats:
-                tmp_dict.update(tmp_stats)
-        if dump:
-            tmp_dump = self._dump(**kwargs)
-            if tmp_dump:
-                tmp_dict[self.dump_header] = tmp_dump
-
-        tmp_data = []
-        if inc_status and self.status():
-            if not high_status:
-                tmp_data.append(self.status(as_prefix=False))
-
-        if tmp_dict:
-            tmp_data.append(format_key_value(tmp_dict))
-
-        tmp_data = '\n'.join(tmp_data)
-        if inc_name:
-            tmp_ret = self.long_name(inc_status=high_status, **kwargs)
-            if tmp_data:
-                tmp_data = '\n' + indent_str(tmp_data, 2)
-                tmp_ret += tmp_data
-
-        else:
-            tmp_ret = tmp_data
-
-        if indent:
-            tmp_ret = indent_str(tmp_ret, indent)
+    @property
+    def status_name(self):
+        tmp_status = self.status
+        tmp_ret = self.name
+        if tmp_status:
+            tmp_ret += ' [%s]' % tmp_status
         return tmp_ret
+
+    def _dump_data(self):
+        return {}
+
+    @property
+    def dump_item(self):
+        return self.name
+
+    def _dump_dict(self):
+        tmp_ret = OrderedDict()
+
+        if self.desc:
+            tmp_ret['Desc'] = self.desc
+        tmp_ret.update(self._dump_data())
+        if self.referenced_obj:
+            tmp_item = []
+            for i in self.referenced_obj:
+                tmp_item.append(i.dump_item)
+            tmp_item = '\n'.join(tmp_item)
+            tmp_ret[self.dump_header] = tmp_item
+        else:
+            tmp_ret[self.dump_header] = '* None *'
+        return tmp_ret
+
+    def dump(self, as_dict=False):
+        if as_dict:
+            tmp_ret = format_key_value(self._dump_dict())
+            tmp_ret = {self.status_name: tmp_ret}
+        else:
+            tmp_ret = format_key_value(self._dump_dict(), indent=4)
+            tmp_ret = self.status_name + '\n' + tmp_ret
+        return tmp_ret
+
+    def __hash__(self):
+        return hash(str(self))
+
+    def __repr__(self):
+        if self.desc:
+            return '%s: %s ( %r )' % (self.__class__.__name__, self.long_name, self.desc)
+        else:
+            return '%s: %s' % (self.__class__.__name__, self.long_name)
 
 
 class TestFlaggerBaseItemList(object):
@@ -459,6 +378,17 @@ class TestFlaggerBaseItemList(object):
 # ******************************************************************************
 
 class TestFlaggerSkipIDObj(TestFlaggerBaseItemObj):
+    """
+    [m] id_name
+
+    id_name [matched 2]
+        desc  : desc
+        tests : test 1
+                test 2
+                test 3
+
+    """
+
     metric_info = {'test_count': 'Matched Tests',
                    'not_found': 'Not Found IDs'}
     dump_header = 'Tests'
@@ -497,9 +427,12 @@ class TestFlaggerSkipIDObj(TestFlaggerBaseItemObj):
     def unmatched(self):
         return not self.matched
 
-    def status(self, as_prefix=False):
-        if as_prefix:
-            return ''
+    @property
+    def summary_data(self):
+        return self.status
+
+    @property
+    def status(self):
         if self.matched:
             if self.test_count > 1:
                 return 'Matched %s times' % self.test_count
@@ -509,18 +442,23 @@ class TestFlaggerSkipIDObj(TestFlaggerBaseItemObj):
         else:
             return 'Not Matched'
 
-    def details(self, indent=0, dump=False, inc_stats=False, inc_analysis=False, inc_status=True, **kwargs):
-        if inc_stats:
-            inc_status = False
+    @property
+    def status_prefix(self):
+        tmp_status = self.status
+        if tmp_status == 'Not Matched':
+            return 'U'
+        else:
+            return 'M'
 
-        return super(TestFlaggerSkipIDObj, self).details(
-                    indent=indent,
-                    dump=dump,
-                    inc_stats=inc_stats,
-                    inc_analysis=inc_analysis,
-                    inc_status=inc_status,
-                    **kwargs
-                )
+    @property
+    def long_name(self):
+        tmp_status = self.status
+        if tmp_status:
+            return self.name + ' | ' + tmp_status
+        else:
+            return self.name
+
+    found = test_count
 
 
 class TestFlaggerSkipIDList(TestFlaggerBaseItemList):
@@ -557,6 +495,22 @@ class TestFlaggerSkipIDList(TestFlaggerBaseItemList):
 
 
 class TestFlaggerTestObj(TestFlaggerBaseItemObj):
+    """
+
+    short_name | summary_data = long name
+    [s] Test_name | Flags: xxx  name_match = xxx
+
+    dump
+    status_name
+    test_name [skipped]
+        desc     : desc
+        flags    :  flag_name
+                    flag_name
+        is_match : test_name*
+
+
+    """
+
     metric_info = {
         'run': 'Run',
         'passed': 'Passed',
@@ -565,8 +519,9 @@ class TestFlaggerTestObj(TestFlaggerBaseItemObj):
         'skipped': 'Skipped'
     }
     dump_header = 'Flags'
+    all_groups = [('run', 'skipped'), ('passed', 'failed', 'raised')]
 
-    def __init__(self, flagger, name, desc=None, is_default=True, flags=None, failed=None, fail_reason=None, **kwargs):
+    def __init__(self, flagger, name, desc=None, is_default=True, flags=None, **kwargs):
         if not isinstance(name, str):
             desc = desc or name.__doc__
             name = name.id()
@@ -576,22 +531,23 @@ class TestFlaggerTestObj(TestFlaggerBaseItemObj):
         elif name.startswith('test'):
             name = name[4:]
         self.skip_id_obj = None
-        self.skip_reason = None
         self.skipped = None
+        self.skipped_flags = []
         self.run = None
         self.passed = None
-        self.failed = failed
+        self.failed = None
         self.raised = None
-        self.fail_reason = fail_reason
+        self.fail_reason = None
 
         super(TestFlaggerTestObj, self).__init__(flagger, name, desc, is_default, **kwargs)
+
         if flags:
             self.check(flags)
 
     def clear(self):
         super(TestFlaggerTestObj, self).clear()
         self.skip_id_obj = None
-        self.skip_reason = None
+        self.skipped_flags.clear()
         self.skipped = None
         self.run = None
         self.passed = None
@@ -599,94 +555,124 @@ class TestFlaggerTestObj(TestFlaggerBaseItemObj):
         self.raised = None
         self.fail_reason = None
 
-    def check(self, flags):
+    def skip_reasons(self):
+        if self.skipped is None:
+            return ''
+        elif not self.skipped:
+            return ''
+        else:
+            tmp_ret = []
+            tmp_flags = []
+            for f in self.skipped_flags:
+                if isinstance(f, str):
+                    tmp_flags.append(f)
+                else:
+                    tmp_flags.append(f.name)
+            if tmp_flags:
+                if len(tmp_flags) > 1:
+                    tmp_flags = 'Flags: %s' % ', '.join(tmp_flags)
+                else:
+                    tmp_flags = 'Flag: %s' % tmp_flags[0]
+                tmp_ret.append(tmp_flags)
+
+            if self.skip_id_obj is not None:
+                tmp_ret.append('Skip Test IDs: %s' % self.skip_id_obj.name)
+
+            if tmp_ret:
+                tmp_ret = 'Due To: %s' % ' / '.join(tmp_ret)
+
+        return tmp_ret
+
+    def check(self, flags=None, skip_id_obj=None):
         flags = make_list(flags)
 
         if not flags and not self.flagger.allow_no_flags:
-            self.skip_reason = 'Test was missing flags'
-            self.failed = True
+            self.fail_reason = 'Test was missing flags'
             raise AttributeError('No flags defined for this test')
 
-        skip_reasons = []
-
-        for a in flags:
-            skipped_flags = []
-            if a in self.flagger.flags:
-                tmp_flag = self.flagger.flags[a]
-                tmp_flag.found += 1
-                tmp_flag.tests.append(self)
-                self.flags.append(tmp_flag)
-
-                if tmp_flag.should_skip:
-                    skipped_flags.append(tmp_flag.name)
-            if skipped_flags:
-                if len(skipped_flags) > 1:
-                    skip_reasons.append('Flags: %r' % ', '.join(skipped_flags))
-                else:
-                    skip_reasons.append('Flag: %r' % skipped_flags[0])
-
-        if self.name in self.flagger.skip_ids:
-            self.skip_id_obj = self.flagger.skip_ids[self.name]
-            self.skip_id_obj.found += 1
-            self.skip_id_obj.tests.append(self)
-            skip_reasons.append('ID Match: %r' % self.skip_id_obj)
-
-        if skip_reasons:
-            self.skipped = True
-            self.skip_reason = 'Skipped due to: %s' % ' '.join(skip_reasons)
-            for f in self.flags:
-                if f.should_skip:
-                    f.self_skip += 1
-                else:
-                    f.other_skip += 1
-                f.skipped += 1
-            raise unittest.SkipTest(self.skip_reason)
-
-        else:
-            self.run = True
-            for f in self.flags:
-                f.run += 1
-
-    def set_result(self, exc=None, state=None):
-        if state is not None:
-            if state in ('passed', 'failed', 'raised'):
-                self.passed = False
-                self.failed = False
-                self.raised = False
-                self.run = True
-                self.skipped = False
-                if state == 'passed':
-                    self.passed = True
-                elif state == 'failed':
-                    self.failed = True
-                else:
-                    self.raised = True
+        for index in range(len(flags)):
+            if isinstance(flags[index], TestFlaggerFlagObj):
+                continue
+            elif flags[index] in self.flagger.flags:
+                flags[index] = self.flagger.flags[flags[index]]
             else:
-                self.passed = None
-                self.failed = None
-                self.raised = None
-                self.run = False
-                self.skipped = False
-                if state == 'skipped':
-                    self.skipped = True
-                elif state == 'run':
-                    self.run = True
+                if self.flagger.allow_unknown:
+                    if self.flagger.skip_on_unknown:
+                        flags[index] = 'Unknown Flag: ' + flags[index]
+                    else:
+                        flags[index] = self.flagger.add_flag(flags[index])
+                else:
+                    raise AttributeError('%s not defined as a flag' % flags[index])
+
+        if self.name in self.flagger.skip_ids or skip_id_obj is not None:
+            if skip_id_obj is not None:
+                self.skip_id_obj = skip_id_obj
+            else:
+                self.skip_id_obj = self.flagger.skip_ids[self.name]
+            self.skip_id_obj.tests.append(self)
+
+        for flag in flags:
+            if isinstance(flag, str):
+                self.skipped_flags.append(flag)
+            else:
+                flag.link_test(self)
+                self.flags.append(flag)
+
+                if flag.should_skip():
+                    self.skipped_flags.append(flag)
+
+        if self.skipped_flags or self.skip_id_obj is not None:
+            self._set_result(state='skipped')
+            raise unittest.SkipTest(self.skip_reasons())
+
         else:
+            self._set_result(state='run')
+
+    def set_result(self, exc=None):
+        if exc is not None:
+            self.fail_reason = str(exc)
+            if issubclass(exc.__class__, AssertionError):
+                self._set_result('failed')
+            else:
+                self._set_result('raised')
+        else:
+            self._set_result('passed')
+
+    def _set_result(self, state):
+
+        if state in ('passed', 'failed', 'raised'):
+            if self.skipped:
+                raise AttributeError('Test marked as skipped, cannot set result')
             self.passed = False
             self.failed = False
             self.raised = False
-
-        if exc is None:
-            self.passed = True
-        else:
-            self.fail_reason = str(exc)
-            if issubclass(exc.__class__, AssertionError):
+            self.run = True
+            self.skipped = False
+            if state == 'passed':
+                self.passed = True
+            elif state == 'failed':
                 self.failed = True
             else:
                 self.raised = True
+        elif state in ('run', 'skipped'):
+            self.passed = None
+            self.failed = None
+            self.raised = None
+            self.run = False
+            self.skipped = False
+            if state == 'skipped':
+                self.skipped = True
+            elif state == 'run':
+                self.run = True
+        else:
+            self.passed = None
+            self.failed = None
+            self.raised = None
+            self.run = False
+            self.skipped = False
 
         for f in self.flags:
-            f.set_result(passed=self.passed, failed=self.failed, raised=self.raised, exc_str=self.fail_reason)
+            f.set_result()
 
     @property
     def flags(self):
@@ -696,7 +682,8 @@ class TestFlaggerTestObj(TestFlaggerBaseItemObj):
     def skip_ids(self):
         return [self.skip_id_obj]
 
-    def status(self, as_prefix=False):
+    @property
+    def status(self):
         if not self.run and not self.skipped:
             tmp_ret = 'Not Tried'
         else:
@@ -711,41 +698,32 @@ class TestFlaggerTestObj(TestFlaggerBaseItemObj):
                 elif self.raised:
                     tmp_ret = 'Raised'
 
-        if as_prefix:
-            if tmp_ret == 'Raised':
-                tmp_ret = '[E]'
-            elif tmp_ret == 'Not Tried':
-                tmp_ret = '[?]'
-            else:
-                tmp_ret = '[%s]' % tmp_ret[0]
         return tmp_ret
 
-    def flag_list(self):
-        if not self.flags:
-            return None
-        tmp_ret = []
-        for f in self.flags:
-            tmp_ret.append(f.name)
-        tmp_ret = ', '.join(tmp_ret)
-        tmp_ret = 'Flags: ' + tmp_ret
+    @property
+    def summary_data(self):
+        return self.skip_reasons()
 
+    @property
+    def status_prefix(self):
+        tmp_ret = self.status
+        if tmp_ret == 'Raised':
+            tmp_ret = 'E'
+        elif tmp_ret == 'Not Tried':
+            tmp_ret = '?'
+        else:
+            tmp_ret = tmp_ret[0]
         return tmp_ret
 
-    def summary_data(self, inc_desc=True, inc_status=True, inc_flags=True, inc_skip_id=True, **kwargs):
-        tmp_ret = []
-        if inc_status and self.status():
-            tmp_ret.append('[%s]' % self.status())
-        if inc_flags:
-            tmp_flags = self.flag_list()
-            if tmp_flags:
-                tmp_ret.append(tmp_flags)
-
-        if inc_skip_id and self.skip_id_obj is not None:
-            tmp_ret.append('Skip ID Matched: %s' % self.skip_id_obj.name)
-
-        if inc_desc and self.desc:
-            tmp_ret.append('(%s)' % self.desc)
-        tmp_ret = ' '.join(tmp_ret)
+    def _dump_data(self):
+        tmp_ret = {}
+        if self.skip_id_obj is not None:
+            tmp_ret['Skipped Names'] = self.skip_id_obj.name
+        else:
+            tmp_ret['Skipped Names'] = '* None *'
+        tmp_sr = self.skip_reasons()
+        if tmp_sr:
+            tmp_ret['Reasons'] = tmp_sr
         return tmp_ret
 
 
@@ -830,14 +808,32 @@ class TestFlaggerFlagObj(TestFlaggerBaseItemObj):
     skip_if_is_environ_
 
     """
+
+    """
+    [s] flag_name [Skip] | sk:(s-2/o-3) rn:3 ps:3 fa:4 ex:4
+
+
+    flag_name [skip]
+        desc          : desc
+        run/skipped:
+            skipped other : 1
+            skipped self  : 1
+            run           : 2
+        pass/fail:
+            passed        : 7
+            failed        : 3
+            raised        : 3
+        tests         : test 1
+                        test 2
+                        test 3
+
+    """
     metric_info = {
         'run': 'Run',
         'passed': 'Passed',
         'failed': 'Failed',
         'raised': 'Raised',
         'skipped': 'Skipped',
-        'self_skipped': 'Skipped(self)',
-        'other_skipped': 'Skipped(other)',
     }
     all_groups = [('run', 'skipped'), ('passed', 'failed', 'raised')]
     dump_header = 'Tests'
@@ -873,75 +869,91 @@ class TestFlaggerFlagObj(TestFlaggerBaseItemObj):
         super(TestFlaggerFlagObj, self).clear()
         self.fail_reasons.clear()
 
-    def _analysis(self, **kwargs):
+    def _analysis(self):
         return pass_fail_run_skip_analysis(**self.stats_dict(full_field_names=False))
 
-    def status(self, as_prefix=False):
-        if self.should_skip:
-            tmp_ret = 'Skipped'
+    @property
+    def status(self):
+        if self.should_skip():
+            return 'Skip'
         else:
-            tmp_ret = 'Included'
+            return 'Inc'
 
-        if as_prefix:
-            return tmp_ret[0]
+    @property
+    def summary_data(self):
+        if self.run + self.skipped == 0:
+            return 'Not Found'
+        elif self.passed is None:
+            return 'R:%s S:%s' % (self.run, self.skipped)
+        else:
+            return 'R:%s S:%s / P:%s F:%s E:%s' % (self.run, self.skipped, self.passed, self.failed, self.raised)
+
+    def _dump_data(self):
+        """
+        run/skipped:
+            skipped other : 1
+            skipped self  : 1
+            run           : 2
+        pass/fail:
+            passed        : 7
+            failed        : 3
+            raised        : 3
+
+        :return:
+        """
+        if self.run + self.skipped == 0:
+            return {'Stats': '* No Stats *'}
+        tmp_ret = OrderedDict()
+        tmp_ret['Run/Skipped Stats:'] = '__header__'
+        tmp_ret['Run'] = self.run
+        tmp_ret['Skipped/Self'] = self.self_skipped
+        tmp_ret['Skipped/Other'] = self.other_skipped
+        if self.passed is not None:
+            tmp_ret['Passed/Failed Stats:'] = '__header__'
+            tmp_ret['Passed'] = self.passed
+            tmp_ret['Failed'] = self.failed
+            tmp_ret['Raised'] = self.raised
+        if self.fail_reasons:
+            tmp_ret['Reasons:'] = '__header__'
+            tmp_ret[''] = '\n'.join(self.fail_reasons)
         return tmp_ret
 
-    def set_result(self, passed=False, failed=False, raised=False, exc_reason=None):
-        self.passed += passed
-        self.failed += failed
-        self.raised += raised
-        if exc_reason:
-            if exc_reason not in self.fail_reasons:
-                self.fail_reasons.append(exc_reason)
+    def link_test(self, test_in):
+        self.tests.append(test_in)
+        self.set_result()
 
+    def set_result(self):
+        self.found = len(self.tests)
+        self.skipped = 0
+        self.other_skipped = 0
+        self.self_skipped = 0
+        self.run = 0
+        self.passed = 0
+        self.failed = 0
+        self.raised = 0
 
-"""
-skip_if_is_os_<xxx>
+        for t in self.tests:
+            status = t.status
+            if status == 'Skipped':
+                if self.should_skip():
+                    self.self_skipped += 1
+                else:
+                    self.other_skipped += 1
+                self.skipped += 1
+            else:
+                self.run += 1
+                if status == 'Passed':
+                    self.passed += 1
+                elif status == 'Failed':
+                    self.failed += 1
+                    self.fail_reasons.append(t.fail_reason)
+                elif status == 'Raised':
+                    self.raised += 1
+                    self.fail_reasons.append(t.fail_reason)
 
-skip_if_is_pyv_x.x(+-)
-
-skip_if_is_module_xxx[_loaded]
-
-skip_if_is_test_xxx_[passed/failed/raised/run]
-
-skip_if_is_flag_xxx_[all/any/none]_[passed/failed/raised/run]
-
-skip_if_is_platform_[xxx]_xxx
-    [machine|node|platform_aliased|platform_terse|processor|python_compiler|python_implementation|python_branch|release|system|version|java_ver|win32_ver|mac_ver|dist|linux_distribution]
-
-skip_if_is_environ_
-
-"""
-
-
-def skip_if_re_helper(name, match_str='{%s_name}', **kwargs):
-    """
-    :param name:
-        "skip_if_(is|not)_<NAME>_"  <- the name == NAME
-    :param match_str:
-        match_str = any of:
-            '{%s_name}_{pfr}'  == {name_name}_pfr
-            '{any}_{pfr}_{action}
-    :param kwargs:
-        pfr = ['list', 'of', 'options']
-        is_not = 'is'
-    :return:
-        returns regex to match
-    """
-    match_str = 'skip_if_(?P<is_not>is|not)_{name}_' + match_str
-    if '%s_name' in match_str:
-        match_str = match_str % name
-    name_name = name+'_name'
-    tmp_kwargs = {'name': name, name_name: '(?P<%s>.+)' % name_name}
-
-    for key, value in kwargs.items():
-        if isinstance(value, str):
-            tmp_kwargs[key] = value
-        elif isinstance(value, (list, tuple)):
-            tmp_kwargs[key] = '(?P<%s>%s)' % (key, '|'.join(value))
-    match_str = match_str.format(**tmp_kwargs)
-    print(match_str)
-    return re.compile(match_str)
+    @property
+    def long_name(self):
+        return '%s [%s] | %s' % (self.name, self.status, self.summary_data)
 
 
 class TestFlaggerTestSkipOS(TestFlaggerFlagObj):
@@ -950,42 +962,27 @@ class TestFlaggerTestSkipOS(TestFlaggerFlagObj):
     'nt'
     """
     skip_name = 'os'
-    skip_pattern = '{%s_name}'
-    skip_kwargs = {}
-    re_match = skip_if_re_helper(skip_name, skip_pattern, **skip_kwargs)
-    desc = 'Skip this test if {is_not}the OS is {os_name}'
+    re_match = re.compile(r'skip_if_(?P<is_not>is|not)_os_(?P<os_name>.+)')
+    desc = 'Skip this test if the OS is {is_not}{os_name!r}'
     active = True
     check_params = None
 
-    
-
-    # TODO:  I think this needs a __new__
-
-
-
-
-
-
-
-
-
-
-    def __init__(self, flagger, name, desc=None, is_default=True, flags=None, failed=None, fail_reason=None, **kwargs):
+    def __init__(self, flagger, name, desc=None, **kwargs):
         tmp_match = self.re_match.fullmatch(name)
         if not tmp_match:
             raise AttributeError('invalid name: %r for %r' % (name, self.re_match))
         self.check_for_not = tmp_match['is_not'] == 'not'
         self.check_params = tmp_match.groupdict()
+        if self.check_params['is_not'] == 'is':
+            self.check_params['is_not'] = ''
+        else:
+            self.check_params['is_not'] = 'not '
         self.update_params()
         desc = self.desc.format(**self.check_params)
 
         super(TestFlaggerTestSkipOS, self).__init__(flagger=flagger,
                                                  name=name,
                                                  desc=desc,
-                                                 is_default=is_default,
-                                                 flags=flags,
-                                                 failed=failed,
-                                                 fail_reason=fail_reason,
                                                  **kwargs)
 
     def update_params(self):
@@ -1004,24 +1001,29 @@ class TestFlaggerTestSkipOS(TestFlaggerFlagObj):
 class TestFlaggerTestSkipPyVer(TestFlaggerTestSkipOS):
     """skip_if_is_pyv_x.x.x[+|-]"""
     skip_name = 'pyv'
-    skip_pattern = r'{%s_name}(?P<modifier>[\+-]{0,1})'
-    desc = 'Skip this test is {is_not}the Python Version {modifier} {pyv_name}'
+    desc = 'Skip this test if the Python Version is {is_not}{modifier} {pyv_name!r}'
+    re_match = re.compile(r'skip_if_(?P<is_not>is|not)_pyv_(?P<pyv_name>[0-9\.]+)(?P<modifier>[+-]?)')
 
     def update_params(self):
-        if 'modifier' not in self.check_params:
+        if 'modifier' not in self.check_params or self.check_params['modifier'] == '':
             self.check_params['modifier'] = '=='
-        elif self.check_params['modifier'] == '+':
+        elif self.check_params['modifier'] == '-':
             self.check_params['modifier'] = '<='
         else:
             self.check_params['modifier'] = '>='
+        if self.check_params['pyv_name'].isdigit():
+            self.check_params['pyv_name'] += '.0'
 
     def check_skip(self, **kwargs):
         check_version = StrictVersion(self.check_params['pyv_name'])
         plat_version = StrictVersion(platform.python_version())
+
+        # print('%s (%s):  %s %s %s' % (self.name, self.desc, check_version, self.check_params['modifier'], plat_version))
+
         if self.check_params['modifier'] == '<=':
-            return check_version <= plat_version
+            return  plat_version <= check_version
         if self.check_params['modifier'] == '>=':
-            return check_version >= plat_version
+            return plat_version >= check_version
         if self.check_params['modifier'] == '==':
             return check_version == plat_version
 
@@ -1029,9 +1031,8 @@ class TestFlaggerTestSkipPyVer(TestFlaggerTestSkipOS):
 class TestFlaggerTestSkipTestRun(TestFlaggerTestSkipOS):
     """skip_if_is_test_xxx_[passed/failed/raised/run"""
     skip_name = 'test'
-    skip_pattern = '{%s_name}_{action}'
-    skip_kwargs = {'action': ['passed', 'failed', 'raised', 'run']}
-    desc = 'Skip this test if test {test_name} was {is_not}{action}'
+    desc = 'Skip this test if the test {test_name!r} {is_not}{action}'
+    re_match = re.compile(r'skip_if_(?P<is_not>is|not)_test_(?P<test_name>.+)_(?P<action>passed|failed|raised|run)')
 
     def check_skip(self, **kwargs):
         tmp_test = self.flagger.tests[self.check_params['test_name']]
@@ -1041,26 +1042,32 @@ class TestFlaggerTestSkipTestRun(TestFlaggerTestSkipOS):
 class TestFlaggerTestSkipModule(TestFlaggerTestSkipOS):
     """skip_if_is_module_xxx"""
     skip_name = 'module'
-    desc = 'Skip this test if the module {module_name} was {is_not}loaded'
+    desc = 'Skip this test if the module {module_name!r} was {is_not}loaded'
+    re_match = re.compile(r'skip_if_(?P<is_not>is|not)_module_(?P<module_name>.+)')
+    # re_match = MODULE_MATCH_RE
 
     def parse_params(self, check_name_in):
         tmp_ret = {'module': check_name_in}
         return tmp_ret
 
     def check_skip(self, **kwargs):
-        return self.check_params['module'] in sys.modules
+        return self.check_params['module_name'] in sys.modules
 
 
 class TestFlaggerTestSkipFlag(TestFlaggerTestSkipOS):
     """skip_if_is_flag_xxx_[all/any/no]_[passed/failed/raised/run"""
     skip_name = 'flag'
-    skip_pattern = '{%s_name}_{scope}_{action}'
-    skip_kwargs = {'action': ['passed', 'failed', 'raised', 'run'], 'scope': ['all', 'any', 'no']}
-    desc = 'Skip this test if the flag {flag_name} was {is_not}{scope} {action}'
+    re_match = re.compile(r'skip_if_(?P<is_not>is|not)_flag_(?P<flag_name>.+)_(?P<scope>all|any|no)_(?P<action>passed|failed|raised|run)')
+    # re_match = FLAG_MATCH_RE
+    desc = 'Skip this test if the other tests for flag {flag_name!r} {is_not}{scope} {action}'
 
     def check_skip(self, **kwargs):
         tmp_flag = self.flagger.flags[self.check_params['flag_name']]
         return tmp_flag.match(self.check_params['match'])
+
+
+EXPECT_NAMES = r'machine|node|platform_full|platform_aliased|platform_terse|processor|python_compiler|python_implementation|python_branch|release|system|version'
+PLAT_RE = r'skip_if_(?P<is_not>is|not)_platform_(?P<platform_name>%s)_(?P<expect>.+)' % EXPECT_NAMES
 
 
 class TestFlaggerTestSkipPlatform(TestFlaggerTestSkipOS):
@@ -1092,39 +1099,29 @@ class TestFlaggerTestSkipPlatform(TestFlaggerTestSkipOS):
 
     """
     skip_name = 'platform'
-    skip_pattern = '{%s_name}_{expect}'
-    skip_kwargs = {'expect': [
-        'machine','node',
-        'platform-aliased',
-        'platform_terse',
-        'processor',
-        'python-compiler',
-        'python-implementation',
-        'python-branch',
-        'release',
-        'system',
-        'version',
-    ]}
-    desc = 'Skip this test if the platform.{platform_name} is {is_not}{expect}'
+    # re_match = PLAT_MATCH_RE
+    re_match = re.compile(PLAT_RE)
+    desc = 'Skip this test if the platform.{platform_name}() is {is_not}{expect!r}'
     check_funcs = {
         'machine': platform.machine,
         'node': platform.node,
-        'platform': platform.platform,
-        'platform-aliased': platform.platform,
-        'platform-terse': platform.platform,
+        'platform_full': platform.platform,
+        'platform_aliased': platform.platform,
+        'platform_terse': platform.platform,
         'processor': platform.processor,
-        'python-compiler': platform.python_compiler,
-        'python-implementation': platform.python_implementation,
-        'python-branch': platform.python_branch,
+        'python_compiler': platform.python_compiler,
+        'python_implementation': platform.python_implementation,
+        'python_branch': platform.python_branch,
         'release': platform.release,
         'system': platform.system,
         'version': platform.version,
     }
 
     def check_skip(self, **kwargs):
-        if self.check_params['platform_name'] == 'platform-aliased':
+        if self.check_params['platform_name'] == 'platform_aliased':
             return self.check_params['expect'] == platform.platform(aliased=True)
-        elif self.check_params['platform_name'] == 'platform-terse':
+        elif self.check_params['platform_name'] == 'platform_terse':
+            # print('%s (%s): %s == %s' % (self.name, self.desc, self.check_params['expect'], platform.platform(terse=True)))
             return self.check_params['expect'] == platform.platform(terse=True)
         else:
             return self.check_params['expect'] == self.check_funcs[self.check_params['platform_name']]()
@@ -1137,12 +1134,16 @@ class TestFlaggerTestSkipEnvironBase(TestFlaggerTestSkipOS):
 
     """
     skip_name = 'env_var'
-    skip_pattern = '{%s_name}_{expect}'
-    skip_kwargs = {'expect': '.+'}
-    desc = 'Skip this test if the environment var {env_var_name} is {expect}'
+    # re_match = ENV_MATCH_RE
+    re_match = re.compile(r'skip_if_(?P<is_not>is|not)_env_var_(?P<env_var_name>.+)_(?P<expect>.+)')
+
+    desc = 'Skip this test if the environment var {env_var_name!r} is {is_not}{expect!r}'
 
     def check_skip(self, **kwargs):
-        return os.environ[self.check_params['env_var_name']] != self.check_params['expect']
+        try:
+            return os.environ[self.check_params['env_var_name']] == self.check_params['expect']
+        except KeyError:
+            return self.check_for_not
 
 
 class TestFlaggerFlagList(TestFlaggerBaseItemList):
@@ -1207,7 +1208,7 @@ class TestFlagger(object):
         if inc_flags:
             self.skip_on_unknown = True
             for i in self.flags:
-                i.should_skip = True
+                i._should_skip = True
 
             for i in make_list(inc_flags):
                 if i not in self.flags:
@@ -1215,7 +1216,7 @@ class TestFlagger(object):
                         raise AttributeError('Unknown flag %r in inc_flags' % i)
                     self.flags.add(i, is_default=True, should_skip=False)
                 else:
-                    self.flags[i].should_skip = False
+                    self.flags[i]._should_skip = False
         if skip_flags:
             self.skip_on_unknown = False
             for i in make_list(skip_flags):
@@ -1223,7 +1224,7 @@ class TestFlagger(object):
                     if has_flags:
                         raise AttributeError('Unknown flag %r in skip_flags' % i)
                     self.flags.add(i, is_default=True, should_skip=True)
-                self.flags[i].should_skip = True
+                self.flags[i]._should_skip = True
 
     def reset(self):
         self.skip_ids.clear()

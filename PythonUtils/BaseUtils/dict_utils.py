@@ -1,11 +1,31 @@
 
 
 __all__ = ['DictKey2Method', 'AdvDict', 'TreeDict', 'TreeItem', 'MultiLevelDictManager', 'BasicTreeNode', 'DictOfDict',
-           'DictOfList', 'flatten_dict', 'AdvancedDict']
+           'DictOfList', 'flatten_dict', 'AdvancedDict', 'init_dict']
 
 import collections
 from PythonUtils.BaseUtils.general_utils import _UNSET
 from PythonUtils.BaseUtils.path import Path
+from copy import deepcopy
+# ===============================================================================
+# Init Dictionaries
+# ===============================================================================
+
+def init_dict(base_dict_in=None, *args, **kwargs):
+    if base_dict_in is None:
+        base_dict_in = {}
+    else:
+        base_dict_in = deepcopy(base_dict_in)
+
+    for arg in args:
+        arg = arg or {}
+        base_dict_in.update(arg)
+
+    base_dict_in.update(kwargs)
+
+    return base_dict_in
+
+
 
 # ===============================================================================
 # Flatten Dictionaries

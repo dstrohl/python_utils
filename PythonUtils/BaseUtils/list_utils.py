@@ -184,7 +184,7 @@ class DBList(object):
 # ===============================================================================
 
 
-def make_list(in_obj):
+def make_list(*in_obj):
     """
     Will take in an object, and if it is not already a list or other iterables, it will convert it to one.
 
@@ -196,19 +196,20 @@ def make_list(in_obj):
     :param in_obj: list, string, or other iterable.
     :return: a list object.
     """
-    if in_obj is None:
-        return []
+    tmp_ret = []
+    for ino in in_obj:
+        if ino is not None:
+            if isinstance(ino, str):
+                tmp_ret.append(ino)
 
-    if isinstance(in_obj, str):
-        return [in_obj]
-
-    if isinstance(in_obj, list):
-        return in_obj
-
-    try:
-        return list(in_obj)
-    except TypeError:
-        return [in_obj]
+            elif isinstance(ino, (list, tuple)):
+                tmp_ret.extend(ino)
+            else:
+                try:
+                    tmp_ret.extend(list(ino))
+                except:
+                    tmp_ret.append(ino)
+    return tmp_ret
 
 
 def flatten(l, ltypes=(list, tuple), force=None):

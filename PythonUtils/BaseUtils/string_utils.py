@@ -14,7 +14,7 @@ __status__ = ""
 
 __all__ = [ 'get_between', 'get_after', 'get_before',  'index_of_count', 'replace_between', 'spinner_char', 'pluralizer',
             'format_as_decimal_string', 'unslugify', 'ellipse_trim', 'concat', 'convert_to_boolean', 'slugify',
-            'indent_str', 'format_key_value']
+            'indent_str', 'format_key_value', 'StringList', 'FORMAT_RETURN_STYLE']
 
 from decimal import Decimal
 import re
@@ -23,6 +23,7 @@ from PythonUtils.BaseUtils.list_utils import flatten
 from pprint import pformat
 from json import dumps
 from enum import Enum
+from collections import UserList
 
 # ===============================================================================
 # text utils
@@ -179,6 +180,74 @@ def get_between(instring, start_key, end_key):
 
     """
     return get_after(get_before(instring, end_key), start_key)
+
+
+# ===============================================================================
+# string list
+# ===============================================================================
+
+class StringList(UserList):
+
+    def __init__(self, initlist=None, sep='|'):
+        self.sep = sep
+        if isinstance(initlist, str):
+            initlist = initlist.split(sep)
+        super(StringList, self).__init__(initlist)
+
+    def __class(self, initlist=None):
+        return self.__class__(initlist, sep=self.sep)
+
+    def __cast(self, other):
+        if other is None:
+            return []
+        elif isinstance(other, (UserList, self.__class__)):
+            return other.data
+        elif isinstance(other, str):
+            return other.split(self.sep)
+        elif isinstance(other, type(self.data)):
+            return other
+        else:
+            return list(other)
+
+    def __lt__(self, other): return self.data <  self.__cast(other)
+    def __le__(self, other): return self.data <= self.__cast(other)
+    def __eq__(self, other): return self.data == self.__cast(other)
+    def __gt__(self, other): return self.data >  self.__cast(other)
+    def __ge__(self, other): return self.data >= self.__cast(other)
+
+    def __getitem__(self, item):
+        return self.__class(self.data[item])
+
+    def __str__(self):
+        return self.sep.join(self.data)
+
+    def __add__(self, other):
+        return self.__class(self.data + self.__cast(other))
+    __radd__ = __add__
+
+    def __iadd__(self, other):
+        self.data += self.__cast(other)
+        return self
+
+    def __sub__(self, other):
+        tmp_item = self.__class(self.data)
+        tmp_item.pop()
+        tmp_item.data += self.__cast(other)
+        return tmp_item
+
+    __rsub__ = __sub__
+
+    def __isub__(self, other):
+        self.data.pop()
+        self.data += self.__cast(other)
+        return self
+
+    def __mul__(self, n):
+        return self.__class(self.data*n)
+    __rmul__ = __mul__
+
+    def copy(self):
+        return self.__class(self.data)
 
 
 # ===============================================================================
@@ -340,6 +409,8 @@ def format_key_value(data,
     """
     if isinstance(data, dict):
         data = list(data.items())
+    if data is None:
+        data = []
 
     max_key = 0
     # has_neg = False
@@ -365,7 +436,7 @@ def format_key_value(data,
                     value = str(value)
                     value = float(value)
 
-        if value_format in ('number', 'auto') and isinstance(value, (int, float, Decimal)):
+        if value_format in ('number', 'auto') and isinstance(value, (int, float, Decimal)) and not isinstance(value, bool):
             value = NumberFormatHelper(value, decimal_places=decimal_places)
             # has_neg = has_neg or value.has_neg
             max_dec = max(max_dec, value.my_dec_len)
@@ -380,56 +451,59 @@ def format_key_value(data,
 
     for key, value in data:
         tmp_line = ''
-        if key_format != 'skip':
-            if key_format == 'left':
-                tmp_line = key.ljust(max_key)
-            elif key_format == 'left_trimmed':
-                tmp_line = key
-            elif key_format == 'right':
-                tmp_line = key.rjust(max_key)
-            else:
-                raise AttributeError('Invalid key_format value of %s, should be one of ["left", "left_trimmed", "right"]' % key_format)
+        if value == '__header__':
+            tmp_line = key
+        else:
+            if key_format != 'skip':
+                if key_format == 'left':
+                    tmp_line = key.ljust(max_key)
+                elif key_format == 'left_trimmed':
+                    tmp_line = key
+                elif key_format == 'right':
+                    tmp_line = key.rjust(max_key)
+                else:
+                    raise AttributeError('Invalid key_format value of %s, should be one of ["left", "left_trimmed", "right"]' % key_format)
 
-            if indent:
-                tmp_indent = ' ' * indent
-                tmp_line = tmp_indent + tmp_line
-            if return_style in (FORMAT_RETURN_STYLE.LIST, FORMAT_RETURN_STYLE.STRING):
-                if value_format not in ('skip', 'none'):
-                    tmp_line += sep
+                if indent:
+                    tmp_indent = ' ' * indent
+                    tmp_line = tmp_indent + tmp_line
+                if return_style in (FORMAT_RETURN_STYLE.LIST, FORMAT_RETURN_STYLE.STRING):
+                    if value_format not in ('skip', 'none'):
+                        tmp_line += sep
 
-        if value_format == 'skip':
-            value = ''
-        elif value_format == 'repr':
-            value = repr(value)
-        elif value_format == 'pprint':
-            value = pformat(value, indent=4)
-        elif value_format == 'json':
-            value = dumps(value, indent=4)
-        elif value_format == 'str':
-            value = str(value)
-        elif value_format == 'number':
-            value = value.get(max_int=max_int, max_dec=max_dec)  # , has_neg=has_neg)
-        elif value_format == 'auto':
-            if isinstance(value, NumberFormatHelper):
-                value = value.get(max_int=max_int, max_dec=max_dec) # , has_neg=has_neg)
-            elif isinstance(value, str):
+            if value_format == 'skip':
+                value = ''
+            elif value_format == 'repr':
+                value = repr(value)
+            elif value_format == 'pprint':
+                value = pformat(value, indent=4)
+            elif value_format == 'json':
+                value = dumps(value, indent=4)
+            elif value_format == 'str':
                 value = str(value)
-            else:
-                try:
-                    value = dumps(value, indent=4)
-                except Exception:
+            elif value_format == 'number':
+                value = value.get(max_int=max_int, max_dec=max_dec)  # , has_neg=has_neg)
+            elif value_format == 'auto':
+                if isinstance(value, NumberFormatHelper):
+                    value = value.get(max_int=max_int, max_dec=max_dec) # , has_neg=has_neg)
+                elif isinstance(value, str):
+                    value = str(value)
+                else:
                     try:
-                        value = pformat(value, indent=4)
+                        value = dumps(value, indent=4)
                     except Exception:
-                        value = repr(value)
-        elif value_format != 'none':
-            raise AttributeError(
-                'Invalid key_format value of %s, should be one of ["left", "left_trimmed", "right"]' % key_format)
-        if value_format not in ('none', 'skip'):
-            if indent_wrapped:
-                value = indent_str(value, next_lines=len(tmp_line), first_line=0, indent_char=' ', trim_lines=False)
-            if value_indent:
-                value = indent_str(value, value_indent)
+                        try:
+                            value = pformat(value, indent=4)
+                        except Exception:
+                            value = repr(value)
+            elif value_format != 'none':
+                raise AttributeError(
+                    'Invalid key_format value of %s, should be one of ["left", "left_trimmed", "right"]' % key_format)
+            if value_format not in ('none', 'skip'):
+                if indent_wrapped:
+                    value = indent_str(value, next_lines=len(tmp_line), first_line=0, indent_char=' ', trim_lines=False)
+                if value_indent:
+                    value = indent_str(value, value_indent)
 
         if return_style == FORMAT_RETURN_STYLE.DICT:
             tmp_ret[tmp_line] = value
