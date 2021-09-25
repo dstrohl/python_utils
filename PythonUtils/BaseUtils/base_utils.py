@@ -22,6 +22,12 @@ from decimal import Decimal
 #  ===============================================================================
 
 def max_len(*lists_in, field_key=None):
+    """
+    Finds the longest string in a list or list of dicts.
+    :param lists_in:
+    :param field_key:
+    :return:
+    """
     ret_max = 0
     if field_key is None:
         for l in lists_in:
